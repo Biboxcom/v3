@@ -2029,10 +2029,7 @@
 <span class="kd">let</span> <span class="nx">param</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">coin_symbol</span><span class="p">:</span> <span class="dl">'</span><span class="s1">BTC</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">amount</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-    <span class="na">totp_code</span><span class="p">:</span> <span class="mi">642163</span><span class="p">,</span>
-    <span class="na">trade_pwd</span><span class="p">:</span> <span class="dl">'</span><span class="s1">123456</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">addr</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13f2LpNAdsKuxdTt2bKFLaSZL7toeyieGExxx</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">addr_remark</span><span class="p">:</span> <span class="dl">'</span><span class="s1">test.btc</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">memo</span><span class="p">:</span> <span class="dl">''</span>
 <span class="p">};</span>
 
@@ -2099,36 +2096,12 @@
 <td>需大于各币种最小提现数量</td>
 </tr>
 <tr>
-<td>totp_code</td>
-<td>false</td>
-<td>integer</td>
-<td>google验证码</td>
-<td></td>
-<td>新地址需要,旧地址不需要</td>
-</tr>
-<tr>
-<td>trade_pwd</td>
-<td>false</td>
-<td>string</td>
-<td>资金密码</td>
-<td></td>
-<td>新地址需要,旧地址不需要</td>
-</tr>
-<tr>
 <td>addr</td>
 <td>true</td>
 <td>string</td>
 <td>提现地址</td>
 <td></td>
 <td>币种合法地址</td>
-</tr>
-<tr>
-<td>addr_remark</td>
-<td>true</td>
-<td>string</td>
-<td>提现地址备注名称</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>memo</td>
@@ -2320,7 +2293,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>充值记录列表</td>
+<td>记录列表</td>
 </tr>
 <tr>
 <td>coin_symbol</td>
@@ -2344,7 +2317,7 @@
 </tr>
 <tr>
 <td>status</td>
-<td>充值状态,  1-充值进行中，2-充值到账，3-充值失败</td>
+<td>状态,  1-充值进行中，2-充值到账，3-充值失败</td>
 </tr>
 <tr>
 <td>其它字段</td>
@@ -2365,7 +2338,7 @@
 
 <span class="kd">let</span> <span class="nx">param</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">coin_symbol</span><span class="p">:</span> <span class="dl">'</span><span class="s1">USDT</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">filter_type</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">filter_type</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
     <span class="na">page</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="na">size</span><span class="p">:</span> <span class="mi">10</span>
 <span class="p">};</span>
@@ -2500,7 +2473,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>充值记录列表</td>
+<td>记录列表</td>
 </tr>
 <tr>
 <td>coin_symbol</td>
@@ -2528,7 +2501,7 @@
 </tr>
 <tr>
 <td>status</td>
-<td>充值状态,  1-充值进行中，2-充值到账，3-充值失败</td>
+<td>状态,  1-进行中，2-提现成功，3-提现失败，4-提现被撤销</td>
 </tr>
 <tr>
 <td>其它字段</td>
@@ -2789,7 +2762,7 @@
 </tr>
 <tr>
 <td>status</td>
-<td>状态,  -2：审核不通过；-1: 用户撤销；0:待审核; 1:审核通过（待发币）;  2: 发币中； 3：发币完成&#39;</td>
+<td>状态,  -2：审核不通过；-1: 用户撤销；0:待审核; 1:审核通过（待发币）;  2: 发币中； 3：发币完成</td>
 </tr>
 <tr>
 <td>amount</td>
@@ -3246,7 +3219,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>充值记录列表</td>
+<td>记录列表</td>
 </tr>
 <tr>
 <td>id</td>
@@ -3278,15 +3251,15 @@
 </tr>
 <tr>
 <td>price</td>
-<td>委托价格，市价单是0</td>
+<td>委托价格</td>
 </tr>
 <tr>
 <td>amount</td>
-<td>委托数量，市价买单是0</td>
+<td>委托数量</td>
 </tr>
 <tr>
 <td>money</td>
-<td>委托金额，市价卖单是0</td>
+<td>委托金额</td>
 </tr>
 <tr>
 <td>deal_amount</td>
@@ -3302,7 +3275,7 @@
 </tr>
 <tr>
 <td>status</td>
-<td>状态，-1 失败 0或1-待成交, 2-部分成交，3-完全成交，4-部分撤销，5-完全撤销，6-待撤销</td>
+<td>状态，-1 失败，0或1-待成交，2-部分成交，3-完全成交，4-部分撤销，5-完全撤销，6-待撤销</td>
 </tr>
 <tr>
 <td>其它字段</td>
@@ -3494,7 +3467,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>充值记录列表</td>
+<td>记录列表</td>
 </tr>
 <tr>
 <td>id</td>
@@ -3526,15 +3499,15 @@
 </tr>
 <tr>
 <td>price</td>
-<td>委托价格，市价单是0</td>
+<td>委托价格</td>
 </tr>
 <tr>
 <td>amount</td>
-<td>委托数量，市价买单是0</td>
+<td>委托数量</td>
 </tr>
 <tr>
 <td>money</td>
-<td>委托金额，市价卖单是0</td>
+<td>委托金额</td>
 </tr>
 <tr>
 <td>deal_price</td>
@@ -3549,12 +3522,8 @@
 <td>成交金额</td>
 </tr>
 <tr>
-<td>deal_percent</td>
-<td>成交百分比</td>
-</tr>
-<tr>
 <td>status</td>
-<td>状态，-1 失败 0或1-待成交, 2-部分成交，3-完全成交，4-部分撤销，5-完全撤销，6-待撤销</td>
+<td>状态，-1 失败，0或1-待成交，2-部分成交，3-完全成交，4-部分撤销，5-完全撤销，6-待撤销</td>
 </tr>
 <tr>
 <td>其它字段</td>
@@ -3770,7 +3739,7 @@
 </tr>
 <tr>
 <td>pay_bix</td>
-<td>bix抵扣 0 未开启 1 开启</td>
+<td>bix抵扣，0-未开启 1-开启</td>
 </tr>
 <tr>
 <td>fee_symbol</td>
@@ -3950,15 +3919,15 @@
 </tr>
 <tr>
 <td>price</td>
-<td>委托价格，市价单是0</td>
+<td>委托价格</td>
 </tr>
 <tr>
 <td>amount</td>
-<td>委托数量，市价买单是0</td>
+<td>委托数量</td>
 </tr>
 <tr>
 <td>money</td>
-<td>委托金额，市价卖单是0</td>
+<td>委托金额</td>
 </tr>
 <tr>
 <td>deal_amount</td>
@@ -3974,7 +3943,7 @@
 </tr>
 <tr>
 <td>status</td>
-<td>状态，-1 失败 0或1-待成交, 2-部分成交，3-完全成交，4-部分撤销，5-完全撤销，6-待撤销</td>
+<td>状态，-1 失败，0或1-待成交，2-部分成交，3-完全成交，4-部分撤销，5-完全撤销，6-待撤销</td>
 </tr>
 <tr>
 <td>其它字段</td>
@@ -4159,7 +4128,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>充值记录列表</td>
+<td>记录列表</td>
 </tr>
 <tr>
 <td>id</td>
@@ -4207,7 +4176,7 @@
 </tr>
 <tr>
 <td>pay_bix</td>
-<td>bix抵扣 0 未开启 1 开启</td>
+<td>bix抵扣，0-未开启 1-开启</td>
 </tr>
 <tr>
 <td>fee_symbol</td>
@@ -4398,7 +4367,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>充值记录列表</td>
+<td>记录列表</td>
 </tr>
 <tr>
 <td>id</td>
@@ -4442,7 +4411,7 @@
 </tr>
 <tr>
 <td>pay_bix</td>
-<td>bix抵扣 0 未开启 1 开启</td>
+<td>bix抵扣，0-未开启 1-开启</td>
 </tr>
 <tr>
 <td>fee_symbol</td>
@@ -4454,7 +4423,7 @@
 </tr>
 <tr>
 <td>is_maker</td>
-<td>是否maker 0-否，1-是</td>
+<td>是否maker，0-否，1-是</td>
 </tr>
 <tr>
 <td>relay_id</td>
@@ -6441,7 +6410,7 @@
 </tr>
 <tr>
 <td>vol</td>
-<td>成交量(合约价值)</td>
+<td>成交量</td>
 </tr>
 <tr>
 <td>binary</td>
@@ -7608,7 +7577,7 @@
 </thead><tbody>
 <tr>
 <td>normal</td>
-<td>现货账户资产</td>
+<td>币币账户资产</td>
 </tr>
 <tr>
 <td>balance</td>
@@ -7762,7 +7731,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>充值记录列表</td>
+<td>记录列表</td>
 </tr>
 <tr>
 <td>id</td>
@@ -7798,15 +7767,15 @@
 </tr>
 <tr>
 <td>price</td>
-<td>委托价格，市价单是0</td>
+<td>委托价格</td>
 </tr>
 <tr>
 <td>amount</td>
-<td>委托数量，市价买单是0</td>
+<td>委托数量</td>
 </tr>
 <tr>
 <td>money</td>
-<td>委托金额，市价卖单是0</td>
+<td>委托金额</td>
 </tr>
 <tr>
 <td>deal_amount</td>
@@ -7822,7 +7791,7 @@
 </tr>
 <tr>
 <td>status</td>
-<td>状态，-1 失败 0或1-待成交, 2-部分成交，3-完全成交，4-部分撤销，5-完全撤销，6-待撤销</td>
+<td>状态，-1 失败，0或1-待成交，2-部分成交，3-完全成交，4-部分撤销，5-完全撤销，6-待撤销</td>
 </tr>
 <tr>
 <td>其它字段</td>

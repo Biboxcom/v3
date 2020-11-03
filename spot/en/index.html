@@ -2029,10 +2029,7 @@
 <span class="kd">let</span> <span class="nx">param</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">coin_symbol</span><span class="p">:</span><span class="dl">'</span><span class="s1">BTC</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">amount</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-    <span class="na">totp_code</span><span class="p">:</span> <span class="mi">642163</span><span class="p">,</span>
-    <span class="na">trade_pwd</span><span class="p">:</span> <span class="dl">'</span><span class="s1">123456</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">addr</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13f2LpNAdsKuxdTt2bKFLaSZL7toeyieGExxx</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">addr_remark</span><span class="p">:</span><span class="dl">'</span><span class="s1">test.btc</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">memo</span><span class="p">:</span><span class="dl">''</span>
 <span class="p">};</span>
 
@@ -2099,36 +2096,12 @@
 <td>Must be greater than the minimum withdrawal quantity for each currency</td>
 </tr>
 <tr>
-<td>totp_code</td>
-<td>false</td>
-<td>integer</td>
-<td>google verification code</td>
-<td></td>
-<td>New address required, old address not required</td>
-</tr>
-<tr>
-<td>trade_pwd</td>
-<td>false</td>
-<td>string</td>
-<td>Fund password</td>
-<td></td>
-<td>New address required, old address not required</td>
-</tr>
-<tr>
 <td>addr</td>
 <td>true</td>
 <td>string</td>
 <td>Withdrawal address</td>
 <td></td>
 <td>Currency legal address</td>
-</tr>
-<tr>
-<td>addr_remark</td>
-<td>true</td>
-<td>string</td>
-<td>Withdrawal address remark name</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>memo</td>
@@ -2320,7 +2293,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>deposit record list</td>
+<td>records</td>
 </tr>
 <tr>
 <td>coin_symbol</td>
@@ -2365,7 +2338,7 @@
 
 <span class="kd">let</span> <span class="nx">param</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">coin_symbol</span><span class="p">:</span><span class="dl">'</span><span class="s1">USDT</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">filter_type</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">filter_type</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
     <span class="na">page</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="na">size</span><span class="p">:</span> <span class="mi">10</span>
 <span class="p">};</span>
@@ -2500,7 +2473,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>deposit record list</td>
+<td>records</td>
 </tr>
 <tr>
 <td>coin_symbol</td>
@@ -2528,7 +2501,7 @@
 </tr>
 <tr>
 <td>status</td>
-<td>deposit status, 1-withdrawal in progress, 2-withdrawal received, 3-withdrawal failed</td>
+<td>status, 1-withdrawal in progress, 2-withdrawal received, 3-withdrawal failed, 4-withdrawal cancelled</td>
 </tr>
 <tr>
 <td>Other fields</td>
@@ -2789,7 +2762,7 @@
 </tr>
 <tr>
 <td>status</td>
-<td>Status, -2: Approval failed; -1: User canceled; 0: Pending approval; 1: Approved (to be issued coins); 2: In the process of issuing coins; 3: Issuing coins completed&#39;</td>
+<td>Status, -2: Approval failed; -1: User canceled; 0: Pending approval; 1: Approved (to be issued coins); 2: In the process of issuing coins; 3: Issuing coins completed</td>
 </tr>
 <tr>
 <td>amount</td>
@@ -3246,7 +3219,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>deposit record list</td>
+<td>records</td>
 </tr>
 <tr>
 <td>id</td>
@@ -3494,7 +3467,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>deposit record list</td>
+<td>records</td>
 </tr>
 <tr>
 <td>id</td>
@@ -7762,7 +7735,7 @@
 </tr>
 <tr>
 <td>items</td>
-<td>deposit record list</td>
+<td>records</td>
 </tr>
 <tr>
 <td>id</td>
