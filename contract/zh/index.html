@@ -308,7 +308,7 @@
             <a href="/v3/bc/zh/" id="btn_contract_coin">币本位永续合约</a>
           </span>
           <span class="nav_cell nav_tab">
-            <a href="https://biboxcom.github.io/zh-hans/" id="btn_v1">Use V1 Api?</a>
+            <a href="https://biboxcom.github.io/zh-hans/" id="btn_v1">使用v1版本API</a>
           </span>
         </div>
       </div>
@@ -324,7 +324,7 @@
         <ul class="search-results"></ul>
       <ul id="toc" class="toc-list-h1">
           <li>
-            <a href="#49f8583b2b" class="toc-h1 toc-link" data-title="金本位合约">金本位合约</a>
+            <a href="#u" class="toc-h1 toc-link" data-title="U本位合约">U本位合约</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#1" class="toc-h2 toc-link" data-title="1.签名接口请求方式">1.签名接口请求方式</a>
@@ -467,9 +467,7 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='49f8583b2b'>金本位合约</h1>
-<p>这是金本位合约api文档。</p>
-<h2 id='1'>1.签名接口请求方式</h2>
+        <h1 id='u'>U本位合约</h1><h2 id='1'>1.签名接口请求方式</h2>
 <blockquote>
 <p>完整例子</p>
 </blockquote>
@@ -6389,6 +6387,7 @@
         const btn_spot = document.getElementById('btn_spot');
         const btn_contract = document.getElementById('btn_contract');
         const btn_contract_coin = document.getElementById('btn_contract_coin')
+        const btn_v1 = document.getElementById('btn_v1')
 
         const url = GetUrlRelativePath();
 
@@ -6399,6 +6398,7 @@
           btn_spot.innerHTML = 'Spot';
           btn_contract_coin.innerHTML = 'ContractCoin';
           btn_contract.innerHTML = 'Contract USDT';
+          btn_v1.innerHTML = 'Use V1 API?';
 
           lang_btn.href = url.replace('en/', 'zh/');
           btn_spot.href = btn_spot.href.replace('zh/', 'en/');
@@ -6411,6 +6411,7 @@
           btn_spot.innerHTML = '现货';
           btn_contract_coin.innerHTML = '币本位永续合约';
           btn_contract.innerHTML = 'U本位永续合约';
+          btn_v1.innerHTML = '使用v1版本API';
 
           lang_btn.href = url.replace('zh/', 'en/');
           btn_spot.href = btn_spot.href.replace('en/', 'zh/');

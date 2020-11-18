@@ -308,7 +308,7 @@
             <a href="/v3/bc/zh/" id="btn_contract_coin">币本位永续合约</a>
           </span>
           <span class="nav_cell nav_tab">
-            <a href="https://biboxcom.github.io/zh-hans/" id="btn_v1">Use V1 Api?</a>
+            <a href="https://biboxcom.github.io/zh-hans/" id="btn_v1">使用v1版本API</a>
           </span>
         </div>
       </div>
@@ -8264,6 +8264,7 @@
         const btn_spot = document.getElementById('btn_spot');
         const btn_contract = document.getElementById('btn_contract');
         const btn_contract_coin = document.getElementById('btn_contract_coin')
+        const btn_v1 = document.getElementById('btn_v1')
 
         const url = GetUrlRelativePath();
 
@@ -8274,6 +8275,7 @@
           btn_spot.innerHTML = 'Spot';
           btn_contract_coin.innerHTML = 'ContractCoin';
           btn_contract.innerHTML = 'Contract USDT';
+          btn_v1.innerHTML = 'Use V1 API?';
 
           lang_btn.href = url.replace('en/', 'zh/');
           btn_spot.href = btn_spot.href.replace('zh/', 'en/');
@@ -8286,6 +8288,7 @@
           btn_spot.innerHTML = '现货';
           btn_contract_coin.innerHTML = '币本位永续合约';
           btn_contract.innerHTML = 'U本位永续合约';
+          btn_v1.innerHTML = '使用v1版本API';
 
           lang_btn.href = url.replace('zh/', 'en/');
           btn_spot.href = btn_spot.href.replace('en/', 'zh/');
