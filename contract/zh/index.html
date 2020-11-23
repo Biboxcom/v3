@@ -813,6 +813,62 @@
 
 <p>POST https://api.bibox.com/v3.1/cquery/query/getMyBills</p>
 
+<ul>
+<li>2.请求参数</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>描述</th>
+<th>默认值</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>true</td>
+<td>integer</td>
+<td>第几页</td>
+<td></td>
+<td>1,2,...</td>
+</tr>
+<tr>
+<td>size</td>
+<td>true</td>
+<td>integer</td>
+<td>多少条</td>
+<td></td>
+<td>1,2,...</td>
+</tr>
+<tr>
+<td>begin_time</td>
+<td>false</td>
+<td>integer</td>
+<td>开始时间</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>false</td>
+<td>integer</td>
+<td>结束时间</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>false</td>
+<td>integer</td>
+<td>账单类型</td>
+<td></td>
+<td>1转入,2转出,3平仓,4手续费,6爆仓,7减仓,11资金费用调整,12资金费用</td>
+</tr>
+</tbody></table>
+
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -839,7 +895,7 @@
 
 </span></code></pre></div>
 <ul>
-<li>2.返回字段</li>
+<li>3.返回字段</li>
 </ul>
 
 <table><thead>
