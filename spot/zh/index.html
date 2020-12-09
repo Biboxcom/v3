@@ -390,6 +390,9 @@
                   <li>
                     <a href="#a3e0589e61" class="toc-h2 toc-link" data-title="查询某一条提现记录">查询某一条提现记录</a>
                   </li>
+                  <li>
+                    <a href="#cee12899ff" class="toc-h2 toc-link" data-title="查询钱包账户账单">查询钱包账户账单</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -418,6 +421,9 @@
                   </li>
                   <li>
                     <a href="#fd1ce65ca9" class="toc-h2 toc-link" data-title="最新成交明细">最新成交明细</a>
+                  </li>
+                  <li>
+                    <a href="#75ea9ba9f1" class="toc-h2 toc-link" data-title="查询现货账单">查询现货账单</a>
                   </li>
               </ul>
           </li>
@@ -470,6 +476,9 @@
                   </li>
                   <li>
                     <a href="#ee537408ce" class="toc-h2 toc-link" data-title="信用账户撤单">信用账户撤单</a>
+                  </li>
+                  <li>
+                    <a href="#e46148c649" class="toc-h2 toc-link" data-title="查询杠杆账单">查询杠杆账单</a>
                   </li>
               </ul>
           </li>
@@ -2942,6 +2951,143 @@
 <td>忽略</td>
 </tr>
 </tbody></table>
+<h2 id='cee12899ff'>查询钱包账户账单</h2>
+<ul>
+<li>1.请求路径</li>
+</ul>
+
+<p>POST https://api.bibox.com/v3.1/transfer/bills</p>
+
+<ul>
+<li>2.请求参数</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>描述</th>
+<th>默认值</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>account_type</td>
+<td>true</td>
+<td>integer</td>
+<td>0钱包账户 1杠杆账户</td>
+<td></td>
+<td>1</td>
+</tr>
+<tr>
+<td>page</td>
+<td>true</td>
+<td>integer</td>
+<td>第几页</td>
+<td></td>
+<td>1,2,...</td>
+</tr>
+<tr>
+<td>size</td>
+<td>true</td>
+<td>integer</td>
+<td>多少条</td>
+<td></td>
+<td>1,2,...</td>
+</tr>
+<tr>
+<td>begin_time</td>
+<td>false</td>
+<td>integer</td>
+<td>开始时间</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>false</td>
+<td>integer</td>
+<td>结束时间</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>false</td>
+<td>integer</td>
+<td>账单类型</td>
+<td></td>
+<td>0充值,2提现, 130钱包账户转现货, 131现货转钱包, 21钱包转杠杆, 22杠杆转钱包</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+     </span><span class="nl">"result"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"count"</span><span class="p">:</span><span class="mi">11</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"page"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"items"</span><span class="p">:[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"1125899906850284004"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"coin_symbol"</span><span class="p">:</span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"bill_type"</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"comment"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"change_amount"</span><span class="p">:</span><span class="s2">"6.9553"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"change_result"</span><span class="p">:</span><span class="s2">"182461.2621"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="s2">"2020-11-23T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"updatedAt"</span><span class="p">:</span><span class="s2">"2020-11-23T00:00:00.000Z"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div>
+<ul>
+<li>3.返回字段</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>账单id</td>
+</tr>
+<tr>
+<td>coin_symbol</td>
+<td>币种符号</td>
+</tr>
+<tr>
+<td>bill_type</td>
+<td>账单类型</td>
+</tr>
+<tr>
+<td>comment</td>
+<td>账单描述</td>
+</tr>
+<tr>
+<td>change_amount</td>
+<td>资产改变量</td>
+</tr>
+<tr>
+<td>change_result</td>
+<td>资产改变结果</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>账单时间</td>
+</tr>
+<tr>
+<td>其它字段</td>
+<td>忽略</td>
+</tr>
+</tbody></table>
 <h1 id='apikey-2'>币币交易(需要ApiKey)</h1><h2 id='fd6ce2a756'>下单</h2>
 <blockquote>
 <p>Request</p>
@@ -4599,6 +4745,135 @@
 <td>忽略</td>
 </tr>
 </tbody></table>
+<h2 id='75ea9ba9f1'>查询现货账单</h2>
+<ul>
+<li>1.请求路径</li>
+</ul>
+
+<p>POST https://api.bibox.com/v3.1/spot/account/bills</p>
+
+<ul>
+<li>2.请求参数</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>描述</th>
+<th>默认值</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>true</td>
+<td>integer</td>
+<td>第几页</td>
+<td></td>
+<td>1,2,...</td>
+</tr>
+<tr>
+<td>size</td>
+<td>true</td>
+<td>integer</td>
+<td>多少条</td>
+<td></td>
+<td>1,2,...</td>
+</tr>
+<tr>
+<td>begin_time</td>
+<td>false</td>
+<td>integer</td>
+<td>开始时间</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>false</td>
+<td>integer</td>
+<td>结束时间</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>false</td>
+<td>integer</td>
+<td>账单类型</td>
+<td></td>
+<td>130钱包转现货, 131现货转钱包 3卖 5买</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+     </span><span class="nl">"result"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"count"</span><span class="p">:</span><span class="mi">11</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"page"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"items"</span><span class="p">:[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"1125899906850284004"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"coin_symbol"</span><span class="p">:</span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"bill_type"</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"comment"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"change_amount"</span><span class="p">:</span><span class="s2">"6.9553"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"change_result"</span><span class="p">:</span><span class="s2">"182461.2621"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="s2">"2020-11-23T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"updatedAt"</span><span class="p">:</span><span class="s2">"2020-11-23T00:00:00.000Z"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div>
+<ul>
+<li>3.返回字段</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>账单id</td>
+</tr>
+<tr>
+<td>coin_symbol</td>
+<td>币种符号</td>
+</tr>
+<tr>
+<td>bill_type</td>
+<td>账单类型</td>
+</tr>
+<tr>
+<td>comment</td>
+<td>账单描述</td>
+</tr>
+<tr>
+<td>change_amount</td>
+<td>资产改变量</td>
+</tr>
+<tr>
+<td>change_result</td>
+<td>资产改变结果</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>账单时间</td>
+</tr>
+<tr>
+<td>其它字段</td>
+<td>忽略</td>
+</tr>
+</tbody></table>
 <h1 id='apikey-3'>资金划转(需要ApiKey)</h1><h2 id='04f74bcc43'>钱包划转到币币</h2>
 <blockquote>
 <p>Request</p>
@@ -4675,7 +4950,7 @@
 </tr>
 <tr>
 <td>amount</td>
-<td>false</td>
+<td>true</td>
 <td>string</td>
 <td>数量</td>
 <td></td>
@@ -4772,7 +5047,7 @@
 </tr>
 <tr>
 <td>amount</td>
-<td>false</td>
+<td>true</td>
 <td>double</td>
 <td>数量</td>
 <td></td>
@@ -4780,7 +5055,7 @@
 </tr>
 <tr>
 <td>pair</td>
-<td>false</td>
+<td>true</td>
 <td>string</td>
 <td>仓位</td>
 <td></td>
@@ -4869,7 +5144,7 @@
 </tr>
 <tr>
 <td>amount</td>
-<td>false</td>
+<td>true</td>
 <td>double</td>
 <td>数量</td>
 <td></td>
@@ -4877,7 +5152,7 @@
 </tr>
 <tr>
 <td>pair</td>
-<td>false</td>
+<td>true</td>
 <td>string</td>
 <td>仓位</td>
 <td></td>
@@ -6342,7 +6617,144 @@
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{}</span><span class="w">
 
-</span></code></pre></div><h1 id='websocket'>WebSocket</h1><h2 id='kline'>订阅 Kline 数据</h2>
+</span></code></pre></div><h2 id='e46148c649'>查询杠杆账单</h2>
+<ul>
+<li>1.请求路径</li>
+</ul>
+
+<p>POST https://api.bibox.com/v3.1/transfer/bills</p>
+
+<ul>
+<li>2.请求参数</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>描述</th>
+<th>默认值</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>account_type</td>
+<td>true</td>
+<td>integer</td>
+<td>0钱包账户 1杠杆账户</td>
+<td></td>
+<td>1</td>
+</tr>
+<tr>
+<td>page</td>
+<td>true</td>
+<td>integer</td>
+<td>第几页</td>
+<td></td>
+<td>1,2,...</td>
+</tr>
+<tr>
+<td>size</td>
+<td>true</td>
+<td>integer</td>
+<td>多少条</td>
+<td></td>
+<td>1,2,...</td>
+</tr>
+<tr>
+<td>begin_time</td>
+<td>false</td>
+<td>integer</td>
+<td>开始时间</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>false</td>
+<td>integer</td>
+<td>结束时间</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>false</td>
+<td>integer</td>
+<td>账单类型</td>
+<td></td>
+<td>21钱包转杠杆, 22杠杆转钱包, 3卖, 5买, 10借贷, 15还款</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+     </span><span class="nl">"result"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"count"</span><span class="p">:</span><span class="mi">11</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"page"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"items"</span><span class="p">:[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"1125899906850284004"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"coin_symbol"</span><span class="p">:</span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"bill_type"</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"comment"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"change_amount"</span><span class="p">:</span><span class="s2">"6.9553"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"change_result"</span><span class="p">:</span><span class="s2">"182461.2621"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="s2">"2020-11-23T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"updatedAt"</span><span class="p">:</span><span class="s2">"2020-11-23T00:00:00.000Z"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div>
+<ul>
+<li>3.返回字段</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>账单id</td>
+</tr>
+<tr>
+<td>coin_symbol</td>
+<td>币种符号</td>
+</tr>
+<tr>
+<td>bill_type</td>
+<td>账单类型</td>
+</tr>
+<tr>
+<td>comment</td>
+<td>账单描述</td>
+</tr>
+<tr>
+<td>change_amount</td>
+<td>资产改变量</td>
+</tr>
+<tr>
+<td>change_result</td>
+<td>资产改变结果</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>账单时间</td>
+</tr>
+<tr>
+<td>其它字段</td>
+<td>忽略</td>
+</tr>
+</tbody></table>
+<h1 id='websocket'>WebSocket</h1><h2 id='kline'>订阅 Kline 数据</h2>
 <blockquote>
 <p>完整例子</p>
 </blockquote>
