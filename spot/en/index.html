@@ -327,6 +327,9 @@
             <a href="#spot-trading" class="toc-h1 toc-link" data-title="Spot trading">Spot trading</a>
               <ul class="toc-list-h2">
                   <li>
+                    <a href="#sdk-and-demo" class="toc-h2 toc-link" data-title="SDK and Demo">SDK and Demo</a>
+                  </li>
+                  <li>
                     <a href="#signature-interface-request-method" class="toc-h2 toc-link" data-title="Signature interface request method">Signature interface request method</a>
                   </li>
                   <li>
@@ -521,11 +524,10 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='spot-trading'>Spot trading</h1>
-        <h2 id='sdk-and-demo'>SDK and Demo</h2>
-<p>Bibox provides spot/credit SDKs for developers in multiple languages.</p>
+        <h1 id='spot-trading'>Spot trading</h1><h2 id='sdk-and-demo'>SDK and Demo</h2>
+<p>Bibox provides contract SDKs for developers in multiple languages.</p>
 
-<p>These SDKs are developed based on the Bibox spot/credit API and automatically complete the following functions:</p>
+<p>These SDKs are developed based on the Bibox contract API and automatically complete the following functions:</p>
 
 <ul>
 <li>Data signature</li>
@@ -537,12 +539,12 @@
 <p>If you need to download or read more information, please click the following link:</p>
 
 <ul>
-<li><a href="https://github.com/Biboxcom/spots_java">Spot Java</a></li>
-<li><a href="https://github.com/Biboxcom/spots_nodejs">Spot Node</a></li>
-<li><a href="https://github.com/Biboxcom/credits_java">Credit Java</a></li>
-<li><a href="https://github.com/Biboxcom/credits_nodejs">Credit Node</a></li>
+<li><a href="https://github.com/Biboxcom/spots_java">Java spot</a></li>
+<li><a href="https://github.com/Biboxcom/spots_nodejs">Node spot</a></li>
+<li><a href="https://github.com/Biboxcom/credits_java">Java credit</a></li>
+<li><a href="https://github.com/Biboxcom/credits_nodejs">Node credit</a></li>
 </ul>
-        <h2 id='signature-interface-request-method'>Signature interface request method</h2>
+<h2 id='signature-interface-request-method'>Signature interface request method</h2>
 <blockquote>
 <p>Example</p>
 </blockquote>
@@ -563,7 +565,7 @@
 <span class="kd">let</span> <span class="nx">secret</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">c708ac3e70d115ec29efbee197330627d7edf842</span><span class="dl">"</span>
 <span class="kd">let</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacMD5</span><span class="p">(</span><span class="nx">strToSign</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span><span class="c1">//4. Signed result</span>
 
-<span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://api.bibox.com/v3.1/transfer/assets</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://api.bibox.com/v3.1/transfer/mainAssets</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">({</span>
         <span class="na">url</span><span class="p">:</span> <span class="nx">url</span><span class="p">,</span><span class="c1">//request path</span>
@@ -1776,7 +1778,7 @@
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">CryptoJS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">crypto-js</span><span class="dl">"</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">request</span><span class="dl">"</span><span class="p">);</span>
 
-<span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://api.bibox.com/v3.1/transfer/assets</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://api.bibox.com/v3.1/transfer/mainAssets</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">apikey</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">900625568558820892a8c833c33ebc8fd2701efe</span><span class="dl">"</span><span class="p">;</span> 
 <span class="kd">let</span> <span class="nx">secret</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">c708ac3e70d115ec29efbee197330627d7edf842</span><span class="dl">"</span><span class="p">;</span>
@@ -1815,7 +1817,7 @@
 <li>1. Request path</li>
 </ul>
 
-<p>POST https://api.bibox.com/v3.1/transfer/assets</p>
+<p>POST https://api.bibox.com/v3.1/transfer/mainAssets</p>
 
 <ul>
 <li>2. Request parameter</li>

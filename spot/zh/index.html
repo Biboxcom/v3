@@ -327,6 +327,9 @@
             <a href="#api" class="toc-h1 toc-link" data-title="API简介">API简介</a>
               <ul class="toc-list-h2">
                   <li>
+                    <a href="#sdk" class="toc-h2 toc-link" data-title="SDK与代码示例">SDK与代码示例</a>
+                  </li>
+                  <li>
                     <a href="#9baf730520" class="toc-h2 toc-link" data-title="签名接口请求方式">签名接口请求方式</a>
                   </li>
                   <li>
@@ -530,27 +533,26 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='api'>API简介</h1>
-        <h2 id='sdk'>SDK与代码示例</h2>
-        <p>Bibox为开发人员提供了多种语言版本的现货/杠杆SDK。
-        这些SDK基于Bibox现货/杠杆API开发，并自动完成以下功能：</p>
+        <h1 id='api'>API简介</h1><h2 id='sdk'>SDK与代码示例</h2>
+<p>Bibox为开发人员提供了多种语言版本的合约SDK。
+这些SDK基于Bibox合约API开发，并自动完成以下功能：</p>
 
-        <ul>
-        <li>数据签名</li>
-        <li>数据合成，例如：自动根据增量数据合成完整的深度</li>
-        </ul>
+<ul>
+<li>数据签名</li>
+<li>数据合成，例如：自动根据增量数据合成完整的深度</li>
+</ul>
 
-        <p>因此，使用SDK开发访问Bibox的程序比使用API更便捷，开发周期更短。</p>
+<p>因此，使用SDK开发访问Bibox的程序比使用API更便捷，开发周期更短。</p>
 
-        <p>如果需要下载或者阅读更多信息，请点击以下链接:</p>
+<p>如果需要下载或者阅读更多信息，请点击以下链接:</p>
 
-        <ul>
-        <li><a href="https://github.com/Biboxcom/spots_java">Spot Java</a></li>
-        <li><a href="https://github.com/Biboxcom/spots_nodejs">Spot Node</a></li>
-        <li><a href="https://github.com/Biboxcom/credits_java">Credit Java</a></li>
-        <li><a href="https://github.com/Biboxcom/credits_nodejs">Credit Node</a></li>
-        </ul>
-        <h2 id='9baf730520'>签名接口请求方式</h2>
+<ul>
+<li><a href="https://github.com/Biboxcom/spots_java">Java 币币</a></li>
+<li><a href="https://github.com/Biboxcom/spots_nodejs">Node 币币</a></li>
+<li><a href="https://github.com/Biboxcom/credits_java">Java 杠杆</a></li>
+<li><a href="https://github.com/Biboxcom/credits_nodejs">Node 杠杆</a></li>
+</ul>
+<h2 id='9baf730520'>签名接口请求方式</h2>
 <blockquote>
 <p>完整例子</p>
 </blockquote>
@@ -571,7 +573,7 @@
 <span class="kd">let</span> <span class="nx">secret</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">c708ac3e70d115ec29efbee197330627d7edf842</span><span class="dl">"</span><span class="p">;</span> <span class="c1">//你的 apikey 密码</span>
 <span class="kd">let</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacMD5</span><span class="p">(</span><span class="nx">strToSign</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span><span class="c1">//4.签名后的结果</span>
 
-<span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://api.bibox.com/v3.1/transfer/assets</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://api.bibox.com/v3.1/transfer/mainAssets</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">({</span>
         <span class="na">url</span><span class="p">:</span> <span class="nx">url</span><span class="p">,</span><span class="c1">//请求路径</span>
@@ -1784,7 +1786,7 @@
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">CryptoJS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">crypto-js</span><span class="dl">"</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">request</span><span class="dl">"</span><span class="p">);</span>
 
-<span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://api.bibox.com/v3.1/transfer/assets</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://api.bibox.com/v3.1/transfer/mainAssets</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">apikey</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">900625568558820892a8c833c33ebc8fd2701efe</span><span class="dl">"</span><span class="p">;</span> <span class="c1">//your apikey</span>
 <span class="kd">let</span> <span class="nx">secret</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">c708ac3e70d115ec29efbee197330627d7edf842</span><span class="dl">"</span><span class="p">;</span> <span class="c1">//your apikey secret</span>
@@ -1823,7 +1825,7 @@
 <li>1.请求路径</li>
 </ul>
 
-<p>POST https://api.bibox.com/v3.1/transfer/assets</p>
+<p>POST https://api.bibox.com/v3.1/transfer/mainAssets</p>
 
 <ul>
 <li>2.请求参数</li>
