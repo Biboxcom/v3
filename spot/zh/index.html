@@ -4916,7 +4916,7 @@
 <span class="kd">let</span> <span class="nx">secret</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">c708ac3e70d115ec29efbee197330627d7edf842</span><span class="dl">"</span><span class="p">;</span> <span class="c1">//你的 apikey 密码</span>
 <span class="kd">let</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacMD5</span><span class="p">(</span><span class="nx">strToSign</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span><span class="c1">//4.签名后的结果</span>
 
-<span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://api.bibox.com/v3.1/assets/transfer/spot</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://api.bibox.com/v3/assets/transfer/spot</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">({</span>
         <span class="na">url</span><span class="p">:</span> <span class="nx">url</span><span class="p">,</span><span class="c1">//请求路径</span>
@@ -4943,7 +4943,7 @@
 <li>1.请求路径</li>
 </ul>
 
-<p>POST https://api.bibox.com/v3.1/assets/transfer/spot</p>
+<p>POST https://api.bibox.com/v3/assets/transfer/spot</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -6781,7 +6781,7 @@
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.me</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
@@ -6878,7 +6878,7 @@
 <li>1.订阅路径</li>
 </ul>
 
-<p>wss://push.bibox.me</p>
+<p>wss://push.bibox.com</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -7025,7 +7025,7 @@
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.me</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
@@ -7122,7 +7122,7 @@
 <li>1.订阅路径</li>
 </ul>
 
-<p>wss://push.bibox.me</p>
+<p>wss://push.bibox.com</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -7297,7 +7297,7 @@
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.me</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
@@ -7394,7 +7394,7 @@
 <li>1.订阅路径</li>
 </ul>
 
-<p>wss://push.bibox.me</p>
+<p>wss://push.bibox.com</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -7507,7 +7507,7 @@
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.me</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
@@ -7604,7 +7604,7 @@
 <li>1.订阅路径</li>
 </ul>
 
-<p>wss://push.bibox.me</p>
+<p>wss://push.bibox.com</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -7705,7 +7705,7 @@
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.me</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
@@ -7802,7 +7802,7 @@
 <li>1.订阅路径</li>
 </ul>
 
-<p>wss://push.bibox.me</p>
+<p>wss://push.bibox.com</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -7937,7 +7937,7 @@
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">CryptoJS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">crypto-js</span><span class="dl">"</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.me</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// 1.请求路径</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// 1.请求路径</span>
 
 <span class="kd">let</span> <span class="nx">apikey</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">900625568558820892a8c833c33ebc8fd2701efe</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// 你的apikey</span>
 <span class="kd">let</span> <span class="nx">param</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1">// 定义参数对象param，需要用到apikey</span>
@@ -8009,7 +8009,7 @@
 <li>1.请求路径</li>
 </ul>
 
-<p>wss://push.bibox.me</p>
+<p>wss://push.bibox.com</p>
 
 <ul>
 <li>2.请求参数</li>
