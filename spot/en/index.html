@@ -324,6 +324,41 @@
         <ul class="search-results"></ul>
       <ul id="toc" class="toc-list-h1">
           <li>
+            <a href="#api-booster" class="toc-h1 toc-link" data-title="API Booster">API Booster</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#api-booster-intro" class="toc-h2 toc-link" data-title="API Booster Intro">API Booster Intro</a>
+                  </li>
+                  <li>
+                    <a href="#how-to-use-api-booster" class="toc-h2 toc-link" data-title="How to use API Booster">How to use API Booster</a>
+                  </li>
+                  <li>
+                    <a href="#why-use-api-booster" class="toc-h2 toc-link" data-title="Why use API Booster">Why use API Booster</a>
+                  </li>
+                  <li>
+                    <a href="#install" class="toc-h2 toc-link" data-title="Install">Install</a>
+                  </li>
+                  <li>
+                    <a href="#install-java-environment" class="toc-h2 toc-link" data-title="Install JAVA environment">Install JAVA environment</a>
+                  </li>
+                  <li>
+                    <a href="#install-api-booster" class="toc-h2 toc-link" data-title="Install API Booster">Install API Booster</a>
+                  </li>
+                  <li>
+                    <a href="#start-api-booster" class="toc-h2 toc-link" data-title="Start API Booster">Start API Booster</a>
+                  </li>
+                  <li>
+                    <a href="#service-port" class="toc-h2 toc-link" data-title="Service Port">Service Port</a>
+                  </li>
+                  <li>
+                    <a href="#stop-method" class="toc-h2 toc-link" data-title="Stop Method">Stop Method</a>
+                  </li>
+                  <li>
+                    <a href="#api-booster-interface-documentation" class="toc-h2 toc-link" data-title="API Booster Interface Documentation">API Booster Interface Documentation</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#spot-trading" class="toc-h1 toc-link" data-title="Spot trading">Spot trading</a>
               <ul class="toc-list-h2">
                   <li>
@@ -524,7 +559,83 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='spot-trading'>Spot trading</h1><h2 id='sdk-and-demo'>SDK and Demo</h2>
+        <h1 id='api-booster'>API Booster</h1><h2 id='api-booster-intro'>API Booster Intro</h2>
+<p>Bibox API Booster (hereinafter referred to as API Booster) is a fast development tool launched by Bibox for traders. Using API Booster can greatly reduce the difficulty of trading system development and obtain stable and reliable real-time data.</p>
+<h2 id='how-to-use-api-booster'>How to use API Booster</h2>
+<p>To use API Booster, traders only need to download API Booster to their computer and start it. API Booster will automatically connect to Bibox and continuously synchronize market data and account order data. Traders develop or modify their own trading system to make it connected with HTTP RESTFul interface provided by API Booster instead of directly connecting with Bibox API.</p>
+<h2 id='why-use-api-booster'>Why use API Booster</h2>
+<p>Using API Booster is much simpler than using Bibox API directly. Traders can complete the connection with API Booster in a very small time. Traders only need to focus on writing strategies, and the maintenance of real-time data is done automatically by API Booster.</p>
+
+<p>Below we will list main advantages of API Booster.</p>
+
+<ul>
+<li><p>Pure HTTP RESTFul interface, easier development</p>
+
+<p>API Booster only provides HTTP RESTFul interface, which simplifies the development work. In the past, developers used Websocket interface to obtain real-time data, which is now automatically completed by API Booster. The data obtained through API Booster HTTP RESTFul interface has no real-time loss.</p></li>
+<li><p>Fewer interfaces, clearer</p>
+
+<p>API Booster provides fewer and clearer interfaces than Bibox API. This is because API Booster automatically completes the assembly of multiple data, making a single interface provide more data content and clearer structure.</p></li>
+<li><p>No signature required</p>
+
+<p>Don&#39;t need to sign to use API Booster, just save API Key of the account into API Booster.</p></li>
+<li><p>No frequency limit</p>
+
+<p>There is no frequency limit for using API Booster interface to obtain market information or account data, and the frequency control of order cancellation is automatically completed by API Booster.</p></li>
+</ul>
+<h2 id='install'>Install</h2>
+<p>Installation of API Booster is divided into two steps, first install JAVA environment, and then install API Booster.</p>
+<h2 id='install-java-environment'>Install JAVA environment</h2>
+<p>Please visit following link and follow instructions on the page to install JAVA environment.</p>
+
+<ul>
+<li><a href="https://github.com/Biboxcom/spots_java">https://java.com/zh-CN/download/</a></li>
+</ul>
+<h2 id='install-api-booster'>Install API Booster</h2>
+<p>To install API Booster, please download API Booster executable JAR file from Bibox official website.</p>
+
+<ul>
+<li><a href="https://github.com/Biboxcom/spots_java">bibox-spot-apibooster-1.0.0.jar</a></li>
+</ul>
+
+<p>Please create a new directory on your computer and move the above JAR file to this directory. During runtime, API Booster will create some necessary data files in this directory, please make sure there are no other files in this directory.</p>
+<h2 id='start-api-booster'>Start API Booster</h2>
+<p>To start API Booster, just enter the following command in command line tool.</p>
+
+<p><code>java -jar bibox-spot-apibooster-1.0.0.jar</code></p>
+
+<p>Specific method is as follows:</p>
+
+<table><thead>
+<tr>
+<th>Platform</th>
+<th>Start method</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Linux</td>
+<td>Enter command line mode, or start &quot;Terminal&quot; application in graphics mode. Use cd command to enter the directory where bibox-spot-apibooster-1.0.0.jar is located. Enter the above command</td>
+</tr>
+<tr>
+<td>MacOS</td>
+<td>Click the &quot;Launchpad&quot; rocket icon in the shortcut menu. Find and click the &quot;Terminal&quot; icon. Use cd command to enter the directory where bibox-spot-apibooster-1.0.0.jar is located. Enter the above command</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>Open &quot;File Explorer&quot;, Find and enter the directory where bibox-spot-apibooster-1.0.0.jar is located, Hold down Shift key and click right mouse button on a blank space in &quot;File Explorer&quot;, In the pop-up menu, click &quot;Open Powershell window here&quot;, Enter the above command in &quot;Powershell&quot; window</td>
+</tr>
+</tbody></table>
+<h2 id='service-port'>Service Port</h2>
+<p>API Booster uses port 8080 to provide HTTP services by default. If there are other services using this port in your system, you can specify the service port of API Booster through the &quot;port&quot; command line parameter.</p>
+
+<p><code>java -jar bibox-spot-apibooster-1.0.0.jar --port 8081</code></p>
+
+<p>The 8081 can be any unused port.</p>
+<h2 id='stop-method'>Stop Method</h2>
+<p>To stop API Booster, close command line tool, or use process management tool to close API Booster process.</p>
+<h2 id='api-booster-interface-documentation'>API Booster Interface Documentation</h2>
+<p>**
+To read API Booster&#39;s detailed interface documentation, please enter <strong>localhost:8080</strong> in the browser after starting API Booster.</p>
+<h1 id='spot-trading'>Spot trading</h1><h2 id='sdk-and-demo'>SDK and Demo</h2>
 <p>Bibox provides contract SDKs for developers in multiple languages.</p>
 
 <p>These SDKs are developed based on the Bibox contract API and automatically complete the following functions:</p>
