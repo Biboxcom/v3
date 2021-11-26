@@ -363,7 +363,7 @@
                     <a href="#11" class="toc-h2 toc-link" data-title="11.查询订单列表">11.查询订单列表</a>
                   </li>
                   <li>
-                    <a href="#12" class="toc-h2 toc-link" data-title="12.查询订单">12.查询订单</a>
+                    <a href="#12" class="toc-h2 toc-link" data-title="12.查询在线订单">12.查询在线订单</a>
                   </li>
                   <li>
                     <a href="#13" class="toc-h2 toc-link" data-title="13.批量查询订单列表">13.批量查询订单列表</a>
@@ -384,7 +384,7 @@
                     <a href="#18" class="toc-h2 toc-link" data-title="18.查询历史委托">18.查询历史委托</a>
                   </li>
                   <li>
-                    <a href="#19" class="toc-h2 toc-link" data-title="19.查询订单">19.查询订单</a>
+                    <a href="#19" class="toc-h2 toc-link" data-title="19.查询订单(历史订单也可以查到)">19.查询订单(历史订单也可以查到)</a>
                   </li>
                   <li>
                     <a href="#19-1" class="toc-h2 toc-link" data-title="19.1.查询账单">19.1.查询账单</a>
@@ -616,6 +616,8 @@
     <span class="p">});</span>
 
 </code></pre></div>
+<p>可以把钱包账户中的资金转到合约账户，也可以把合约账户中的资金转到钱包账户。合约账户中转入资金后，才可以下单，否则下单会提示“可用余额不足”。</p>
+
 <ul>
 <li>1.请求路径</li>
 </ul>
@@ -738,6 +740,11 @@
     <span class="p">});</span>
 
 </code></pre></div>
+<p>在合约账户中转入资金之后，才有能下单成功。
+下单的数量参数amount必须是合约面值的整数倍，本意是以一张合约为基本单位。例如：一张4XRP_USDT合约的面值为10XRP，那么amount参数必须是10的整数倍，如果传的不是10的整数倍，则会提示“amount参数错误”。
+下市价单的时候，price参数传1即可，系统会根据最优价格下单。最优价格跟杠杆倍数有关，如果是高杠杆，就限制了最优价格偏离当前指数价不能太远，所以可能会导致单子不能完全成交甚至没有成交的情况。
+下限价单的时候，price参数同样收到最优价格的限制，如果是高杠杆，就下单价格不能偏离当前指数价不能太远，不允许出现单子一成交就爆仓的情况。</p>
+
 <ul>
 <li>1.请求路径</li>
 </ul>
@@ -1924,7 +1931,7 @@
 <td>忽略</td>
 </tr>
 </tbody></table>
-<h2 id='12'>12.查询订单</h2>
+<h2 id='12'>12.查询在线订单</h2>
 <blockquote>
 <p>Request</p>
 </blockquote>
@@ -1966,6 +1973,8 @@
     <span class="p">});</span>
 
 </code></pre></div>
+<p>这个接口只能查到未完成的订单，如果订单已经撤销或者已经完全成交，则可能查不到了。</p>
+
 <ul>
 <li>1.请求路径</li>
 </ul>
@@ -2155,6 +2164,8 @@
     <span class="p">});</span>
 
 </code></pre></div>
+<p>这个接口只能查到未完成的订单，如果订单已经撤销或者已经完全成交，则可能查不到了。</p>
+
 <ul>
 <li>1.请求路径</li>
 </ul>
@@ -2346,6 +2357,8 @@
     <span class="p">});</span>
 
 </code></pre></div>
+<p>这个接口只能查到未完成的订单，如果订单已经撤销或者已经完全成交，则可能查不到了。</p>
+
 <ul>
 <li>1.请求路径</li>
 </ul>
@@ -3176,7 +3189,7 @@
 <td>忽略</td>
 </tr>
 </tbody></table>
-<h2 id='19'>19.查询订单</h2>
+<h2 id='19'>19.查询订单(历史订单也可以查到)</h2>
 <blockquote>
 <p>Request</p>
 </blockquote>
