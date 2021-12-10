@@ -423,7 +423,7 @@
                     <a href="#31" class="toc-h2 toc-link" data-title="31.查询合约市场深度">31.查询合约市场深度</a>
                   </li>
                   <li>
-                    <a href="#32-kline" class="toc-h2 toc-link" data-title="32.订阅 Kline 数据">32.订阅 Kline 数据</a>
+                    <a href="#32-kline" class="toc-h2 toc-link" data-title="32.订阅 Kline 增量数据">32.订阅 Kline 增量数据</a>
                   </li>
                   <li>
                     <a href="#33" class="toc-h2 toc-link" data-title="33.订阅标记价格">33.订阅标记价格</a>
@@ -4774,7 +4774,7 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <td>忽略</td>
 </tr>
 </tbody></table>
-<h2 id='32-kline'>32.订阅 Kline 数据</h2>
+<h2 id='32-kline'>32.订阅 Kline 增量数据</h2>
 <blockquote>
 <p>完整例子</p>
 </blockquote>
@@ -4782,59 +4782,40 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com/cbu</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://npush.bibox360.com/cbu</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
 <span class="p">};</span>
 
-<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_decodeMsg</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// console.log(Buffer.from(data, 'base64'))</span>
-        <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="dl">'</span><span class="s1">base64</span><span class="dl">'</span><span class="p">),</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-            <span class="p">}</span>
+<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_decodeMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">data1</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">data1</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="k">try</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">_decodeMsg</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
-                <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
-                <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+                <span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
             <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">_decodeMsg catch</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
-                <span class="nx">reject</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
             <span class="p">}</span>
-        <span class="p">});</span>
-    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-    <span class="p">});</span>
-<span class="p">};</span>
-
-<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_consumerMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">binary</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">data</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">that</span><span class="p">.</span><span class="nx">_decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
-    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
     <span class="p">});</span>
 <span class="p">};</span>
 
 <span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_initWs</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">)</span>
     <span class="kd">let</span> <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">);</span>
     <span class="nx">that</span><span class="p">.</span><span class="nx">ws</span> <span class="o">=</span> <span class="nx">ws</span><span class="p">;</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">open</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">{</span>
+        <span class="p">{</span><span class="c1">// kline</span>
             <span class="nx">ws</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
                 <span class="na">event</span><span class="p">:</span> <span class="dl">'</span><span class="s1">addChannel</span><span class="dl">'</span><span class="p">,</span>
-                <span class="na">channel</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bibox_sub_spot_4BTC_USDT_kline_1min</span><span class="dl">'</span><span class="p">,</span>
-                <span class="na">binary</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="na">ver</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="na">sub</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4BTC_USDT_kline_1min</span><span class="dl">'</span><span class="p">,</span>
             <span class="p">}));</span>
         <span class="p">}</span>
     <span class="p">});</span>
@@ -4856,15 +4837,14 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
     <span class="p">});</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
-        <span class="kd">let</span> <span class="nx">jdata</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="c1">// 获得数据</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">jdata</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">jdata</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">continue</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="nx">that</span><span class="p">.</span><span class="nx">_consumerMsg</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">that</span><span class="p">.</span><span class="nx">_decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">0</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">)));</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
+
     <span class="p">});</span>
 <span class="p">};</span>
 
@@ -4874,12 +4854,15 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
 <span class="p">});</span>
 
+
 </code></pre></div>
+<p>kline只提供最近两根数据。全量数据请通过api get 调用。</p>
+
 <ul>
 <li>1.订阅路径</li>
 </ul>
 
-<p>wss://push.bibox.com/cbu</p>
+<p>wss://npush.bibox360.com/cbu</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -4912,116 +4895,54 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <td>1min, 5min, 15min, 30min, 1hour, 2hour, 4hour, 6hour, 12hour, day, week</td>
 </tr>
 <tr>
-<td>event</td>
-<td>true</td>
-<td>string</td>
-<td>行为</td>
-<td></td>
-<td>&#39;addChannel&#39;</td>
-</tr>
-<tr>
-<td>channel</td>
+<td>sub</td>
 <td>true</td>
 <td>string</td>
 <td></td>
 <td></td>
-<td>&#39;bibox_sub_spot_&#39; + ${pair} + &#39;_kline_&#39; + ${period}</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>true</td>
-<td>int</td>
-<td></td>
-<td></td>
-<td>0</td>
-</tr>
-<tr>
-<td>ver</td>
-<td>true</td>
-<td>int</td>
-<td></td>
-<td></td>
-<td>8</td>
+<td>${pair} + &#39;_kline_&#39; + ${period}</td>
 </tr>
 </tbody></table>
 
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"channel"</span><span class="p">:</span><span class="s2">"bibox_sub_spot_4BTC_USDT_kline_1min"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"binary"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data_type"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data"</span><span class="p">:[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"time"</span><span class="p">:</span><span class="mi">1603969980000</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"open"</span><span class="p">:</span><span class="s2">"13131.80000000"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"high"</span><span class="p">:</span><span class="s2">"13136.40000000"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"low"</span><span class="p">:</span><span class="s2">"13131.80000000"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"close"</span><span class="p">:</span><span class="s2">"13136.40000000"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"vol"</span><span class="p">:</span><span class="s2">"43045.00000000"</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"time"</span><span class="p">:</span><span class="mi">1603970040000</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"open"</span><span class="p">:</span><span class="s2">"13136.30000000"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"high"</span><span class="p">:</span><span class="s2">"13136.80000000"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"low"</span><span class="p">:</span><span class="s2">"13136.30000000"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"close"</span><span class="p">:</span><span class="s2">"13136.70000000"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"vol"</span><span class="p">:</span><span class="s2">"5561.00000000"</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">]</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="err">topic:</span><span class="w"> </span><span class="err">'</span><span class="mi">4</span><span class="err">BTC_USDT_kline_</span><span class="mi">1</span><span class="err">min'</span><span class="p">,</span><span class="w">
+  </span><span class="err">t:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="err">d:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">[</span><span class="w">
+      </span><span class="err">'</span><span class="mi">1639122420000</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47868.1</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47892.3</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47825.4</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47825.4</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">10.86</span><span class="err">'</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="p">[</span><span class="w">
+      </span><span class="err">'</span><span class="mi">1639122480000</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47825.4</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47830.9</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47728.7</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47775.6</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">10.88</span><span class="err">'</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre></div>
 <ul>
 <li>3.返回字段</li>
 </ul>
 
-<table><thead>
-<tr>
-<th>名称</th>
-<th>描述</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>time</td>
-<td>k线某周期开始时间</td>
-</tr>
-<tr>
-<td>count</td>
-<td>成交笔数</td>
-</tr>
-<tr>
-<td>open</td>
-<td>开盘价</td>
-</tr>
-<tr>
-<td>high</td>
-<td>最高价</td>
-</tr>
-<tr>
-<td>low</td>
-<td>最低价</td>
-</tr>
-<tr>
-<td>close</td>
-<td>收盘价</td>
-</tr>
-<tr>
-<td>vol</td>
-<td>成交量(合约价值)</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>0代表数据没有压缩，1代表数据压缩了</td>
-</tr>
-<tr>
-<td>其它字段</td>
-<td>忽略</td>
-</tr>
-</tbody></table>
+<p>[
+k线某周期开始时间,
+开盘价,
+最高价,
+最低价,
+收盘价,
+成交量(合约价值)
+]</p>
 <h2 id='33'>33.订阅标记价格</h2>
 <blockquote>
 <p>完整例子</p>
@@ -5030,59 +4951,40 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com/cbu</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://npush.bibox360.com/cbu</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
 <span class="p">};</span>
 
-<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_decodeMsg</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// console.log(Buffer.from(data, 'base64'))</span>
-        <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="dl">'</span><span class="s1">base64</span><span class="dl">'</span><span class="p">),</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-            <span class="p">}</span>
+<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_decodeMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">data1</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">data1</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="k">try</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">_decodeMsg</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
-                <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
-                <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+                <span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
             <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">_decodeMsg catch</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
-                <span class="nx">reject</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
             <span class="p">}</span>
-        <span class="p">});</span>
-    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-    <span class="p">});</span>
-<span class="p">};</span>
-
-<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_consumerMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">binary</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">data</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">that</span><span class="p">.</span><span class="nx">_decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
-    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
     <span class="p">});</span>
 <span class="p">};</span>
 
 <span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_initWs</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">)</span>
     <span class="kd">let</span> <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">);</span>
     <span class="nx">that</span><span class="p">.</span><span class="nx">ws</span> <span class="o">=</span> <span class="nx">ws</span><span class="p">;</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">open</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">{</span>
+        <span class="p">{</span><span class="c1">// kline</span>
             <span class="nx">ws</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
                 <span class="na">event</span><span class="p">:</span> <span class="dl">'</span><span class="s1">addChannel</span><span class="dl">'</span><span class="p">,</span>
-                <span class="na">channel</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bibox_sub_spot_4BTC_USDTTAGPRICE_kline_1min</span><span class="dl">'</span><span class="p">,</span>
-                <span class="na">binary</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="na">ver</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="na">sub</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4BTC_USDTTAGPRICE_kline_1min</span><span class="dl">'</span><span class="p">,</span>
             <span class="p">}));</span>
         <span class="p">}</span>
     <span class="p">});</span>
@@ -5104,15 +5006,14 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
     <span class="p">});</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
-        <span class="kd">let</span> <span class="nx">jdata</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="c1">// 获得数据</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">jdata</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">jdata</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">continue</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="nx">that</span><span class="p">.</span><span class="nx">_consumerMsg</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">that</span><span class="p">.</span><span class="nx">_decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">0</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">)));</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
+
     <span class="p">});</span>
 <span class="p">};</span>
 
@@ -5127,7 +5028,7 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <li>1.订阅路径</li>
 </ul>
 
-<p>wss://push.bibox.com/cbu</p>
+<p>wss://npush.bibox360.com/cbu</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -5152,112 +5053,54 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <td>4BTC_USDT, 4ETH_USDT</td>
 </tr>
 <tr>
-<td>event</td>
-<td>true</td>
-<td>string</td>
-<td>行为</td>
-<td></td>
-<td>&#39;addChannel&#39;</td>
-</tr>
-<tr>
-<td>channel</td>
+<td>sub</td>
 <td>true</td>
 <td>string</td>
 <td></td>
 <td></td>
-<td>&#39;bibox_sub_spot_&#39; + ${pair} + &#39;TAGPRICE_kline_1min&#39;</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>true</td>
-<td>int</td>
-<td></td>
-<td></td>
-<td>0</td>
-</tr>
-<tr>
-<td>ver</td>
-<td>true</td>
-<td>int</td>
-<td></td>
-<td></td>
-<td>8</td>
+<td>${pair} + &#39;TAGPRICE_kline_1min&#39;</td>
 </tr>
 </tbody></table>
 
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"channel"</span><span class="p">:</span><span class="s2">"bibox_sub_spot_4BTC_USDTTAGPRICE_kline_1min"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"binary"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data_type"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data"</span><span class="p">:[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"time"</span><span class="p">:</span><span class="mi">1603970520000</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"open"</span><span class="p">:</span><span class="s2">"13153.34453367"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"high"</span><span class="p">:</span><span class="s2">"13153.34453367"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"low"</span><span class="p">:</span><span class="s2">"13151.07785535"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"close"</span><span class="p">:</span><span class="s2">"13151.13533507"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"vol"</span><span class="p">:</span><span class="s2">"30.00000000"</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"time"</span><span class="p">:</span><span class="mi">1603970580000</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"open"</span><span class="p">:</span><span class="s2">"13150.75301752"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"high"</span><span class="p">:</span><span class="s2">"13150.75301752"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"low"</span><span class="p">:</span><span class="s2">"13149.51581987"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"close"</span><span class="p">:</span><span class="s2">"13149.51581987"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"vol"</span><span class="p">:</span><span class="s2">"5.00000000"</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">]</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="err">topic:</span><span class="w"> </span><span class="err">'</span><span class="mi">4</span><span class="err">BTC_USDTTAGPRICE_kline_</span><span class="mi">1</span><span class="err">min'</span><span class="p">,</span><span class="w">
+  </span><span class="err">t:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="err">d:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">[</span><span class="w">
+      </span><span class="err">'</span><span class="mi">1639123440000</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47744.46219748</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47744.46219748</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47678.11820096</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47685.89214597</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mi">30</span><span class="err">'</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="p">[</span><span class="w">
+      </span><span class="err">'</span><span class="mi">1639123500000</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47683.92095634</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47707.9817466</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47683.25428563</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mf">47705.7285557</span><span class="err">'</span><span class="p">,</span><span class="w">
+      </span><span class="err">'</span><span class="mi">28</span><span class="err">'</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre></div>
 <ul>
 <li>3.返回字段</li>
 </ul>
 
-<table><thead>
-<tr>
-<th>名称</th>
-<th>描述</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>time</td>
-<td>k线某周期开始时间</td>
-</tr>
-<tr>
-<td>count</td>
-<td>成交笔数</td>
-</tr>
-<tr>
-<td>open</td>
-<td>开盘价</td>
-</tr>
-<tr>
-<td>high</td>
-<td>最高价</td>
-</tr>
-<tr>
-<td>low</td>
-<td>最低价</td>
-</tr>
-<tr>
-<td>close</td>
-<td>最新价</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>0代表数据没有压缩，1代表数据压缩了</td>
-</tr>
-<tr>
-<td>其它字段</td>
-<td>忽略</td>
-</tr>
-</tbody></table>
+<p>[
+k线某周期开始时间,
+开盘价,
+最高价,
+最低价,
+收盘价,
+成交量(忽略)
+]</p>
 <h2 id='34'>34.订阅深度</h2>
 <blockquote>
 <p>完整例子</p>
@@ -5266,59 +5109,40 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com/cbu</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://npush.bibox360.com/cbu</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
 <span class="p">};</span>
 
-<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_decodeMsg</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// console.log(Buffer.from(data, 'base64'))</span>
-        <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="dl">'</span><span class="s1">base64</span><span class="dl">'</span><span class="p">),</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-            <span class="p">}</span>
+<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_decodeMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">data1</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">data1</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="k">try</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">_decodeMsg</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
-                <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
-                <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+                <span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
             <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">_decodeMsg catch</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
-                <span class="nx">reject</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
             <span class="p">}</span>
-        <span class="p">});</span>
-    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-    <span class="p">});</span>
-<span class="p">};</span>
-
-<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_consumerMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">binary</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">data</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">that</span><span class="p">.</span><span class="nx">_decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
-    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
     <span class="p">});</span>
 <span class="p">};</span>
 
 <span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_initWs</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">)</span>
     <span class="kd">let</span> <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">);</span>
     <span class="nx">that</span><span class="p">.</span><span class="nx">ws</span> <span class="o">=</span> <span class="nx">ws</span><span class="p">;</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">open</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">{</span>
+        <span class="p">{</span><span class="c1">// kline</span>
             <span class="nx">ws</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
                 <span class="na">event</span><span class="p">:</span> <span class="dl">'</span><span class="s1">addChannel</span><span class="dl">'</span><span class="p">,</span>
-                <span class="na">channel</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bibox_sub_spot_4BTC_USDT_depth</span><span class="dl">'</span><span class="p">,</span> <span class="c1">// depth</span>
-                <span class="na">binary</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="na">ver</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="na">sub</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4BTC_USDT_depth</span><span class="dl">'</span><span class="p">,</span>
             <span class="p">}));</span>
         <span class="p">}</span>
     <span class="p">});</span>
@@ -5340,15 +5164,14 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
     <span class="p">});</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
-        <span class="kd">let</span> <span class="nx">jdata</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="c1">// 获得数据</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">jdata</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">jdata</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">continue</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="nx">that</span><span class="p">.</span><span class="nx">_consumerMsg</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">that</span><span class="p">.</span><span class="nx">_decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">0</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">)));</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
+
     <span class="p">});</span>
 <span class="p">};</span>
 
@@ -5359,11 +5182,13 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <span class="p">});</span>
 
 </code></pre></div>
+<p>第一次会返回全量数据，接下来会返回增量数据。注意接收到的seq应该是不断递增加1的，如果发现有跳跃的情况，需要重新订阅。</p>
+
 <ul>
 <li>1.订阅路径</li>
 </ul>
 
-<p>wss://push.bibox.com/cbu</p>
+<p>wss://npush.bibox360.com/cbu</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -5388,67 +5213,79 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <td>4BTC_USDT, 4ETH_USDT</td>
 </tr>
 <tr>
-<td>event</td>
-<td>true</td>
-<td>string</td>
-<td>行为</td>
-<td></td>
-<td>&#39;addChannel&#39;</td>
-</tr>
-<tr>
-<td>channel</td>
+<td>sub</td>
 <td>true</td>
 <td>string</td>
 <td></td>
 <td></td>
-<td>&#39;bibox_sub_spot_&#39; + ${pair} + &#39;_depth_&#39;</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>true</td>
-<td>int</td>
-<td></td>
-<td></td>
-<td>0</td>
-</tr>
-<tr>
-<td>ver</td>
-<td>true</td>
-<td>int</td>
-<td></td>
-<td></td>
-<td>3</td>
+<td>${pair} + &#39;_depth_&#39;</td>
 </tr>
 </tbody></table>
 
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="nl">"pair"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"update_time"</span><span class="p">:</span><span class="mi">1604021669643</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"seq"</span><span class="p">:</span><span class="mi">4544162</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"add"</span><span class="p">:{</span><span class="w">
-        </span><span class="nl">"asks"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"bids"</span><span class="p">:</span><span class="kc">null</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nl">"del"</span><span class="p">:{</span><span class="w">
-        </span><span class="nl">"asks"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"bids"</span><span class="p">:</span><span class="kc">null</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nl">"mod"</span><span class="p">:{</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"4BTC_USDT_depth"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"pair"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ut"</span><span class="p">:</span><span class="mi">1639124171584</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"seq"</span><span class="p">:</span><span class="mi">188236</span><span class="p">,</span><span class="w">
         </span><span class="nl">"asks"</span><span class="p">:[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"volume"</span><span class="p">:</span><span class="s2">"54000"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"price"</span><span class="p">:</span><span class="s2">"13574.4"</span><span class="w">
-            </span><span class="p">}</span><span class="w">
+            </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"7.904"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"47741.6"</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"0.604"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"47741.8"</span><span class="w">
+            </span><span class="p">]</span><span class="w">
         </span><span class="p">],</span><span class="w">
         </span><span class="nl">"bids"</span><span class="p">:[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"volume"</span><span class="p">:</span><span class="s2">"17012"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"price"</span><span class="p">:</span><span class="s2">"13574.3"</span><span class="w">
-            </span><span class="p">}</span><span class="w">
+            </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"1.667"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"47741.3"</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"0.534"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"47726.8"</span><span class="w">
+            </span><span class="p">]</span><span class="w">
         </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"4BTC_USDT_depth"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"pair"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ut"</span><span class="p">:</span><span class="mi">1639124172771</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"seq"</span><span class="p">:</span><span class="mi">188240</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"add"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"asks"</span><span class="p">:[</span><span class="w">
+                </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"0.11"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"47744.9"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"bids"</span><span class="p">:[</span><span class="w">
+                </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"0.809"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"47741.5"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"del"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"asks"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"bids"</span><span class="p">:[</span><span class="w">
+                </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"0.522"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"47741.3"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 
@@ -5468,12 +5305,16 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <td>交易对</td>
 </tr>
 <tr>
-<td>update_time</td>
+<td>ut</td>
 <td>时间</td>
 </tr>
 <tr>
+<td>t</td>
+<td>0代表全量数据，1代表增量数据</td>
+</tr>
+<tr>
 <td>seq</td>
-<td>交易对</td>
+<td>序列号</td>
 </tr>
 <tr>
 <td>add</td>
@@ -5489,23 +5330,11 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 </tr>
 <tr>
 <td>asks</td>
-<td>卖单</td>
+<td>卖单，第一字段是挂单数量，第二字段是深度价格</td>
 </tr>
 <tr>
 <td>bids</td>
 <td>买单</td>
-</tr>
-<tr>
-<td>volume</td>
-<td>挂单数量</td>
-</tr>
-<tr>
-<td>price</td>
-<td>深度价格</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>0代表数据没有压缩，1代表数据压缩了</td>
 </tr>
 <tr>
 <td>其它字段</td>
@@ -5520,58 +5349,40 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com/cbu</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://npush.bibox360.com/cbu</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
 <span class="p">};</span>
 
-<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_decodeMsg</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// console.log(Buffer.from(data, 'base64'))</span>
-        <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="dl">'</span><span class="s1">base64</span><span class="dl">'</span><span class="p">),</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-            <span class="p">}</span>
+<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_decodeMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">data1</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">data1</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="k">try</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">_decodeMsg</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
-                <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
-                <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+                <span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
             <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">_decodeMsg catch</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
-                <span class="nx">reject</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
             <span class="p">}</span>
-        <span class="p">});</span>
-    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-    <span class="p">});</span>
-<span class="p">};</span>
-
-<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_consumerMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">binary</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">data</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">that</span><span class="p">.</span><span class="nx">_decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
-    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
     <span class="p">});</span>
 <span class="p">};</span>
 
 <span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_initWs</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">)</span>
     <span class="kd">let</span> <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">);</span>
     <span class="nx">that</span><span class="p">.</span><span class="nx">ws</span> <span class="o">=</span> <span class="nx">ws</span><span class="p">;</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">open</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">{</span>
+        <span class="p">{</span><span class="c1">// kline</span>
             <span class="nx">ws</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
                 <span class="na">event</span><span class="p">:</span> <span class="dl">'</span><span class="s1">addChannel</span><span class="dl">'</span><span class="p">,</span>
-                <span class="na">channel</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bibox_sub_spot_4BTC_USDT_deals</span><span class="dl">'</span><span class="p">,</span> 
-                <span class="na">binary</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="na">sub</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4BTC_USDT_deals</span><span class="dl">'</span><span class="p">,</span>
             <span class="p">}));</span>
         <span class="p">}</span>
     <span class="p">});</span>
@@ -5593,15 +5404,14 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
     <span class="p">});</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
-        <span class="kd">let</span> <span class="nx">jdata</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="c1">// 获得数据</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">jdata</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">jdata</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">continue</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="nx">that</span><span class="p">.</span><span class="nx">_consumerMsg</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">that</span><span class="p">.</span><span class="nx">_decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">0</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">)));</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
+
     <span class="p">});</span>
 <span class="p">};</span>
 
@@ -5612,11 +5422,13 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <span class="p">});</span>
 
 </code></pre></div>
+<p>第一次会返回全量数据，接下来会返回增量数据。注意t=0和t=1时数据结构的区别。</p>
+
 <ul>
 <li>1.订阅路径</li>
 </ul>
 
-<p>wss://push.bibox.com/cbu</p>
+<p>wss://npush.bibox360.com/cbu</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -5641,44 +5453,53 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <td>4BTC_USDT, 4ETH_USDT</td>
 </tr>
 <tr>
-<td>event</td>
-<td>true</td>
-<td>string</td>
-<td>行为</td>
-<td></td>
-<td>&#39;addChannel&#39;</td>
-</tr>
-<tr>
-<td>channel</td>
+<td>sub</td>
 <td>true</td>
 <td>string</td>
 <td></td>
 <td></td>
-<td>&#39;bibox_sub_spot_&#39; + ${pair} + &#39;_deals&#39;</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>true</td>
-<td>int</td>
-<td></td>
-<td></td>
-<td>0</td>
+<td>${pair} + &#39;_deals&#39;</td>
 </tr>
 </tbody></table>
 
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"4BTC_USDT_deals"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
         </span><span class="nl">"pair"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"price"</span><span class="p">:</span><span class="s2">"13570.600000"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"amount"</span><span class="p">:</span><span class="s2">"800.00"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"time"</span><span class="p">:</span><span class="mi">1604022129044</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"side"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"id"</span><span class="p">:</span><span class="mi">0</span><span class="w">
+        </span><span class="nl">"d"</span><span class="p">:[</span><span class="w">
+            </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"48008.1"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"0.009"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"1639124930499"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">""</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"48006.5"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"0.021"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"1639124930328"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">""</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">]</span><span class="w">
     </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+  </span><span class="err">topic:</span><span class="w"> </span><span class="err">'</span><span class="mi">4</span><span class="err">BTC_USDT_deals'</span><span class="p">,</span><span class="w">
+  </span><span class="err">t:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="err">d:</span><span class="w"> </span><span class="p">[</span><span class="w">
+         </span><span class="s2">"48008.1"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"0.009"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"1639124930499"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">""</span><span class="w">
+     </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre></div>
 <ul>
@@ -5696,28 +5517,12 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <td>交易对</td>
 </tr>
 <tr>
-<td>price</td>
-<td>成交价格</td>
+<td>t</td>
+<td>0代表全量数据，1代表增量数据</td>
 </tr>
 <tr>
-<td>amount</td>
-<td>成交价值</td>
-</tr>
-<tr>
-<td>time</td>
-<td>成交时间戳</td>
-</tr>
-<tr>
-<td>side</td>
-<td>成交方向，1-开多，2-开空</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>0代表数据没有压缩，1代表数据压缩了</td>
-</tr>
-<tr>
-<td>其它字段</td>
-<td>忽略</td>
+<td>d</td>
+<td>数组定义：成交价格,成交价值,成交时间戳,成交方向(1-开多，2-开空)</td>
 </tr>
 </tbody></table>
 <h2 id='36'>36.订阅最新成交价</h2>
@@ -5728,58 +5533,40 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com/cbu</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://npush.bibox360.com/cbu</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
 <span class="p">};</span>
 
-<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_decodeMsg</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// console.log(Buffer.from(data, 'base64'))</span>
-        <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="dl">'</span><span class="s1">base64</span><span class="dl">'</span><span class="p">),</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-            <span class="p">}</span>
+<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_decodeMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">data1</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">data1</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="k">try</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">_decodeMsg</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
-                <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
-                <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+                <span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
             <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">_decodeMsg catch</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
-                <span class="nx">reject</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
             <span class="p">}</span>
-        <span class="p">});</span>
-    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-    <span class="p">});</span>
-<span class="p">};</span>
-
-<span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_consumerMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">binary</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">data</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">that</span><span class="p">.</span><span class="nx">_decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
-    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
     <span class="p">});</span>
 <span class="p">};</span>
 
 <span class="nx">wsClass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_initWs</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">)</span>
     <span class="kd">let</span> <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">);</span>
     <span class="nx">that</span><span class="p">.</span><span class="nx">ws</span> <span class="o">=</span> <span class="nx">ws</span><span class="p">;</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">open</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">{</span>
+        <span class="p">{</span><span class="c1">// kline</span>
             <span class="nx">ws</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
                 <span class="na">event</span><span class="p">:</span> <span class="dl">'</span><span class="s1">addChannel</span><span class="dl">'</span><span class="p">,</span>
-                <span class="na">channel</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bibox_sub_spot_4BTC_USDT_ticker</span><span class="dl">'</span><span class="p">,</span> 
-                <span class="na">binary</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="na">sub</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4BTC_USDT_ticker</span><span class="dl">'</span><span class="p">,</span>
             <span class="p">}));</span>
         <span class="p">}</span>
     <span class="p">});</span>
@@ -5801,15 +5588,14 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
     <span class="p">});</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
-        <span class="kd">let</span> <span class="nx">jdata</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="c1">// 获得数据</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">jdata</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">let</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">jdata</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">continue</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="nx">that</span><span class="p">.</span><span class="nx">_consumerMsg</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">that</span><span class="p">.</span><span class="nx">_decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">0</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">)));</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
+
     <span class="p">});</span>
 <span class="p">};</span>
 
@@ -5824,7 +5610,7 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <li>1.订阅路径</li>
 </ul>
 
-<p>wss://push.bibox.com/cbu</p>
+<p>wss://npush.bibox360.com/cbu</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -5849,217 +5635,212 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <td>4BTC_USDT, 4ETH_USDT</td>
 </tr>
 <tr>
-<td>event</td>
-<td>true</td>
-<td>string</td>
-<td>行为</td>
-<td></td>
-<td>&#39;addChannel&#39;</td>
-</tr>
-<tr>
-<td>channel</td>
+<td>sub</td>
 <td>true</td>
 <td>string</td>
 <td></td>
 <td></td>
-<td>&#39;bibox_sub_spot_&#39; + ${pair} + &#39;_ticker&#39;</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>true</td>
-<td>int</td>
-<td></td>
-<td></td>
-<td>0</td>
+<td>${pair} + &#39;_ticker&#39;</td>
 </tr>
 </tbody></table>
 
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"channel"</span><span class="p">:</span><span class="s2">"bibox_sub_spot_4BTC_USDT_ticker"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"binary"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data_type"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-            </span><span class="nl">"pair"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"last"</span><span class="p">:</span><span class="s2">"13593.5"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"last_usd"</span><span class="p">:</span><span class="s2">"13593.50"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"last_cny"</span><span class="p">:</span><span class="s2">"91076.20"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"high"</span><span class="p">:</span><span class="s2">"13700.300000"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"low"</span><span class="p">:</span><span class="s2">"12986.000000"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"buy"</span><span class="p">:</span><span class="s2">"13593.5"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"buy_amount"</span><span class="p">:</span><span class="s2">"48375"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"sell"</span><span class="p">:</span><span class="s2">"13593.6"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"sell_amount"</span><span class="p">:</span><span class="s2">"56625"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"vol"</span><span class="p">:</span><span class="s2">"155811681.00"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"percent"</span><span class="p">:</span><span class="s2">"+2.44%"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="mi">1604022393028</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"base_last_cny"</span><span class="p">:</span><span class="s2">"91076.20000000"</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"4BTC_USDT_ticker"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:[</span><span class="w">
+        </span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"48099.9"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"48099.90"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"299951.30"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"49631.3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"47319.1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"48095.1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"0.041"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"48098.1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"2.292"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"16781.668"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"-2.83%"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"1639125637999"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"299951.30000000"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre></div>
 <ul>
 <li>3.返回字段</li>
 </ul>
 
-<table><thead>
-<tr>
-<th>名称</th>
-<th>描述</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>pair</td>
-<td>交易对</td>
-</tr>
-<tr>
-<td>last</td>
-<td>最新成交价</td>
-</tr>
-<tr>
-<td>last_cny</td>
-<td>最新成交价，cny计价</td>
-</tr>
-<tr>
-<td>last_usd</td>
-<td>最新成交价，usd计价</td>
-</tr>
-<tr>
-<td>high</td>
-<td>24h最高价</td>
-</tr>
-<tr>
-<td>low</td>
-<td>24h最低价</td>
-</tr>
-<tr>
-<td>buy</td>
-<td>最新买一价</td>
-</tr>
-<tr>
-<td>buy_amount</td>
-<td>买一价值)</td>
-</tr>
-<tr>
-<td>sell</td>
-<td>最新卖一价</td>
-</tr>
-<tr>
-<td>sell_amount</td>
-<td>卖一价值)</td>
-</tr>
-<tr>
-<td>vol</td>
-<td>24h成交价值</td>
-</tr>
-<tr>
-<td>percent</td>
-<td>24h涨跌幅</td>
-</tr>
-<tr>
-<td>timestamp</td>
-<td>时间戳</td>
-</tr>
-<tr>
-<td>base_last_cny</td>
-<td>最新成交价，cny计价（保留8位小数）</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>0代表数据没有压缩，1代表数据压缩了</td>
-</tr>
-<tr>
-<td>其它字段</td>
-<td>忽略</td>
-</tr>
-</tbody></table>
+<p>[
+交易对,
+最新成交价,
+最新成交价(cny计价),
+最新成交价(usd计价),
+24h最高价,
+24h最低价,
+最新买一价,
+买一价值,
+最新卖一价,
+卖一价值,
+24h成交价值,
+24h涨跌幅,
+时间戳,
+最新成交价(cny计价)
+]</p>
 <h2 id='37'>37.订阅用户数据方法</h2>
 <blockquote>
 <p>实际例子</p>
 </blockquote>
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code>
+
 <span class="dl">'</span><span class="s1">use strict</span><span class="dl">'</span>
 
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">zlib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">zlib</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">CryptoJS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">crypto-js</span><span class="dl">"</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://push.bibox.com/cbu</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// 1.请求路径</span>
+<span class="kd">const</span> <span class="nx">biboxws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://npush.bibox360.com/cbu</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// 1.请求路径</span>
+
+<span class="kd">let</span> <span class="nx">ws</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">apikey</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">900625568558820892a8c833c33ebc8fd2701efe</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// 你的apikey</span>
-<span class="kd">let</span> <span class="nx">param</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1">// 定义参数对象param，需要用到apikey</span>
-    <span class="dl">"</span><span class="s2">apikey</span><span class="dl">"</span><span class="p">:</span> <span class="nx">apikey</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">channel</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bibox_sub_spot_ALL_ALL_login</span><span class="dl">"</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">event</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">addChannel</span><span class="dl">"</span>
-<span class="p">};</span>
-<span class="kd">let</span> <span class="nx">strParam</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">param</span><span class="p">);</span> <span class="c1">// 格式化参数对象param，得到strParam</span>
 <span class="kd">let</span> <span class="nx">secret</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">c708ac3e70d115ec29efbee197330627d7edf842</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// apikey的密码</span>
-<span class="kd">let</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacMD5</span><span class="p">(</span><span class="nx">strParam</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span> <span class="c1">// 用apikey的密码secret对strParam进行HmacMD5签名，得到签名结果sign</span>
-<span class="kd">let</span> <span class="nx">wsparam</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1">// 2.请求参数</span>
-    <span class="dl">"</span><span class="s2">apikey</span><span class="dl">"</span><span class="p">:</span> <span class="nx">apikey</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">channel</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bibox_sub_spot_ALL_ALL_login</span><span class="dl">"</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">event</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">addChannel</span><span class="dl">"</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">sign</span><span class="dl">"</span><span class="p">:</span> <span class="nx">sign</span><span class="p">,</span>
+
+<span class="kd">let</span> <span class="nx">subparam</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span> <span class="c1">// 格式化参数对象，得到subparam</span>
+    <span class="nx">apikey</span><span class="p">,</span>
+    <span class="na">sub</span><span class="p">:</span> <span class="dl">'</span><span class="s1">ALL_ALL_login</span><span class="dl">'</span>
+<span class="p">});</span>
+<span class="kd">let</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacMD5</span><span class="p">(</span><span class="nx">subparam</span><span class="p">,</span> <span class="nb">String</span><span class="p">(</span><span class="nx">secret</span><span class="p">)).</span><span class="nx">toString</span><span class="p">();</span> <span class="c1">// 用apikey的密码secret对得到subparam进行HmacMD5签名，得到签名结果sign</span>
+<span class="kd">let</span> <span class="nx">form</span> <span class="o">=</span> <span class="p">{</span> <span class="c1">// 得到最终的订阅参数</span>
+    <span class="nx">apikey</span><span class="p">,</span>
+    <span class="nx">sign</span><span class="p">,</span>
+    <span class="na">sub</span><span class="p">:</span> <span class="dl">'</span><span class="s1">ALL_ALL_login</span><span class="dl">'</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">form</span><span class="dl">'</span><span class="p">,</span> <span class="nx">form</span><span class="p">)</span>
+
+<span class="kd">let</span> <span class="nx">reiniting</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+<span class="kd">let</span> <span class="nx">resend</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">user_id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ws</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">!=</span> <span class="nx">WebSocket</span><span class="p">.</span><span class="nx">OPEN</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">resend</span><span class="p">(</span><span class="nx">user_id</span><span class="p">);</span>
+        <span class="p">},</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">ws</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">form</span><span class="p">));</span>
 <span class="p">};</span>
 
+<span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ws</span> <span class="o">&amp;&amp;</span> <span class="nx">ws</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">==</span> <span class="nx">WebSocket</span><span class="p">.</span><span class="nx">OPEN</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">ws</span><span class="p">.</span><span class="nx">ping</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">},</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">10</span><span class="p">);</span>
 
-<span class="kd">let</span> <span class="nx">init</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-
-    <span class="kd">let</span> <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">);</span>
-
-    <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+<span class="kd">let</span> <span class="nx">reinit</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">reiniting</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">reiniting</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">try</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">ws</span> <span class="o">&amp;&amp;</span> <span class="nx">ws</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">==</span> <span class="nx">WebSocket</span><span class="p">.</span><span class="nx">OPEN</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">manu ping</span><span class="dl">'</span><span class="p">);</span>
-            <span class="nx">ws</span><span class="p">.</span><span class="nx">ping</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">());</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">manu close </span><span class="dl">'</span><span class="p">)</span>
+            <span class="nx">ws</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
         <span class="p">}</span>
-    <span class="p">},</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="p">}</span>
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">init</span><span class="p">();</span>
+    <span class="p">},</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">30</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">let</span> <span class="nx">init</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">user_id</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">init</span><span class="dl">'</span><span class="p">,</span> <span class="nx">user_id</span><span class="p">);</span>
+    <span class="nx">reiniting</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+    <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">biboxws</span><span class="p">);</span>
+
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ws</span> <span class="o">||</span> <span class="nx">ws</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">!=</span> <span class="nx">WebSocket</span><span class="p">.</span><span class="nx">OPEN</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">reinit</span><span class="p">(</span><span class="nx">user_id</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">},</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">60</span><span class="p">);</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">open</span><span class="p">()</span> <span class="p">{</span>
 
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">)</span>
-        <span class="nx">ws</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">wsparam</span><span class="p">));</span>
+        <span class="nx">resend</span><span class="p">(</span><span class="nx">user_id</span><span class="p">);</span>
 
     <span class="p">});</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">close</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">close, </span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+        <span class="nx">reinit</span><span class="p">(</span><span class="nx">user_id</span><span class="p">);</span>
     <span class="p">});</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+        <span class="nx">reinit</span><span class="p">(</span><span class="nx">user_id</span><span class="p">);</span>
     <span class="p">});</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">ping</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">ping</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">ping on</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="dl">'</span><span class="s1">utf8</span><span class="dl">'</span><span class="p">));</span>
     <span class="p">});</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">pong</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">pong</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+        <span class="c1">// console.log('pong ', err.toString('utf8'));</span>
     <span class="p">});</span>
 
     <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">incoming</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">let</span> <span class="nx">jdata</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="c1">// 返回结果</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">jdata</span><span class="p">.</span><span class="nx">ping</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">decodeMsg</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
         <span class="p">}</span>
 
     <span class="p">});</span>
 <span class="p">};</span>
 
+<span class="kd">let</span> <span class="nx">login</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">reiniting</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">reiniting</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="nx">init</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="kd">let</span> <span class="nx">decodeMsg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">data1</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="nx">zlib</span><span class="p">.</span><span class="nx">unzip</span><span class="p">(</span><span class="nx">data1</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="p">{</span>
+                <span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="nx">e</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">};</span>
+
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{};</span>
 
-<span class="nx">init</span><span class="p">();</span>
+<span class="nx">login</span><span class="p">();</span>
+
 
 
 </code></pre></div>
+<p>订阅成功后，会推送用户的资产信息、仓位信息、订单信息。如果相关用户信息有变化，会推送最新的信息。</p>
+
 <ul>
 <li>1.请求路径</li>
 </ul>
 
-<p>wss://push.bibox.com/cbu</p>
+<p>wss://npush.bibox360.com/cbu</p>
 
 <ul>
 <li>2.请求参数</li>
@@ -6092,20 +5873,12 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <td></td>
 </tr>
 <tr>
-<td>event</td>
-<td>true</td>
-<td>string</td>
-<td>行为</td>
-<td></td>
-<td>&#39;addChannel&#39;</td>
-</tr>
-<tr>
-<td>channel</td>
+<td>sub</td>
 <td>true</td>
 <td>string</td>
 <td></td>
 <td></td>
-<td>&#39;bibox_sub_spot_ALL_ALL_login&#39;</td>
+<td>&#39;ALL_ALL_login&#39;</td>
 </tr>
 </tbody></table>
 
@@ -6115,12 +5888,11 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 
 <p>1.定义参数对象param，需要用到apikey</p>
 
-<p>let apikey = &#39;thisisyourapikey&#39;; </p>
+<p>let apikey = &#39;this is your apikey&#39;; </p>
 
 <p>let param = {
      &quot;apikey&quot;: apikey,
-     &quot;channel&quot;: &quot;bibox_sub_spot_ALL_ALL_login&quot;,
-     &quot;event&quot;: &quot;addChannel&quot;
+     &quot;sub&quot;: &quot;ALL_ALL_login&quot;
    };</p>
 
 <p>2.格式化参数对象param，得到strParam</p>
@@ -6131,7 +5903,7 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 
 <p>let CryptoJS = require(&quot;crypto-js&quot;);</p>
 
-<p>let secret = &#39;c708ac3e70d115ec29efbee197330627d7edf842&#39;;</p>
+<p>let secret = &#39;this is your apikey secret&#39;;</p>
 
 <p>let sign = CryptoJS.HmacMD5(strParam, secret).toString();  </p>
 
@@ -6139,24 +5911,21 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 
 <p>let wsparam = {
      &quot;apikey&quot;: apikey,
-     &quot;channel&quot;: &quot;bibox_sub_spot_ALL_ALL_login&quot;,
-     &quot;event&quot;: &quot;addChannel&quot;,
       &quot;sign&quot;: sign,
+     &quot;sub&quot;: &quot;ALL_ALL_login&quot;
     };</p>
 
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"channel"</span><span class="p">:</span><span class="s2">"bibox_sub_spot_ALL_ALL_login"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"binary"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data_type"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-            </span><span class="nl">"result"</span><span class="p">:</span><span class="s2">"订阅成功"</span><span class="w">
-        </span><span class="p">}</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"ALL_ALL_login"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uid"</span><span class="p">:</span><span class="s2">"1000000"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"result"</span><span class="p">:</span><span class="s2">"订阅成功"</span><span class="w">
     </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre></div>
 <ul>
@@ -6183,29 +5952,50 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <li>1.关键字段</li>
 </ul>
 
-<p>contract_assets</p>
+<p>第一次订阅会返回全量数据assets_all，之后会返回增量数据contract_assets。</p>
 
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"channel"</span><span class="p">:</span><span class="s2">"bibox_sub_spot_ALL_ALL_login"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"binary"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data_type"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-            </span><span class="nl">"contract_assets"</span><span class="p">:{</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"ALL_ALL_login"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uid"</span><span class="p">:</span><span class="s2">"10000"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"assets_all"</span><span class="p">:[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
                 </span><span class="nl">"ff"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"b"</span><span class="p">:</span><span class="s2">"218884.3026"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"b"</span><span class="p">:</span><span class="s2">"2050.8565"</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"c"</span><span class="p">:</span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"u"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"mc"</span><span class="p">:</span><span class="s2">"93265.8573"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"mf"</span><span class="p">:</span><span class="s2">"486.3048"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1639123200000</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"u"</span><span class="p">:</span><span class="mi">11008936</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"v"</span><span class="p">:</span><span class="mi">62938352964</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"mc"</span><span class="p">:</span><span class="s2">"261.3161"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"mf"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"fc"</span><span class="p">:</span><span class="s2">"0"</span><span class="w">
             </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"ALL_ALL_login"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uid"</span><span class="p">:</span><span class="s2">"100006"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"contract_assets"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"ff"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"b"</span><span class="p">:</span><span class="s2">"1862.4156"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"c"</span><span class="p">:</span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1639128405433</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"u"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"v"</span><span class="p">:</span><span class="mi">108774606</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"mc"</span><span class="p">:</span><span class="s2">"130.6414"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"mf"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"fc"</span><span class="p">:</span><span class="s2">"6.0756"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre></div>
 <ul>
@@ -6256,39 +6046,82 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <li>1.关键字段</li>
 </ul>
 
-<p>contract_order</p>
+<p>第一次订阅会返回全量数据position_all，之后会返回增量数据contract_order。</p>
 
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"channel"</span><span class="p">:</span><span class="s2">"bibox_sub_spot_ALL_ALL_login"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"binary"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data_type"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-            </span><span class="nl">"contract_order"</span><span class="p">:{</span><span class="w">
-                </span><span class="nl">"pt"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"f"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"l"</span><span class="p">:</span><span class="s2">"10"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"sd"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"pa"</span><span class="p">:</span><span class="s2">"1.0006153088"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"ui"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"fb0"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"pf"</span><span class="p">:</span><span class="s2">"1.0006148393"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"md"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"lc"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"pi"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"mg"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"hc"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"fb"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"po"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"ALL_ALL_login"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uid"</span><span class="p">:</span><span class="s2">"100006"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"position_all"</span><span class="p">:[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
                 </span><span class="nl">"pp"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"ps"</span><span class="p">:</span><span class="s2">"0"</span><span class="w">
+                </span><span class="nl">"ps"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pt"</span><span class="p">:</span><span class="s2">"-0.0886026273"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"sd"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"ui"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"md"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"mg"</span><span class="p">:</span><span class="s2">"72.825"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"1125899906842624043"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"sp"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"ut"</span><span class="p">:</span><span class="mi">1639123200000</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"cc"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"st"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"f"</span><span class="p">:</span><span class="s2">"0.4344"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"l"</span><span class="p">:</span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pa"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pc"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1638177636516</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"fb0"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"v"</span><span class="p">:</span><span class="mi">108181199</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pf"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"lc"</span><span class="p">:</span><span class="s2">"0.013"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pi"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"hc"</span><span class="p">:</span><span class="s2">"0.013"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"fb"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"po"</span><span class="p">:</span><span class="s2">"55700.1923076923"</span><span class="w">
             </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"ALL_ALL_login"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uid"</span><span class="p">:</span><span class="s2">"100006"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"contract_order"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"pp"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"ps"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pt"</span><span class="p">:</span><span class="s2">"-0.0886026273"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"sd"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"ui"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"md"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"mg"</span><span class="p">:</span><span class="s2">"72.825"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"1125899906842624043"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"sp"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"ut"</span><span class="p">:</span><span class="mi">1639128405433</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"cc"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"st"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"f"</span><span class="p">:</span><span class="s2">"0.4344"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"l"</span><span class="p">:</span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pa"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pc"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1638177636516</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"fb0"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"v"</span><span class="p">:</span><span class="mi">108774604</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pf"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"lc"</span><span class="p">:</span><span class="s2">"0.013"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pi"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"hc"</span><span class="p">:</span><span class="s2">"0.013"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"fb"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"po"</span><span class="p">:</span><span class="s2">"55700.1923076923"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre></div>
 <ul>
@@ -6363,41 +6196,90 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <li>1.关键字段</li>
 </ul>
 
-<p>contract_pending</p>
+<p>第一次订阅会返回全量数据order_all，之后会返回增量数据contract_pending。</p>
 
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"channel"</span><span class="p">:</span><span class="s2">"bibox_sub_spot_ALL_ALL_login"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"binary"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data_type"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-            </span><span class="nl">"contract_pending"</span><span class="p">:{</span><span class="w">
-                </span><span class="nl">"f"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"ALL_ALL_login"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uid"</span><span class="p">:</span><span class="s2">"100006"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"order_all"</span><span class="p">:[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"tt"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"tw"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pw"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"dp"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"eq"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"p"</span><span class="p">:</span><span class="s2">"11692"</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"tif"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"q"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"sd"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"bt"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"ui"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"fz"</span><span class="p">:</span><span class="s2">"6.0756"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"of"</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"oi"</span><span class="p">:</span><span class="s2">"17592186044417"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"ot"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"f"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"eq"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"p"</span><span class="p">:</span><span class="s2">"60000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"q"</span><span class="p">:</span><span class="s2">"0.001"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"tpl"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"r"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"s"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1602750121093</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"ui"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"fz"</span><span class="p">:</span><span class="s2">"0.0000086786"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1639128405433</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pd"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"fb0"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"of"</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"tl"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"pi"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"oi"</span><span class="p">:</span><span class="s2">"432108069716000"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"coi"</span><span class="p">:</span><span class="s2">"1602750117690"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"tpw"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"coi"</span><span class="p">:</span><span class="s2">"1639128409489"</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"fb"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pl"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"po"</span><span class="p">:</span><span class="kc">false</span><span class="w">
             </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"ALL_ALL_login"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uid"</span><span class="p">:</span><span class="s2">"100006"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"contract_pending"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"tt"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"tw"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pw"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"dp"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"tif"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"sd"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"bt"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"ui"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"fz"</span><span class="p">:</span><span class="s2">"6.0756"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"of"</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"oi"</span><span class="p">:</span><span class="s2">"17592186044417"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"ot"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"f"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"eq"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"p"</span><span class="p">:</span><span class="s2">"60000"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"q"</span><span class="p">:</span><span class="s2">"0.001"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"tpl"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"r"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"s"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1639128405433</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pd"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"fb0"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"tl"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pi"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"tpw"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"coi"</span><span class="p">:</span><span class="s2">"1639128409489"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"fb"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pl"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"po"</span><span class="p">:</span><span class="kc">false</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre></div>
 <ul>
@@ -6493,35 +6375,33 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"channel"</span><span class="p">:</span><span class="s2">"bibox_sub_spot_ALL_ALL_login"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"binary"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data_type"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-            </span><span class="nl">"contract_detail"</span><span class="p">:{</span><span class="w">
-                </span><span class="nl">"oi"</span><span class="p">:</span><span class="s2">"432108069715999"</span><span class="p">,</span><span class="err">//挂单id</span><span class="w">
-                </span><span class="nl">"ui"</span><span class="p">:</span><span class="s2">"100006"</span><span class="p">,</span><span class="err">//用户id</span><span class="w">
-                </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"1125899906842648855"</span><span class="p">,</span><span class="err">//成交id</span><span class="w">
-                </span><span class="nl">"coi"</span><span class="p">:</span><span class="s2">"1602750117684"</span><span class="p">,</span><span class="err">//自定义id</span><span class="w">
-                </span><span class="nl">"pi"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="err">//交易对</span><span class="w">
-                </span><span class="nl">"sd"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="err">//</span><span class="w">
-                </span><span class="nl">"s"</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="err">//</span><span class="w">
-                </span><span class="nl">"ot"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"of"</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="err">//</span><span class="w"> </span><span class="err">挂单来源</span><span class="w">
-                </span><span class="nl">"q"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"p"</span><span class="p">:</span><span class="s2">"11692"</span><span class="p">,</span><span class="err">//挂单价格</span><span class="w">
-                </span><span class="nl">"dp"</span><span class="p">:</span><span class="s2">"10655"</span><span class="p">,</span><span class="err">//成交价格</span><span class="w">
-                </span><span class="nl">"ep"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"f"</span><span class="p">:</span><span class="s2">"0.0000000657"</span><span class="p">,</span><span class="err">//手续费</span><span class="w">
-                </span><span class="nl">"fb"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="err">//bix抵扣</span><span class="w">
-                </span><span class="nl">"fb0"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="err">//优惠券抵扣</span><span class="w">
-                </span><span class="nl">"im"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="err">//是否是maker</span><span class="w">
-                </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1602750121093</span><span class="p">,</span><span class="w"> </span><span class="err">//成交时间</span><span class="w">
-            </span><span class="p">}</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"ALL_ALL_login"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uid"</span><span class="p">:</span><span class="s2">"100006"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"contract_detail"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"oi"</span><span class="p">:</span><span class="s2">"17592186044418"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"ui"</span><span class="p">:</span><span class="s2">"100006"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"1125899906846520658"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"coi"</span><span class="p">:</span><span class="s2">"1639128805027"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"pi"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"sd"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"s"</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"ot"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"of"</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"q"</span><span class="p">:</span><span class="s2">"0.001"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"p"</span><span class="p">:</span><span class="s2">"48173.6"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"dp"</span><span class="p">:</span><span class="s2">"48082.7"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"ep"</span><span class="p">:</span><span class="s2">"0.001"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"f"</span><span class="p">:</span><span class="s2">"0.02884962"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"fb"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"fb0"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"im"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1639128800022</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre></div>
 <ul>
@@ -6607,10 +6487,10 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"channel"</span><span class="p">:</span><span class="s2">"bibox_sub_spot_ALL_ALL_login"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"binary"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data_type"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+    </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"ALL_ALL_login"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uid"</span><span class="p">:</span><span class="s2">"100006"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
             </span><span class="nl">"contract_deal_log"</span><span class="p">:{</span><span class="w">
                 </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"1125899906842654296"</span><span class="p">,</span><span class="err">//</span><span class="w"> </span><span class="err">变化id</span><span class="w">
                 </span><span class="nl">"user_id"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="err">//用户id</span><span class="w">
@@ -6690,10 +6570,10 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"channel"</span><span class="p">:</span><span class="s2">"bibox_sub_spot_ALL_ALL_login"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"binary"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data_type"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"topic"</span><span class="p">:</span><span class="s2">"ALL_ALL_login"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"uid"</span><span class="p">:</span><span class="s2">"100006"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"d"</span><span class="p">:{</span><span class="w">
             </span><span class="nl">"base_u_plan_order_v3"</span><span class="p">:{</span><span class="w">
                 </span><span class="nl">"tt"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
                 </span><span class="nl">"pr"</span><span class="p">:</span><span class="s2">"49900"</span><span class="p">,</span><span class="w">
