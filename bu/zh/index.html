@@ -838,6 +838,60 @@
 </tr>
 </tbody></table>
 
+<p>如果是开仓单，并且希望成交后设置止盈止损，可以增加以下参数。</p>
+
+<table><thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>描述</th>
+<th>默认值</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>plan_type</td>
+<td>true</td>
+<td>integer</td>
+<td>止盈止损触发后委托类型</td>
+<td></td>
+<td>1市价，2限价</td>
+</tr>
+<tr>
+<td>profit_price</td>
+<td>true</td>
+<td>string</td>
+<td>止盈触发价(限价开多时，止盈触发价必须大于委托价。限价开空时，止盈触发价应该小于委托价。市价开多时，止盈触发价必须大于最新价。市价开空时，止盈触发价应该小于最新价。)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>loss_price</td>
+<td>true</td>
+<td>string</td>
+<td>止损触发价(限价开多时，止损触发价必须小于委托价。限价开空时，止损触发价应该大于委托价。市价开多时，止损触发价必须小于最新价。市价开空时，止损触发价应该大于最新价。)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>exec_profit_price</td>
+<td>false</td>
+<td>string</td>
+<td>止盈委托价(如果plan_type=2，则必须设置)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>exec_loss_price</td>
+<td>false</td>
+<td>string</td>
+<td>止盈委托价(如果plan_type=2，则必须设置)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -2367,27 +2421,36 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
         </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
         </span><span class="nl">"o"</span><span class="p">:[</span><span class="w">
             </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"f"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="err">//手续费</span><span class="w">
-                </span><span class="nl">"dp"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="err">//成交价格</span><span class="w">
-                </span><span class="nl">"eq"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="err">//成交数量</span><span class="w">
-                </span><span class="nl">"p"</span><span class="p">:</span><span class="s2">"11092"</span><span class="p">,</span><span class="w"> </span><span class="err">//下单价格</span><span class="w">
-                </span><span class="nl">"tif"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">忽略</span><span class="w">
-                </span><span class="nl">"q"</span><span class="p">:</span><span class="s2">"1"</span><span class="p">,</span><span class="w"> </span><span class="err">//下单数量</span><span class="w">
-                </span><span class="nl">"sd"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="err">//下单方向</span><span class="w">
-                </span><span class="nl">"r"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="err">//reason</span><span class="w">
-                </span><span class="nl">"s"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">status</span><span class="w">
-                </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1602679944815</span><span class="p">,</span><span class="w"> </span><span class="err">//下单时间</span><span class="w">
-                </span><span class="nl">"ui"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="w"> </span><span class="err">//用户id</span><span class="w">
-                </span><span class="nl">"fz"</span><span class="p">:</span><span class="s2">"0.0000091417"</span><span class="p">,</span><span class="w"> </span><span class="err">//挂单冻结</span><span class="w">
-                </span><span class="nl">"fb0"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="err">//优惠券抵扣</span><span class="w">
-                </span><span class="nl">"of"</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="err">//order</span><span class="w"> </span><span class="err">from</span><span class="w">
-                </span><span class="nl">"pi"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w"> </span><span class="err">//交易对</span><span class="w">
-                </span><span class="nl">"oi"</span><span class="p">:</span><span class="s2">"426610511577093"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">order</span><span class="w"> </span><span class="err">id</span><span class="w">
-                </span><span class="nl">"coi"</span><span class="p">:</span><span class="s2">"1602679943911"</span><span class="p">,</span><span class="w"> </span><span class="err">//clientoid</span><span class="w">
-                </span><span class="nl">"fb"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="err">//bix抵扣</span><span class="w">
-                </span><span class="nl">"po"</span><span class="p">:</span><span class="kc">false</span><span class="w"> </span><span class="err">//忽略</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="err">...</span><span class="w">
+                </span><span class="nl">"tt"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"tw"</span><span class="p">:</span><span class="s2">"47000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pw"</span><span class="p">:</span><span class="s2">"47000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"dp"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"tif"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"sd"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"bt"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"ui"</span><span class="p">:</span><span class="mi">100006</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"fz"</span><span class="p">:</span><span class="s2">"48.6048"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"of"</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"oi"</span><span class="p">:</span><span class="s2">"17592186044698"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"ot"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"f"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"eq"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"p"</span><span class="p">:</span><span class="s2">"48000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"q"</span><span class="p">:</span><span class="s2">"0.01"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"tpl"</span><span class="p">:</span><span class="s2">"49000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"r"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"s"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"t"</span><span class="p">:</span><span class="mi">1639462436971</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pd"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"fb0"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"tl"</span><span class="p">:</span><span class="s2">"49000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pi"</span><span class="p">:</span><span class="s2">"4BTC_USDT"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"tpw"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"coi"</span><span class="p">:</span><span class="s2">"1639462436446"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"fb"</span><span class="p">:</span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"pl"</span><span class="p">:</span><span class="s2">"49000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"po"</span><span class="p">:</span><span class="kc">false</span><span class="w">
+            </span><span class="p">}</span><span class="w">
         </span><span class="p">]</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="nl">"cmd"</span><span class="p">:</span><span class="s2">"orderList"</span><span class="w">
@@ -2475,6 +2538,26 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <tr>
 <td>fb</td>
 <td>bix抵扣</td>
+</tr>
+<tr>
+<td>bt</td>
+<td>止盈止损委托类型：1市价，2限价，否则代表未设置止盈止损。</td>
+</tr>
+<tr>
+<td>tw</td>
+<td>止盈触发价</td>
+</tr>
+<tr>
+<td>tl</td>
+<td>止损触发价</td>
+</tr>
+<tr>
+<td>pw</td>
+<td>止盈委托价(如果bt=1，则忽略)</td>
+</tr>
+<tr>
+<td>pl</td>
+<td>止损委托价(如果bt=1，则忽略)</td>
 </tr>
 <tr>
 <td>其它字段</td>
@@ -2666,6 +2749,26 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <tr>
 <td>fb</td>
 <td>bix抵扣</td>
+</tr>
+<tr>
+<td>bt</td>
+<td>止盈止损委托类型：1市价，2限价，否则代表未设置止盈止损。</td>
+</tr>
+<tr>
+<td>tw</td>
+<td>止盈触发价</td>
+</tr>
+<tr>
+<td>tl</td>
+<td>止损触发价</td>
+</tr>
+<tr>
+<td>pw</td>
+<td>止盈委托价(如果bt=1，则忽略)</td>
+</tr>
+<tr>
+<td>pl</td>
+<td>止损委托价(如果bt=1，则忽略)</td>
 </tr>
 <tr>
 <td>其它字段</td>
@@ -2861,6 +2964,26 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <td>bix抵扣</td>
 </tr>
 <tr>
+<td>bt</td>
+<td>止盈止损委托类型：1市价，2限价，否则代表未设置止盈止损。</td>
+</tr>
+<tr>
+<td>tw</td>
+<td>止盈触发价</td>
+</tr>
+<tr>
+<td>tl</td>
+<td>止损触发价</td>
+</tr>
+<tr>
+<td>pw</td>
+<td>止盈委托价(如果bt=1，则忽略)</td>
+</tr>
+<tr>
+<td>pl</td>
+<td>止损委托价(如果bt=1，则忽略)</td>
+</tr>
+<tr>
 <td>其它字段</td>
 <td>忽略</td>
 </tr>
@@ -3052,6 +3175,26 @@ ps是指已经委托的止损仓位数量，剩余可以作为止损委托的仓
 <tr>
 <td>fb</td>
 <td>bix抵扣</td>
+</tr>
+<tr>
+<td>bt</td>
+<td>止盈止损委托类型：1市价，2限价，否则代表未设置止盈止损。</td>
+</tr>
+<tr>
+<td>tw</td>
+<td>止盈触发价</td>
+</tr>
+<tr>
+<td>tl</td>
+<td>止损触发价</td>
+</tr>
+<tr>
+<td>pw</td>
+<td>止盈委托价(如果bt=1，则忽略)</td>
+</tr>
+<tr>
+<td>pl</td>
+<td>止损委托价(如果bt=1，则忽略)</td>
 </tr>
 <tr>
 <td>其它字段</td>

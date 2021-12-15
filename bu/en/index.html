@@ -826,6 +826,60 @@
 </tr>
 </tbody></table>
 
+<p>If you are opening postions order and want to set a stop profit stop loss after the transaction, you can add the following parameters.</p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Necessary or not</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+<th>Value Range</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>plan_type</td>
+<td>true</td>
+<td>integer</td>
+<td>market order or limit order</td>
+<td></td>
+<td>1 market order，2 limit order</td>
+</tr>
+<tr>
+<td>profit_price</td>
+<td>true</td>
+<td>string</td>
+<td>Stop-profit trigger price (The stop-profit trigger price must be greater than the order price if the limit price is extended. When the limit is short, the stop-profit trigger price should be less than the order price. The stop-profit trigger price must be higher than the latest price when the market is open. The stop-profit trigger price should be lower than the latest price when the market is open short.)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>loss_price</td>
+<td>true</td>
+<td>string</td>
+<td>Stop-loss trigger price (when the limit is wide, the stop-loss trigger price must be less than the order price. When limit open short, stop loss trigger price should be greater than the order price. The stop-loss trigger price must be lower than the latest price when the market is open. The stop-loss trigger price should be higher than the latest price when the market is short.)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>exec_profit_price</td>
+<td>false</td>
+<td>string</td>
+<td>Stop-profit mandate price (must be set if plan_type=2)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>exec_loss_price</td>
+<td>false</td>
+<td>string</td>
+<td>Stop-profit mandate price (must be set if plan_type=2)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -2455,6 +2509,26 @@
 <td>BIX deduction</td>
 </tr>
 <tr>
+<td>bt</td>
+<td>Stop-profit and stop-loss orders: 1 market price, 2 limit price, Otherwise no stop-profit and stop-loss is set.</td>
+</tr>
+<tr>
+<td>tw</td>
+<td>Stop earnings trigger price</td>
+</tr>
+<tr>
+<td>tl</td>
+<td>Stop loss trigger price</td>
+</tr>
+<tr>
+<td>pw</td>
+<td>Stop-profit order price (ignored if bt =1)</td>
+</tr>
+<tr>
+<td>pl</td>
+<td>Stop loss order price (ignored if bt =1)</td>
+</tr>
+<tr>
 <td>Other fields</td>
 <td>ignore</td>
 </tr>
@@ -2642,6 +2716,26 @@
 <tr>
 <td>fb</td>
 <td>BIX deduction</td>
+</tr>
+<tr>
+<td>bt</td>
+<td>Stop-profit and stop-loss orders: 1 market price, 2 limit price, Otherwise no stop-profit and stop-loss is set.</td>
+</tr>
+<tr>
+<td>tw</td>
+<td>Stop earnings trigger price</td>
+</tr>
+<tr>
+<td>tl</td>
+<td>Stop loss trigger price</td>
+</tr>
+<tr>
+<td>pw</td>
+<td>Stop-profit order price (ignored if bt =1)</td>
+</tr>
+<tr>
+<td>pl</td>
+<td>Stop loss order price (ignored if bt =1)</td>
 </tr>
 <tr>
 <td>Other fields</td>
@@ -2835,6 +2929,26 @@
 <td>BIX deduction</td>
 </tr>
 <tr>
+<td>bt</td>
+<td>Stop-profit and stop-loss orders: 1 market price, 2 limit price, Otherwise no stop-profit and stop-loss is set.</td>
+</tr>
+<tr>
+<td>tw</td>
+<td>Stop earnings trigger price</td>
+</tr>
+<tr>
+<td>tl</td>
+<td>Stop loss trigger price</td>
+</tr>
+<tr>
+<td>pw</td>
+<td>Stop-profit order price (ignored if bt =1)</td>
+</tr>
+<tr>
+<td>pl</td>
+<td>Stop loss order price (ignored if bt =1)</td>
+</tr>
+<tr>
 <td>Other fields</td>
 <td>ignore</td>
 </tr>
@@ -3024,6 +3138,26 @@
 <tr>
 <td>fb</td>
 <td>BIX deduction</td>
+</tr>
+<tr>
+<td>bt</td>
+<td>Stop-profit and stop-loss orders: 1 market price, 2 limit price, Otherwise no stop-profit and stop-loss is set.</td>
+</tr>
+<tr>
+<td>tw</td>
+<td>Stop earnings trigger price</td>
+</tr>
+<tr>
+<td>tl</td>
+<td>Stop loss trigger price</td>
+</tr>
+<tr>
+<td>pw</td>
+<td>Stop-profit order price (ignored if bt =1)</td>
+</tr>
+<tr>
+<td>pl</td>
+<td>Stop loss order price (ignored if bt =1)</td>
 </tr>
 <tr>
 <td>Other fields</td>
