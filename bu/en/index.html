@@ -288,7 +288,7 @@
     </script>
   </head>
 
-  <body class="index" data-languages="[&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;javascript&quot;,&quot;python&quot;]">
     <a href="#" id="nav-button">
       <span>
         <img src="images/navbar-cad8cdcb.png" alt="" />
@@ -317,6 +317,7 @@
     <div class="toc-wrapper">
         <div class="lang-selector">
               <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="python">python</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -470,7 +471,15 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='base-usdt-contract'>Base-USDT contract</h1><h2 id='sdk-and-demo'>SDK and Demo</h2>
+        <h1 id='base-usdt-contract'>Base-USDT contract</h1><h2 id='sdk-and-demo'>SDK and Demo</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Base-USDT contract javascript Demo</span><span class="dl">'</span><span class="p">);</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Base-USDT contract python Demo'</span><span class="p">)</span>
+
+</code></pre></div>
 <p>Bibox provides contract SDKs for developers in multiple languages.</p>
 
 <p>These SDKs are developed based on the Bibox contract API and automatically complete the following functions:</p>
@@ -533,6 +542,50 @@
 
     <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="c1"># BASE_URL = 'https://api.bibox.com'  # https://api.bibox.tel
+</span><span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">transfer</span><span class="p">(</span><span class="n">inout</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbuassets/transfer'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'symbol'</span><span class="p">:</span> <span class="s">'USDT'</span><span class="p">,</span>
+        <span class="s">'type'</span><span class="p">:</span> <span class="n">inout</span><span class="p">,</span>
+        <span class="s">'amount'</span><span class="p">:</span> <span class="n">amount</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">transfer</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># transfer in contract
+</span>    <span class="n">transfer</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># transfer out contract
+</span>
 </code></pre></div>
 <ul>
 <li><p>1.Get current timestamp</p></li>
@@ -625,6 +678,50 @@
 
     <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="c1"># BASE_URL = 'https://api.bibox.com'  # https://api.bibox.tel
+</span><span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">transfer</span><span class="p">(</span><span class="n">inout</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbuassets/transfer'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'symbol'</span><span class="p">:</span> <span class="s">'USDT'</span><span class="p">,</span>
+        <span class="s">'type'</span><span class="p">:</span> <span class="n">inout</span><span class="p">,</span>
+        <span class="s">'amount'</span><span class="p">:</span> <span class="n">amount</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">transfer</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># transfer in contract
+</span>    <span class="n">transfer</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># transfer out contract
+</span>
 </code></pre></div>
 <ul>
 <li>1.Request path</li>
@@ -746,6 +843,53 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="c1"># BASE_URL = 'https://api.bibox.com'  # 墙内 https://api.bibox.tel
+</span><span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_open</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/open'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"pair"</span><span class="p">:</span> <span class="s">"4BTC_USDT"</span><span class="p">,</span>
+        <span class="s">"order_side"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">"order_type"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s">"price"</span><span class="p">:</span> <span class="s">"11500"</span><span class="p">,</span>
+        <span class="s">"amount"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">"order_from"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="s">"client_oid"</span><span class="p">:</span> <span class="s">"1234567890"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_open</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -964,6 +1108,46 @@
 
     <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_close</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/close'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"425510999949316"</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_close</span><span class="p">()</span>
+
 </code></pre></div>
 <ul>
 <li>1.Request path</li>
@@ -1065,6 +1249,46 @@
 
     <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_close_batch</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/closeBatch'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"order_ids"</span><span class="p">:</span> <span class="p">[</span><span class="s">"2234567890"</span><span class="p">,</span> <span class="s">"2234567891"</span><span class="p">]</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_close_batch</span><span class="p">()</span>
+
 </code></pre></div>
 <ul>
 <li>1.Request path</li>
@@ -1165,6 +1389,47 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_close_all</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/closeAll'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"pair"</span><span class="p">:</span> <span class="s">"4BTC_USDT"</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_close_all</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -1272,6 +1537,52 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_plan_open</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/planOpen'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'pair'</span><span class="p">:</span> <span class="s">"4BTC_USDT"</span><span class="p">,</span>
+        <span class="s">'price'</span><span class="p">:</span> <span class="mi">58000</span><span class="p">,</span>
+        <span class="s">'trigger_price'</span><span class="p">:</span> <span class="mi">58000</span><span class="p">,</span>
+        <span class="s">'amount'</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+        <span class="s">'side'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">'plan_type'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">'book_type'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_plan_open</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -1421,6 +1732,46 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_plan_order_list</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/planOrderList'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'pair'</span><span class="p">:</span> <span class="s">"4BTC_USDT"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_plan_order_list</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -1580,6 +1931,46 @@
 
     <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_plan_close</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/planClose'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"425510999949316"</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_plan_close</span><span class="p">()</span>
+
 </code></pre></div>
 <ul>
 <li>1.Request path</li>
@@ -1680,6 +2071,46 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_plan_close_all</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/planCloseAll'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"pair"</span><span class="p">:</span><span class="s">"4BTC_USDT"</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_plan_close_all</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -1783,6 +2214,48 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">change_margin</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/changeMargin'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"pair"</span><span class="p">:</span> <span class="s">"4BTC_USDT"</span><span class="p">,</span>
+        <span class="s">"margin"</span><span class="p">:</span> <span class="s">"0.01"</span><span class="p">,</span>
+        <span class="s">"side"</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">change_margin</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -1903,6 +2376,49 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">change_mode</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/changeMode'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"pair"</span><span class="p">:</span> <span class="s">"4BTC_USDT"</span><span class="p">,</span>
+        <span class="s">"mode"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s">"leverage_long"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s">"leverage_short"</span><span class="p">:</span> <span class="mi">20</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">change_mode</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -2028,6 +2544,46 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">assets</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/assets'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"coin"</span><span class="p">:</span> <span class="s">"USDT"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">assets</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -2166,6 +2722,47 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">position</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/position'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"pair"</span><span class="p">:</span> <span class="s">"4BTC_USDT"</span><span class="p">,</span>
+        <span class="s">"side"</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">position</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -2349,6 +2946,47 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_list</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/list'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"pair"</span><span class="p">:</span> <span class="s">"4BTC_USDT"</span><span class="p">,</span>
+        <span class="s">"order_side"</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_list</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -2574,6 +3212,46 @@
 
     <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_detail</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/detail'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"426610511577093"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_detail</span><span class="p">()</span>
+
 </code></pre></div>
 <ul>
 <li>1.Request path</li>
@@ -2782,6 +3460,46 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_list_batch</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/listBatch'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"order_ids"</span><span class="p">:</span> <span class="p">[</span><span class="s">"426610511577093"</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_list_batch</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -2993,6 +3711,46 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">order_list_batch_by_client_oid</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3/cbu/order/listBatchByClientOid'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"order_ids"</span><span class="p">:</span> <span class="p">[</span><span class="s">"1602679943911"</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">order_list_batch_by_client_oid</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -3237,6 +3995,49 @@
 
     <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span> <span class="n">getopt</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">get_baseu_deal_log</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3.1/cquery/base_u/dealLog'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"pair"</span><span class="p">:</span> <span class="s">"4BTC_USDT"</span><span class="p">,</span>
+        <span class="s">"page"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">"size"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">get_baseu_deal_log</span><span class="p">()</span>
+
 </code></pre></div>
 <ul>
 <li>1.Request path</li>
@@ -3444,6 +4245,49 @@
 
     <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span> <span class="n">getopt</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">get_baseu_order_detail</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3.1/cquery/base_u/orderDetail'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"orderId"</span><span class="p">:</span> <span class="s">"421112953438213"</span><span class="p">,</span>
+        <span class="s">"page"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">"size"</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">get_baseu_order_detail</span><span class="p">()</span>
+
 </code></pre></div>
 <ul>
 <li>1.Request path</li>
@@ -3635,6 +4479,51 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span> <span class="n">getopt</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">get_baseu_order_history</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3.1/cquery/base_u/orderHistory'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"page"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">"size"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s">"pair"</span><span class="p">:</span> <span class="s">"4BTC_USDT"</span><span class="p">,</span>
+        <span class="s">"side"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">"status"</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">get_baseu_order_history</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -3886,6 +4775,48 @@
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
 
     <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># -*- coding:utf-8 -*-
+</span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span> <span class="n">getopt</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://api.bibox.com'</span>  <span class="c1"># 'https://api.bibox.tel' #
+</span>
+
+<span class="k">def</span> <span class="nf">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="c1"># to_sign = str(timestamp)+json.dumps(body,separators=(',',':'))
+</span>    <span class="n">to_sign</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">+</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">to_sign</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">to_sign</span><span class="p">)</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'bibox-api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+        <span class="s">'bibox-api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'bibox-timestamp'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">headers</span>
+
+
+<span class="k">def</span> <span class="nf">get_baseu_order_by_id</span><span class="p">():</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v3.1/cquery/base_u/orderById'</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"orderIds"</span><span class="p">:</span> <span class="p">[</span><span class="s">"421112953438213"</span><span class="p">,</span> <span class="s">"421112953438214"</span><span class="p">],</span>
+        <span class="s">"clientOids"</span><span class="p">:</span> <span class="p">[</span><span class="s">"1602644402806"</span><span class="p">,</span> <span class="s">"1602644402811"</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">do_sign</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">get_baseu_order_by_id</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -4619,6 +5550,83 @@
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
 <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># /usr/bin/env python
+# -*- coding: UTF-8 -*-
+</span>
+<span class="kn">import</span> <span class="nn">websocket</span> <span class="c1"># websocket-client
+</span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+
+<span class="n">ws_url</span> <span class="o">=</span> <span class="s">'wss://npush.bibox360.com/cbu'</span>
+
+
+<span class="k">def</span> <span class="nf">stringify</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\'</span><span class="s">"</span><span class="p">,</span> <span class="s">"</span><span class="se">\"</span><span class="s">"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_sub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'sub'</span><span class="p">:</span> <span class="s">'4BTC_USDT_kline_1min'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="c1"># print(stringify(subdata))
+</span>    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_unsub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'unsub'</span><span class="p">:</span> <span class="s">'4BTC_USDT_kline_1min'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x01</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">zlib</span><span class="p">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">zlib</span><span class="p">.</span><span class="n">MAX_WBITS</span> <span class="o">|</span> <span class="mi">32</span><span class="p">)</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x00</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">on_message</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="c1"># print(message)
+</span>    <span class="n">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_error</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_close</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"### closed ###"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_open</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">get_sub_str</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">connect</span><span class="p">():</span>
+    <span class="n">websocket</span><span class="p">.</span><span class="n">enableTrace</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">websocket</span><span class="p">.</span><span class="n">WebSocketApp</span><span class="p">(</span><span class="n">ws_url</span><span class="p">,</span>
+                                <span class="n">on_message</span><span class="o">=</span><span class="n">on_message</span><span class="p">,</span>
+                                <span class="n">on_error</span><span class="o">=</span><span class="n">on_error</span><span class="p">,</span>
+                                <span class="n">on_close</span><span class="o">=</span><span class="n">on_close</span><span class="p">)</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">on_open</span> <span class="o">=</span> <span class="n">on_open</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">ping_interval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">ping_timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">connect</span><span class="p">()</span>
+
 </code></pre></div>
 <ul>
 <li>1.Subscription path</li>
@@ -4786,6 +5794,83 @@ Volume(Contract value)
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
 <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># /usr/bin/env python
+# -*- coding: UTF-8 -*-
+</span>
+<span class="kn">import</span> <span class="nn">websocket</span> <span class="c1"># websocket-client
+</span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+
+<span class="n">ws_url</span> <span class="o">=</span> <span class="s">'wss://npush.bibox360.com/cbu'</span>
+
+
+<span class="k">def</span> <span class="nf">stringify</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\'</span><span class="s">"</span><span class="p">,</span> <span class="s">"</span><span class="se">\"</span><span class="s">"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_sub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'sub'</span><span class="p">:</span> <span class="s">'4BTC_USDTTAGPRICE_kline_1min'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="c1"># print(stringify(subdata))
+</span>    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_unsub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'unsub'</span><span class="p">:</span> <span class="s">'4BTC_USDTTAGPRICE_kline_1min'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x01</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">zlib</span><span class="p">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">zlib</span><span class="p">.</span><span class="n">MAX_WBITS</span> <span class="o">|</span> <span class="mi">32</span><span class="p">)</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x00</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">on_message</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="c1"># print(message)
+</span>    <span class="n">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_error</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_close</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"### closed ###"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_open</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">get_sub_str</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">connect</span><span class="p">():</span>
+    <span class="n">websocket</span><span class="p">.</span><span class="n">enableTrace</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">websocket</span><span class="p">.</span><span class="n">WebSocketApp</span><span class="p">(</span><span class="n">ws_url</span><span class="p">,</span>
+                                <span class="n">on_message</span><span class="o">=</span><span class="n">on_message</span><span class="p">,</span>
+                                <span class="n">on_error</span><span class="o">=</span><span class="n">on_error</span><span class="p">,</span>
+                                <span class="n">on_close</span><span class="o">=</span><span class="n">on_close</span><span class="p">)</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">on_open</span> <span class="o">=</span> <span class="n">on_open</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">ping_interval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">ping_timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">connect</span><span class="p">()</span>
+
 </code></pre></div>
 <ul>
 <li>1.Subscription path</li>
@@ -4944,6 +6029,83 @@ Volume(ignore)
 <span class="nx">instance</span><span class="p">.</span><span class="nx">_initWs</span><span class="p">().</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
 <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># /usr/bin/env python
+# -*- coding: UTF-8 -*-
+</span>
+<span class="kn">import</span> <span class="nn">websocket</span> <span class="c1"># websocket-client
+</span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+
+<span class="n">ws_url</span> <span class="o">=</span> <span class="s">'wss://npush.bibox360.com/cbu'</span>
+
+
+<span class="k">def</span> <span class="nf">stringify</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\'</span><span class="s">"</span><span class="p">,</span> <span class="s">"</span><span class="se">\"</span><span class="s">"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_sub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'sub'</span><span class="p">:</span> <span class="s">'4BTC_USDT_depth'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="c1"># print(stringify(subdata))
+</span>    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_unsub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'unsub'</span><span class="p">:</span> <span class="s">'4BTC_USDT_depth'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x01</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">zlib</span><span class="p">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">zlib</span><span class="p">.</span><span class="n">MAX_WBITS</span> <span class="o">|</span> <span class="mi">32</span><span class="p">)</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x00</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">on_message</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="c1"># print(message)
+</span>    <span class="n">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_error</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_close</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"### closed ###"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_open</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">get_sub_str</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">connect</span><span class="p">():</span>
+    <span class="n">websocket</span><span class="p">.</span><span class="n">enableTrace</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">websocket</span><span class="p">.</span><span class="n">WebSocketApp</span><span class="p">(</span><span class="n">ws_url</span><span class="p">,</span>
+                                <span class="n">on_message</span><span class="o">=</span><span class="n">on_message</span><span class="p">,</span>
+                                <span class="n">on_error</span><span class="o">=</span><span class="n">on_error</span><span class="p">,</span>
+                                <span class="n">on_close</span><span class="o">=</span><span class="n">on_close</span><span class="p">)</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">on_open</span> <span class="o">=</span> <span class="n">on_open</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">ping_interval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">ping_timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">connect</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -5186,6 +6348,83 @@ Volume(ignore)
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
 <span class="p">});</span>
 
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># /usr/bin/env python
+# -*- coding: UTF-8 -*-
+</span>
+<span class="kn">import</span> <span class="nn">websocket</span> <span class="c1"># websocket-client
+</span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+
+<span class="n">ws_url</span> <span class="o">=</span> <span class="s">'wss://npush.bibox360.com/cbu'</span>
+
+
+<span class="k">def</span> <span class="nf">stringify</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\'</span><span class="s">"</span><span class="p">,</span> <span class="s">"</span><span class="se">\"</span><span class="s">"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_sub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'sub'</span><span class="p">:</span> <span class="s">'4BTC_USDT_deals'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="c1"># print(stringify(subdata))
+</span>    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_unsub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'unsub'</span><span class="p">:</span> <span class="s">'4BTC_USDT_deals'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x01</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">zlib</span><span class="p">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">zlib</span><span class="p">.</span><span class="n">MAX_WBITS</span> <span class="o">|</span> <span class="mi">32</span><span class="p">)</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x00</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">on_message</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="c1"># print(message)
+</span>    <span class="n">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_error</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_close</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"### closed ###"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_open</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">get_sub_str</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">connect</span><span class="p">():</span>
+    <span class="n">websocket</span><span class="p">.</span><span class="n">enableTrace</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">websocket</span><span class="p">.</span><span class="n">WebSocketApp</span><span class="p">(</span><span class="n">ws_url</span><span class="p">,</span>
+                                <span class="n">on_message</span><span class="o">=</span><span class="n">on_message</span><span class="p">,</span>
+                                <span class="n">on_error</span><span class="o">=</span><span class="n">on_error</span><span class="p">,</span>
+                                <span class="n">on_close</span><span class="o">=</span><span class="n">on_close</span><span class="p">)</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">on_open</span> <span class="o">=</span> <span class="n">on_open</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">ping_interval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">ping_timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">connect</span><span class="p">()</span>
+
 </code></pre></div>
 <ul>
 <li>1.Subscription path</li>
@@ -5354,6 +6593,83 @@ Timestamp
 <span class="nx">instance</span><span class="p">.</span><span class="nx">_initWs</span><span class="p">().</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
 <span class="p">});</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># /usr/bin/env python
+# -*- coding: UTF-8 -*-
+</span>
+<span class="kn">import</span> <span class="nn">websocket</span> <span class="c1"># websocket-client
+</span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+
+<span class="n">ws_url</span> <span class="o">=</span> <span class="s">'wss://npush.bibox360.com/cbu'</span>
+
+
+<span class="k">def</span> <span class="nf">stringify</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\'</span><span class="s">"</span><span class="p">,</span> <span class="s">"</span><span class="se">\"</span><span class="s">"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_sub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'sub'</span><span class="p">:</span> <span class="s">'4BTC_USDT_ticker'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="c1"># print(stringify(subdata))
+</span>    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_unsub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'unsub'</span><span class="p">:</span> <span class="s">'4BTC_USDT_ticker'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x01</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">zlib</span><span class="p">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">zlib</span><span class="p">.</span><span class="n">MAX_WBITS</span> <span class="o">|</span> <span class="mi">32</span><span class="p">)</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x00</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">on_message</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="c1"># print(message)
+</span>    <span class="n">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_error</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_close</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"### closed ###"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_open</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">get_sub_str</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">connect</span><span class="p">():</span>
+    <span class="n">websocket</span><span class="p">.</span><span class="n">enableTrace</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">websocket</span><span class="p">.</span><span class="n">WebSocketApp</span><span class="p">(</span><span class="n">ws_url</span><span class="p">,</span>
+                                <span class="n">on_message</span><span class="o">=</span><span class="n">on_message</span><span class="p">,</span>
+                                <span class="n">on_error</span><span class="o">=</span><span class="n">on_error</span><span class="p">,</span>
+                                <span class="n">on_close</span><span class="o">=</span><span class="n">on_close</span><span class="p">)</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">on_open</span> <span class="o">=</span> <span class="n">on_open</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">ping_interval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">ping_timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">connect</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -5580,6 +6896,94 @@ Latest cny price
 
 <span class="nx">login</span><span class="p">();</span>
 
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1"># /usr/bin/env python
+# -*- coding: UTF-8 -*-
+</span>
+<span class="kn">import</span> <span class="nn">websocket</span> <span class="c1"># websocket-client
+</span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+
+<span class="n">ws_url</span> <span class="o">=</span> <span class="s">'wss://npush.bibox360.com/cbu'</span>
+<span class="n">apikey</span> <span class="o">=</span> <span class="s">'900625568558820892a8c833c33ebc8fd2701efe'</span>  <span class="c1"># your apikey
+</span><span class="n">secret</span> <span class="o">=</span> <span class="s">'c708ac3e70d115ec29efbee197330627d7edf842'</span>  <span class="c1"># your apikey secret
+</span>
+
+<span class="k">def</span> <span class="nf">stringify</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\'</span><span class="s">"</span><span class="p">,</span> <span class="s">"</span><span class="se">\"</span><span class="s">"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_sign</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">secret</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">data</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">get_sub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'apikey'</span><span class="p">:</span> <span class="n">apikey</span><span class="p">,</span>
+        <span class="s">'sub'</span><span class="p">:</span> <span class="s">'ALL_ALL_login'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="c1"># print(stringify(subdata))
+</span>    <span class="n">sign</span> <span class="o">=</span> <span class="n">get_sign</span><span class="p">(</span><span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">),</span> <span class="n">secret</span><span class="p">)</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'apikey'</span><span class="p">:</span> <span class="n">apikey</span><span class="p">,</span>
+        <span class="s">'sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+        <span class="s">'sub'</span><span class="p">:</span> <span class="s">'ALL_ALL_login'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="c1"># print(stringify(subdata))
+</span>    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_unsub_str</span><span class="p">():</span>
+    <span class="n">subdata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'unsub'</span><span class="p">:</span> <span class="s">'ALL_ALL_login'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">stringify</span><span class="p">(</span><span class="n">subdata</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'</span><span class="se">\x01</span><span class="s">'</span> <span class="ow">or</span> <span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">zlib</span><span class="p">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">zlib</span><span class="p">.</span><span class="n">MAX_WBITS</span> <span class="o">|</span> <span class="mi">32</span><span class="p">)</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jmsgs</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">jmsgs</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">on_message</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="c1"># print(message)
+</span>    <span class="n">decode_data</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_error</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_close</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"### closed ###"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">on_open</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">get_sub_str</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">connect</span><span class="p">():</span>
+    <span class="n">websocket</span><span class="p">.</span><span class="n">enableTrace</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">websocket</span><span class="p">.</span><span class="n">WebSocketApp</span><span class="p">(</span><span class="n">ws_url</span><span class="p">,</span>
+                                <span class="n">on_message</span><span class="o">=</span><span class="n">on_message</span><span class="p">,</span>
+                                <span class="n">on_error</span><span class="o">=</span><span class="n">on_error</span><span class="p">,</span>
+                                <span class="n">on_close</span><span class="o">=</span><span class="n">on_close</span><span class="p">)</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">on_open</span> <span class="o">=</span> <span class="n">on_open</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">ping_interval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">ping_timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">connect</span><span class="p">()</span>
 
 </code></pre></div>
 <ul>
@@ -6579,6 +7983,7 @@ Latest cny price
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="python">python</a>
           </div>
       </div>
     </div>
