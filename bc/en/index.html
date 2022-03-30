@@ -279,7 +279,7 @@
   color: #859900;
 }
     </style>
-    <link href="stylesheets/screen-1df89a6c.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/screen-e0283edf.css" rel="stylesheet" media="screen" />
     <link href="stylesheets/print-628c1a7f.css" rel="stylesheet" media="print" />
       <script src="javascripts/all-e033bdd3.js"></script>
 
@@ -298,8 +298,15 @@
       <div class="flex_box">
         <img src="images/logo-5720d610.png" class="logo" alt="" />
         <div class="nav_box">
-          <span class="nav_cell nav_tab">
-            <a href="/v3/spot/zh/" id="btn_spot">现货</a>
+          <span id="spot_select" class="nav-select">
+            <span id="btn_spot-select">
+              现货
+            </span>
+
+            <span class="nav-select-drop">
+              <a href="/v3/spot/zh/" class="nav-select-item" id="btn_spot">现货v3</a>
+              <a href="/v3/spotv4/zh/" class="nav-select-item" id="btn_spot_v4">现货v4</a>
+            </span>
           </span>
           <span class="nav_cell nav_tab">
             <a href="/v3/bu/zh/" id="btn_contract">U本位永续合约</a>
@@ -9077,55 +9084,74 @@ Latest cny price
   </body>
       <script>
         const lang_btn = document.getElementById('lang_box');
+        const btn_spot_v4 = document.getElementById('btn_spot_v4');
         const btn_spot = document.getElementById('btn_spot');
         const btn_contract = document.getElementById('btn_contract');
         const btn_contract_coin = document.getElementById('btn_contract_coin')
         const btn_v1 = document.getElementById('btn_v1')
 
+        const btnSpotSelect = document.getElementById('btn_spot-select')
+        const spot_select = document.getElementById('spot_select')
+
         const url = GetUrlRelativePath();
 
         if(url.indexOf('en') != -1){
           //英文
-
+          btnSpotSelect.innerHTML = 'Spot'
           lang_btn.innerHTML = '中文';
-          btn_spot.innerHTML = 'Spot';
+          btn_spot.innerHTML = 'Spot v3';
+          btn_spot_v4.innerHTML = 'Spot v4'
           btn_contract_coin.innerHTML = 'ContractCoin';
           btn_contract.innerHTML = 'Contract USDT';
           btn_v1.innerHTML = 'Use V1 API?';
 
           lang_btn.href = url.replace('en/', 'zh/');
           btn_spot.href = btn_spot.href.replace('zh/', 'en/');
+          btn_spot_v4.href = btn_spot_v4.href.replace('zh/', 'en/')
           btn_contract_coin.href = btn_contract_coin.href.replace('zh/', 'en/');
           btn_contract.href = btn_contract.href.replace('zh/', 'en/');
 
         }else{
           //中文
+          btnSpotSelect.innerHTML = '现货'
           lang_btn.innerHTML = 'English';
-          btn_spot.innerHTML = '现货';
+          btn_spot.innerHTML = '现货 v3';
+          btn_spot_v4.innerHTML = '现货 v4'
           btn_contract_coin.innerHTML = '币本位永续合约';
           btn_contract.innerHTML = 'U本位永续合约';
           btn_v1.innerHTML = '使用v1版本API';
 
           lang_btn.href = url.replace('zh/', 'en/');
           btn_spot.href = btn_spot.href.replace('en/', 'zh/');
+          btn_spot_v4.href = btn_spot_v4.href.replace('en/', 'zh/');
           btn_contract_coin.href = btn_contract_coin.href.replace('en/', 'zh/');
           btn_contract.href = btn_contract.href.replace('en/', 'zh/');
         }
 
-        if(location.href.indexOf('v3/spot/') > 0){
+        if(location.href.indexOf('/spotv4/') > 0){
+          btn_spot_v4.className = 'current';
+          btn_contract_coin.className = '';
+          btn_contract.className = '';
+          btn_spot.className = '';
+          spot_select.className = spot_select.className + ' current';
+        } else if(location.href.indexOf('v3/spot/') > 0){
           btn_spot.className = 'current';
           btn_contract_coin.className = '';
           btn_contract.className = '';
+          btn_spot_v4.className = '';
+          spot_select.className = spot_select.className + ' current';
         }
         else if(location.href.indexOf('v3/bc/') > 0){
           btn_spot.className = '';
           btn_contract_coin.className = 'current';
           btn_contract.className = '';
+          btn_spot_v4.className = '';
         }
         else if(location.href.indexOf('v3/bu/') > 0){
           btn_spot.className = '';
           btn_contract_coin.className = '';
           btn_contract.className = 'current';
+          btn_spot_v4.className = '';
         }
 
         lang_btn.style.display = 'block';

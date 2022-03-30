@@ -1,0 +1,2426 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Bibox API Document(v4)</title>
+
+    <style media="screen">
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight .gh {
+  color: #999999;
+}
+.highlight .sr {
+  color: #f6aa11;
+}
+.highlight .go {
+  color: #888888;
+}
+.highlight .gp {
+  color: #555555;
+}
+.highlight .gs {
+}
+.highlight .gu {
+  color: #aaaaaa;
+}
+.highlight .nb {
+  color: #f6aa11;
+}
+.highlight .cm {
+  color: #75715e;
+}
+.highlight .cp {
+  color: #75715e;
+}
+.highlight .c1 {
+  color: #75715e;
+}
+.highlight .cs {
+  color: #75715e;
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cpf {
+  color: #75715e;
+}
+.highlight .err {
+  color: #960050;
+}
+.highlight .gr {
+  color: #960050;
+}
+.highlight .gt {
+  color: #960050;
+}
+.highlight .gd {
+  color: #49483e;
+}
+.highlight .gi {
+  color: #49483e;
+}
+.highlight .ge {
+  color: #49483e;
+}
+.highlight .kc {
+  color: #66d9ef;
+}
+.highlight .kd {
+  color: #66d9ef;
+}
+.highlight .kr {
+  color: #66d9ef;
+}
+.highlight .no {
+  color: #66d9ef;
+}
+.highlight .kt {
+  color: #66d9ef;
+}
+.highlight .mf {
+  color: #ae81ff;
+}
+.highlight .mh {
+  color: #ae81ff;
+}
+.highlight .il {
+  color: #ae81ff;
+}
+.highlight .mi {
+  color: #ae81ff;
+}
+.highlight .mo {
+  color: #ae81ff;
+}
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #ae81ff;
+}
+.highlight .sc {
+  color: #ae81ff;
+}
+.highlight .se {
+  color: #ae81ff;
+}
+.highlight .ss {
+  color: #ae81ff;
+}
+.highlight .sd {
+  color: #e6db74;
+}
+.highlight .s2 {
+  color: #e6db74;
+}
+.highlight .sb {
+  color: #e6db74;
+}
+.highlight .sh {
+  color: #e6db74;
+}
+.highlight .si {
+  color: #e6db74;
+}
+.highlight .sx {
+  color: #e6db74;
+}
+.highlight .s1 {
+  color: #e6db74;
+}
+.highlight .s, .highlight .sa, .highlight .dl {
+  color: #e6db74;
+}
+.highlight .na {
+  color: #a6e22e;
+}
+.highlight .nc {
+  color: #a6e22e;
+}
+.highlight .nd {
+  color: #a6e22e;
+}
+.highlight .ne {
+  color: #a6e22e;
+}
+.highlight .nf, .highlight .fm {
+  color: #a6e22e;
+}
+.highlight .vc {
+  color: #ffffff;
+}
+.highlight .nn {
+  color: #ffffff;
+}
+.highlight .ni {
+  color: #ffffff;
+}
+.highlight .bp {
+  color: #ffffff;
+}
+.highlight .vg {
+  color: #ffffff;
+}
+.highlight .vi {
+  color: #ffffff;
+}
+.highlight .nv, .highlight .vm {
+  color: #ffffff;
+}
+.highlight .w {
+  color: #ffffff;
+}
+.highlight {
+  color: #ffffff;
+}
+.highlight .n, .highlight .py, .highlight .nx {
+  color: #ffffff;
+}
+.highlight .nl {
+  color: #f92672;
+}
+.highlight .ow {
+  color: #f92672;
+}
+.highlight .nt {
+  color: #f92672;
+}
+.highlight .k, .highlight .kv {
+  color: #f92672;
+}
+.highlight .kn {
+  color: #f92672;
+}
+.highlight .kp {
+  color: #f92672;
+}
+.highlight .o {
+  color: #f92672;
+}
+    </style>
+    <style media="print">
+      * {
+        -webkit-transition:none!important;
+        transition:none!important;
+      }
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #586e75;
+}
+.highlight .err {
+  color: #002b36;
+  background-color: #dc322f;
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cpf, .highlight .c1, .highlight .cs {
+  color: #657b83;
+}
+.highlight .cp {
+  color: #b58900;
+}
+.highlight .nt {
+  color: #b58900;
+}
+.highlight .o, .highlight .ow {
+  color: #93a1a1;
+}
+.highlight .p, .highlight .pi {
+  color: #93a1a1;
+}
+.highlight .gi {
+  color: #859900;
+}
+.highlight .gd {
+  color: #dc322f;
+}
+.highlight .gh {
+  color: #268bd2;
+  background-color: #002b36;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #6c71c4;
+}
+.highlight .kc {
+  color: #cb4b16;
+}
+.highlight .kt {
+  color: #cb4b16;
+}
+.highlight .kd {
+  color: #cb4b16;
+}
+.highlight .s, .highlight .sa, .highlight .sb, .highlight .sc, .highlight .dl, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #859900;
+}
+.highlight .sr {
+  color: #2aa198;
+}
+.highlight .si {
+  color: #d33682;
+}
+.highlight .se {
+  color: #d33682;
+}
+.highlight .nn {
+  color: #b58900;
+}
+.highlight .nc {
+  color: #b58900;
+}
+.highlight .no {
+  color: #b58900;
+}
+.highlight .na {
+  color: #268bd2;
+}
+.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
+  color: #859900;
+}
+.highlight .ss {
+  color: #859900;
+}
+    </style>
+    <link href="stylesheets/screen-e0283edf.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print-628c1a7f.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all-e033bdd3.js"></script>
+
+    <script>
+      $(function() { setupCodeCopy(); });
+    </script>
+  </head>
+
+  <body class="index" data-languages="[&quot;javascript&quot;,&quot;python&quot;,&quot;csharp&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        <img src="images/navbar-cad8cdcb.png" alt="" />
+      </span>
+    </a>
+    <header>
+      <div class="flex_box">
+        <img src="images/logo-5720d610.png" class="logo" alt="" />
+        <div class="nav_box">
+          <span id="spot_select" class="nav-select">
+            <span id="btn_spot-select">
+              现货
+            </span>
+
+            <span class="nav-select-drop">
+              <a href="/v3/spot/zh/" class="nav-select-item" id="btn_spot">现货v3</a>
+              <a href="/v3/spotv4/zh/" class="nav-select-item" id="btn_spot_v4">现货v4</a>
+            </span>
+          </span>
+          <span class="nav_cell nav_tab">
+            <a href="/v3/bu/zh/" id="btn_contract">U本位永续合约</a>
+          </span>
+          <span class="nav_cell nav_tab">
+            <a href="/v3/bc/zh/" id="btn_contract_coin">币本位永续合约</a>
+          </span>
+          <span class="nav_cell nav_tab">
+            <a href="https://biboxcom.github.io/zh-hans/" id="btn_v1">使用v1版本API</a>
+          </span>
+        </div>
+      </div>
+      <a href="/v3/spot/en/" class="lang" id="lang_box">English</a>
+    </header>
+    <div class="toc-wrapper">
+        <div class="lang-selector">
+              <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="python">python</a>
+              <a href="#" data-language-name="csharp">csharp</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <ul id="toc" class="toc-list-h1">
+          <li>
+            <a href="#basic-information" class="toc-h1 toc-link" data-title="Basic Information">Basic Information</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#spot-api" class="toc-h2 toc-link" data-title="Spot API">Spot API</a>
+                  </li>
+                  <li>
+                    <a href="#traffic-restrictions" class="toc-h2 toc-link" data-title="Traffic Restrictions">Traffic Restrictions</a>
+                  </li>
+                  <li>
+                    <a href="#authentication" class="toc-h2 toc-link" data-title="Authentication">Authentication</a>
+                  </li>
+                  <li>
+                    <a href="#api-key-permission" class="toc-h2 toc-link" data-title="Api Key permission">Api Key permission</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#market-data-endpoints" class="toc-h1 toc-link" data-title="Market Data Endpoints">Market Data Endpoints</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-listed-pairs" class="toc-h2 toc-link" data-title="Get Listed Pairs">Get Listed Pairs</a>
+                  </li>
+                  <li>
+                    <a href="#get-order-book" class="toc-h2 toc-link" data-title="Get Order Book">Get Order Book</a>
+                  </li>
+                  <li>
+                    <a href="#get-candles" class="toc-h2 toc-link" data-title="Get Candles">Get Candles</a>
+                  </li>
+                  <li>
+                    <a href="#get-trades" class="toc-h2 toc-link" data-title="Get Trades">Get Trades</a>
+                  </li>
+                  <li>
+                    <a href="#get-tickers" class="toc-h2 toc-link" data-title="Get Tickers">Get Tickers</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#market-data-streams" class="toc-h1 toc-link" data-title="Market Data Streams">Market Data Streams</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#overview" class="toc-h2 toc-link" data-title="Overview">Overview</a>
+                  </li>
+                  <li>
+                    <a href="#request-methods" class="toc-h2 toc-link" data-title="Request Methods">Request Methods</a>
+                  </li>
+                  <li>
+                    <a href="#subscribe-order-book" class="toc-h2 toc-link" data-title="Subscribe Order Book">Subscribe Order Book</a>
+                  </li>
+                  <li>
+                    <a href="#subscribe-trades" class="toc-h2 toc-link" data-title="Subscribe Trades">Subscribe Trades</a>
+                  </li>
+                  <li>
+                    <a href="#subscribe-candles" class="toc-h2 toc-link" data-title="Subscribe Candles">Subscribe Candles</a>
+                  </li>
+                  <li>
+                    <a href="#subscribe-tickers" class="toc-h2 toc-link" data-title="Subscribe Tickers">Subscribe Tickers</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#user-data-endpoints" class="toc-h1 toc-link" data-title="User Data Endpoints">User Data Endpoints</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-accounts" class="toc-h2 toc-link" data-title="Get Accounts">Get Accounts</a>
+                  </li>
+                  <li>
+                    <a href="#get-an-account-39-s-ledger" class="toc-h2 toc-link" data-title="Get an account's ledger">Get an account's ledger</a>
+                  </li>
+                  <li>
+                    <a href="#create-an-order" class="toc-h2 toc-link" data-title="Create an order">Create an order</a>
+                  </li>
+                  <li>
+                    <a href="#get-an-order" class="toc-h2 toc-link" data-title="Get an order">Get an order</a>
+                  </li>
+                  <li>
+                    <a href="#get-orders" class="toc-h2 toc-link" data-title="Get Orders">Get Orders</a>
+                  </li>
+                  <li>
+                    <a href="#cancel-an-order" class="toc-h2 toc-link" data-title="Cancel an Order">Cancel an Order</a>
+                  </li>
+                  <li>
+                    <a href="#cancel-all-orders" class="toc-h2 toc-link" data-title="Cancel all Orders">Cancel all Orders</a>
+                  </li>
+                  <li>
+                    <a href="#get-fills" class="toc-h2 toc-link" data-title="Get fills">Get fills</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#user-data-streams" class="toc-h1 toc-link" data-title="User Data Streams">User Data Streams</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#overview-2" class="toc-h2 toc-link" data-title="Overview">Overview</a>
+                  </li>
+                  <li>
+                    <a href="#account" class="toc-h2 toc-link" data-title="Account">Account</a>
+                  </li>
+                  <li>
+                    <a href="#orders" class="toc-h2 toc-link" data-title="Orders">Orders</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#error-code" class="toc-h2 toc-link" data-title="error code">error code</a>
+                  </li>
+              </ul>
+          </li>
+      </ul>
+        <ul class="toc-footer">
+            <li><a href='https://www.bibox.com'>start trading</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id='basic-information'>Basic Information</h1><h2 id='spot-api'>Spot API</h2>
+<p><strong>Using the Spot API to develop applications, you can accurately obtain market data of the Bibox spot market and conduct automated transactions quickly. The Spot API contains many interfaces, which are roughly divided into the following groups according to their functions：</strong></p>
+
+<ul>
+<li>Market Data Endpoints REST interface for obtaining market data</li>
+<li>User Data Endpoints REST interface for obtaining user private data</li>
+<li>Market Data Streams WebSocket interface for obtaining market data</li>
+<li>User Data Streams WebSocket interface for obtaining user private data</li>
+</ul>
+
+<p><strong>Spot API usage is as followsBase URL：</strong></p>
+
+<ul>
+<li>Market Data Endpoints: https://api.bibox.com</li>
+<li>User Data Endpoints: https://api.bibox.com</li>
+<li>Market Data Stream: wss://market-wss.bibox360.com</li>
+<li>User Data Stream: wss://user-wss.bibox360.com</li>
+</ul>
+
+<p><strong>The REST interface of the Spot API uses the following HTTP methods：</strong></p>
+
+<ul>
+<li>GET Used to get market data or private data</li>
+<li>POST Used to submit orders and other operations</li>
+<li>DELETE Used to revoke orders and other operations</li>
+</ul>
+
+<p><strong>Parameters required by the REST interface of the Spot API should be appended to the request according to the following rules：</strong></p>
+
+<ul>
+<li>Interface parameters of type GET should be appended to the Query String</li>
+<li>The interface parameters of the POST type should be appended to the Request Body in JSON format</li>
+<li>Interface parameters of type DELETE should be appended to Request Body in JSON format</li>
+</ul>
+
+<p><strong>Response</strong></p>
+
+<p>The response data of the Spot API is returned in JSON format. For the specific format, please refer to the description of each interface.</p>
+
+<p><strong>Error</strong></p>
+
+<p>Errors from the Spot API are returned in the following JSON format：</p>
+
+<p>{<br/>
+&nbsp;&nbsp;&quot;error&quot;: error code,<br/>
+&nbsp;&nbsp;&quot;message&quot;: &quot;error message&quot;<br/>
+}</p>
+
+<p><em>Among them, error indicates the type of error, and message contains the cause of the error or a hint on how to avoid the error. For specific error types, please refer to the <a href="#errors">Error</a> chapter.</em></p>
+
+<p><strong>Time or Timestamp</strong></p>
+
+<p>The time values ​​involved in the interface parameters and response data of the Spot API are all UNIX time in milliseconds.</p>
+
+<hr>
+<h2 id='traffic-restrictions'>Traffic Restrictions</h2>
+<p><strong>Bibox imposes the following access restrictions on requests from the same IP:</strong></p>
+
+<ol>
+<li>Access Limits </li>
+<li>Usage Limits CPU usage limit</li>
+</ol>
+
+<ul>
+<li>Access Limits Access frequency limit
+
+<ol>
+<li>The same IP has a maximum of 10000 requests every 10 seconds, and requests that exceed the limit will receive a -2101 error.</li>
+<li>The user can send up to 10,000 requests at any frequency within 10 seconds as needed, either roughly every 10ms, or 10,000 consecutive times within 1 second, then wait 9 seconds.
+<br/>
+<br/></li>
+</ol></li>
+<li>Usage Limits
+
+<ol>
+<li>The same IP consumes up to 10,000 CPU points every 10 seconds, and requests that exceed the limit will receive a -2102 error.</li>
+<li>Different APIs consume different CPU time, depending on how the API accesses the data.</li>
+<li>In this article, the way each API interface accesses data will be indicated in the form of &quot;cache&quot; and &quot;database&quot;. API that accesses the cache consumes less CPU time, and API that accesses the database consumes more CPU time. Depending on the parameters sent by the user, the API may access the cache and database in a mix, or even access the database multiple times, which will increase the CPU time consumed by the API.</li>
+<li>The CPU time consumed by each API request will be included in the response header Bibox-Usage in the format t1:t2:t3, where t1 represents the CPU time consumed by this API request, and t2 represents the current IP consumption in the last 10 seconds CPU time, t3 represents the remaining available CPU time of the current IP in the last 10 seconds.</li>
+</ol></li>
+</ul>
+
+<hr>
+<h2 id='authentication'>Authentication</h2>
+<p><strong>Authentication</strong></p>
+
+<ul>
+<li>The private interface is used to access private information such as accounts and delegations, and additional signatures are required when requesting to satisfy Bibox for authentication. This section describes how to create a signature.</li>
+</ul>
+
+<p><strong>Generate API Key</strong></p>
+
+<ul>
+<li>To create a signature, you first need to generate a combination of Api Key and Secret Key. For specific steps, please refer to____. Please keep in mind the Secret Key generated during this process because the value is only displayed once, if you forget the Secret Key, delete the Api Key and generate a new combination of Api Key and Secret Key.</li>
+</ul>
+
+<p><strong>HTTP Request Header</strong></p>
+
+<p><strong>Requests to access private interfaces must append the following HTTP request headers：</strong></p>
+
+<ul>
+<li>Bibox-Api-Key Generated Api Key</li>
+<li>Bibox-Api-Sign Signature, </li>
+</ul>
+
+<p><strong>The following HTTP request headers can also be appended if desired：</strong></p>
+
+<ul>
+<li>Bibox-Expire-Time
+
+<ol>
+<li>Interface expiration time.</li>
+<li>The value is the Unix time in milliseconds, the server will ignore requests received after this time, mainly to avoid the impact of network delays.</li>
+</ol></li>
+</ul>
+
+<p><strong>Create signature</strong></p>
+
+<p>Before sending the request, first determine the message body for signing. For GET type requests, Query String is the message body that needs to be signed. For POST and DELETE type requests, Body String is the message body that needs to be signed. The specific method of signing is as follows:</p>
+
+<ul>
+<li>Step 1: Use the Secret Key as the key to execute the HmacSHA256 algorithm on the message body that needs to be signed</li>
+<li>Step 2: Convert the above result to Hex String</li>
+<li>Step 3: Use Hex String as the value of the request header Bibox-Api-Sign</li>
+</ul>
+<h2 id='api-key-permission'>Api Key permission</h2>
+<p><strong>Private interfaces require specific permissions to execute. Appropriate permissions can be granted to the Api Key. If the Api Key is not granted the permissions required by an interface, then requests submitted using that Api Key will be rejected.</strong></p>
+
+<p><strong>The following permissions can be granted to Api Key：</strong></p>
+
+<ul>
+<li>View permission allows Api Key to get private data.</li>
+<li>Trade permission allows Api Key to submit or revoke orders, and allows Api Key to obtain transaction-related data.</li>
+</ul>
+
+<p><em>The permissions required by the interfaces are given in the description of each interface.</em></p>
+
+<hr>
+<h1 id='market-data-endpoints'>Market Data Endpoints</h1>
+<!-- ## Object
+
+  ``` javascript
+  // Price Level
+  [
+    "46125.7", // Order price
+    "0.079045" // Order amount
+  ]
+  ```
+
+  ``` javascript
+  // Order Book
+  ...
+  ```
+
+  ``` javascript
+  // Trade
+  [
+    "i": "17122255", // transaction id
+    "p": "46125.7", // transaction price
+    "q": "0.079045", // transaction amount
+    "s": "buy", // Taker's transaction direction
+    "t": "1628738748319" // Transaction time
+  ]
+  ```
+
+  ``` javascript
+  // Candle
+  [
+    "1644224940000", // start time
+    "10190.53", // opening price
+    "10192.5", // highest price
+    "9806.82", // lowest price
+    "10127.37", // closing price
+    "0.834", // transaction amount
+    "8370.40506", // transaction value
+    "1", // first transaction id
+    278 // The total number of transactions in the range
+  ]
+  ```
+
+  ``` javascript
+  // Ticker
+  ...
+  ```
+
+  ``` javascript
+  // Pair
+  {
+    "symbol": "BTC_USDT", // trading pair code
+    "base": "BTC", // underlying asset code
+    "quote": "USDT", // denominated asset code
+    "status": "tradable", // trading pair status
+    "min_price": "100000000", // minimum price
+    "max_price": "0.0001", // maximum price
+    "price_increment": "0.0001", // price increment
+    "price_scale": 4, // price decimal places
+    "min_quantity": "0.0001", // minimum order amount
+    "max_quantity": "1000000", // maximum order amount
+    "quantity_increment": "0.0001", // Increment of order amount
+    "quantity_scale": 4, // order amount decimal places
+    "min_order_value": "10" // minimum order value
+  }
+  ``` -->
+<h2 id='get-listed-pairs'>Get Listed Pairs</h2>
+<p><strong>Get a list of currencies</strong></p>
+
+<ul>
+<li>Request Method: GET</li>
+<li>Request Path: /v4/marketdata/pairs</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>No</td>
+<td>Trading pair codes, such as BTC_USDT, ETH_USDT, etc.<br/>Multiple trading pair codes can be specified in the following two forms<br/>1. /pairs?symbol=BTC_USDT,ETH_USDT<br/> 2. /pairs?symbol=BTC_USDT&amp;symbol=ETH_USDT <br/> If the symbol parameter is not specified, the information of all trading pairs will be returned</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">symbol</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// trading pair code</span>
+    <span class="dl">"</span><span class="s2">base</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// underlying asset code</span>
+    <span class="dl">"</span><span class="s2">quote</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// denominated asset code</span>
+    <span class="dl">"</span><span class="s2">status</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">tradable</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// trading pair status</span>
+    <span class="dl">"</span><span class="s2">min_price</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">100000000</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// minimum price</span>
+    <span class="dl">"</span><span class="s2">max_price</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.0001</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// maximum price</span>
+    <span class="dl">"</span><span class="s2">price_increment</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.0001</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// price increment</span>
+    <span class="dl">"</span><span class="s2">price_scale</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="c1">// price decimal places</span>
+    <span class="dl">"</span><span class="s2">min_quantity</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.0001</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// minimum order amount</span>
+    <span class="dl">"</span><span class="s2">max_quantity</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1000000</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// maximum order amount</span>
+    <span class="dl">"</span><span class="s2">quantity_increment</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.0001</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Increment of order amount</span>
+    <span class="dl">"</span><span class="s2">quantity_scale</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="c1">// order amount decimal places</span>
+    <span class="dl">"</span><span class="s2">min_order_value</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">10</span><span class="dl">"</span> <span class="c1">// minimum order value</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+<ul>
+<li>Data source</li>
+</ul>
+
+<p>Cache</p>
+<h2 id='get-order-book'>Get Order Book</h2>
+<p><strong>Get depth data</strong></p>
+
+<ul>
+<li>Request Method: GET</li>
+<li>Request Path: /v4/marketdata/order_book</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>yes</td>
+<td>trading pair code, such as BTC_USDT, ETH_USDT, etc.</td>
+</tr>
+<tr>
+<td>level</td>
+<td>int32</td>
+<td>no</td>
+<td>Specifies the maximum level depth to return<br/>Valid values ​​1, 2, 5, 10, 20, 50, 100, 200, 500, 1000<br/>Default value 100</td>
+</tr>
+<tr>
+<td>price_scale</td>
+<td>integer</td>
+<td>No</td>
+<td>Specify the depth of consolidation by price. For example, the price of the specified trading pair has a maximum of 4 decimal places. When price_scale=0, the price returned includes a maximum of 4 decimal places, and when <br/>price_scale=1, the returned price The price contains up to 3 decimal places, and the order quantity is the sum of all orders in the price range of 0.0010<br/> The price returned when price_scale=2 contains up to 2 decimal places, and the order volume is the sum of all orders in the price range of 0.0100<br/> br/&gt;price_scale=3 The returned price contains at most 1 decimal place, and the order quantity is the sum of all orders in the price range of 0.1000.<br/>price_scale=4 The returned price contains at most 0 decimal places, and the order volume is the price range Sum of all orders in 1.0000<br/>Valid values ​​0, 1, 2, 3, 4, 5<br/>Default value 0</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1027024</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// update id</span>
+  <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1644558642100</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// update time</span>
+  <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span> <span class="c1">// buy order</span>
+    <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+      <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+    <span class="p">],</span>
+    <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+      <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+    <span class="p">],</span>
+    <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+      <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+    <span class="p">]</span>
+    <span class="p">...</span>
+  <span class="p">],</span>
+  <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span> <span class="c1">// sell order</span>
+    <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+      <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+    <span class="p">],</span>
+    <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+      <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+    <span class="p">],</span>
+    <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+      <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+    <span class="p">]</span>
+    <span class="p">...</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>Note: The data is sorted according to the best price, that is, the depth of the buy side is sorted by price from large to small, and the depth of the sell side is sorted by price from small to large</p>
+</blockquote>
+
+<ul>
+<li>Data source</li>
+</ul>
+
+<p>Cache</p>
+<h2 id='get-candles'>Get Candles</h2>
+<p><strong>Get K-line data</strong></p>
+
+<ul>
+<li>Request Method: GET</li>
+<li>Request Path: /v4/marketdata/candles</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>yes</td>
+<td>trading pair code, such as BTC_USDT, ETH_USDT, etc.</td>
+</tr>
+<tr>
+<td>time_frame</td>
+<td>string</td>
+<td>Yes</td>
+<td>K-line data time frame<br/>Valid values ​​1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 12h, 1d, 3d, 1W or 1M</td>
+</tr>
+<tr>
+<td>before</td>
+<td>int64</td>
+<td>No</td>
+<td>utc time<br/>limited to return the latest time of the K-line record</td>
+</tr>
+<tr>
+<td>after</td>
+<td>int64</td>
+<td>No</td>
+<td>utc time<br/>limited to return the earliest time of the K-line record</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>integer</td>
+<td>No</td>
+<td>Get the maximum number of K-line records<br/>The default value is 100, the maximum value is 1000</td>
+</tr>
+</tbody></table>
+
+<ul>
+<li>Parameter combinations and data sources supported by this interface</li>
+</ul>
+
+<ol>
+<li>symbol + time_frame  --&gt; cache</li>
+<li>symbol + time_frame + limit  --&gt; cache</li>
+<li>symbol + time_frame + before  --&gt; database</li>
+<li>symbol + time_frame + before + limit  --&gt; database</li>
+<li>symbol + time_frame + after  --&gt; database</li>
+<li>symbol + time_frame + after + limit  --&gt; database</li>
+</ol>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">[</span>
+  <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">1644224940000</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// start time</span>
+    <span class="dl">"</span><span class="s2">10190.53</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// opening price</span>
+    <span class="dl">"</span><span class="s2">10192.5</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// maximum price</span>
+    <span class="dl">"</span><span class="s2">9806.82</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// minimum price</span>
+    <span class="dl">"</span><span class="s2">10127.37</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// closing price</span>
+    <span class="dl">"</span><span class="s2">0.834</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+    <span class="dl">"</span><span class="s2">8370.40506</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction value</span>
+    <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// first transaction id</span>
+    <span class="mi">278</span> <span class="c1">// The total number of transactions in the range</span>
+  <span class="p">],</span>
+  <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">1644224940000</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// start time</span>
+    <span class="dl">"</span><span class="s2">10190.53</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// opening price</span>
+    <span class="dl">"</span><span class="s2">10192.5</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// maximum price</span>
+    <span class="dl">"</span><span class="s2">9806.82</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// minimum price</span>
+    <span class="dl">"</span><span class="s2">10127.37</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// closing price</span>
+    <span class="dl">"</span><span class="s2">0.834</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+    <span class="dl">"</span><span class="s2">8370.40506</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction value</span>
+    <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// first transaction id</span>
+    <span class="mi">278</span> <span class="c1">// The total number of transactions in the range</span>
+  <span class="p">],</span>
+  <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">1644224940000</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// start time</span>
+    <span class="dl">"</span><span class="s2">10190.53</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// opening price</span>
+    <span class="dl">"</span><span class="s2">10192.5</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// maximum price</span>
+    <span class="dl">"</span><span class="s2">9806.82</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// minimum price</span>
+    <span class="dl">"</span><span class="s2">10127.37</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// closing price</span>
+    <span class="dl">"</span><span class="s2">0.834</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+    <span class="dl">"</span><span class="s2">8370.40506</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction value</span>
+    <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// first transaction id</span>
+    <span class="mi">278</span> <span class="c1">// The total number of transactions in the range</span>
+  <span class="p">]</span>
+  <span class="p">...</span>
+<span class="p">]</span>
+</code></pre></div>
+<blockquote>
+<p>The returned results are sorted by time from earliest to latest</p>
+</blockquote>
+<h2 id='get-trades'>Get Trades</h2>
+<p><strong>Get transaction history</strong></p>
+
+<ul>
+<li>Request Method: GET</li>
+<li>Request Path: /v4/marketdata/trades</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+</tbody></table>
+
+<p>| symbol | string | yes | trading pair code, such as BTC_USDT, ETH_USDT, etc. |
+| start_time | int64 | no | limited to return the earliest time of transaction records |
+| end_time | int64 | no | limited to return the latest time of transaction records |
+| before | int64 | no | transaction id<br/>limited to return the maximum id of transaction records |
+| after | int64 | no | transaction id<br/>limited to return the maximum id of transaction records |</p>
+
+<ul>
+<li><p>Parameter combinations and data sources supported by this interface</p>
+
+<ol>
+<li>symbol  --&gt; cache</li>
+<li>symbol + limit  --&gt; cache</li>
+<li>symbol + start_time  --&gt; database</li>
+<li>symbol + start_time + limit  --&gt; database</li>
+<li>symbol + end_time  --&gt; database</li>
+<li>symbol + end_time + limit  --&gt; database</li>
+<li>symbol + start_time + end_time  --&gt; database</li>
+<li>symbol + start_time + end_time + limit  --&gt; database</li>
+<li>symbol + before  --&gt; database</li>
+<li>symbol + before + limit  --&gt; database</li>
+<li>symbol + after  --&gt; database</li>
+<li>symbol + after + limit  --&gt; database</li>
+</ol>
+
+<p><em>The parameter combination whose data source is cache is used to get the last 1000 transaction records</em></p>
+
+<p><em>The parameter combination whose data source is database is used to obtain earlier transaction records</em></p>
+
+<p><em>If the latest transaction record is obtained with the parameter combination whose data source is database, the result will be slightly delayed than the cache data source</em></p></li>
+<li><p>Usage
+<strong>Usage example: Get all transaction records of a trading pair within three months</strong></p>
+
+<ol>
+<li>First use the symbol + limit parameter combination to get the latest transaction record</li>
+<li>Use the tradeId of the first record obtained as the value of the before parameter, and repeatedly use the symbol + before + limit parameter combination to obtain more records, until all transaction records within three months are obtained and then stop
+&gt; Response</li>
+</ol></li>
+</ul>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">17122255</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction id</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction price</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction amount</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">buy</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Taker's transaction direction</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1628738748319</span><span class="dl">"</span> <span class="c1">// transaction time</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">17122255</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction id</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction price</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction amount</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">buy</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Taker's transaction direction</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1628738748319</span><span class="dl">"</span> <span class="c1">// transaction time</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">17122255</span><span class="dl">"</span><span class="p">,</span> <span class="c1">//  transaction id</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">//  transaction price</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction amount</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">buy</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Taker's transaction direction</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1628738748319</span><span class="dl">"</span> <span class="c1">// transaction time</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">]</span>
+</code></pre></div>
+<blockquote>
+<p>The returned results are sorted by transaction record id from small to large</p>
+</blockquote>
+<h2 id='get-tickers'>Get Tickers</h2>
+<p><strong>Get quote data</strong></p>
+
+<ul>
+<li>Request Method: GET</li>
+<li>Request Path: /v4/marketdata/tickers</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>No</td>
+<td>Trading pair code, such as BTC_USDT, ETH_USDT, etc.<br/>Multiple trading pair codes can be specified in the following two forms<br/> 1. /pairs?symbol=BTC_USDT,ETH_USDT<br/ > 2. /pairs?symbol=BTC_USDT&amp;symbol=ETH_USDT<br/>If the symbol parameter is not specified, it will return the quotation data of all trading pairs</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// trading pair code</span>
+    <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">99.00000000</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// opening price</span>
+    <span class="dl">"</span><span class="s2">h</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">100.00000000</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// highest price</span>
+    <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.10000000</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// lowest price</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">4.00000200</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// latest price</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.002</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// latest volume</span>
+    <span class="dl">"</span><span class="s2">v</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">8913.30000000</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 24 hour volume</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">15.30000000</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 24 hour transaction value</span>
+    <span class="dl">"</span><span class="s2">c</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">-94.99999800</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 24 hour Change</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">123456</span><span class="p">,</span>  <span class="c1">// 24 hour transaction count</span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1234</span><span class="p">,</span>  <span class="c1">// 24 hour first transaction id</span>
+    <span class="dl">"</span><span class="s2">bp</span><span class="dl">"</span><span class="p">:</span><span class="mf">9959.87</span><span class="p">,</span>  <span class="c1">// Best current bid price</span>
+    <span class="dl">"</span><span class="s2">bq</span><span class="dl">"</span><span class="p">:</span><span class="mf">0.007</span><span class="p">,</span>  <span class="c1">// Best current bid quantity</span>
+    <span class="dl">"</span><span class="s2">ap</span><span class="dl">"</span><span class="p">:</span><span class="mf">10022.77</span><span class="p">,</span>  <span class="c1">// Best current ask price</span>
+    <span class="dl">"</span><span class="s2">aq</span><span class="dl">"</span><span class="p">:</span><span class="mf">0.006</span>  <span class="c1">// Best current ask quantity</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+<ul>
+<li>Data Source</li>
+</ul>
+
+<p>Cache</p>
+<h1 id='market-data-streams'>Market Data Streams</h1><h2 id='overview'>Overview</h2>
+<p><strong>The market information can be obtained in time by using the Websocket push service.</strong></p>
+
+<ul>
+<li>Connect to Websocket server
+Please use the following URL to connect to the Websocket server:
+<br/>
+wss://market-wss.bibox360.com</li>
+</ul>
+
+<blockquote>
+<p>After connecting, the client can send the following JSON-formatted request to the server</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code>  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="c1">// The request id given by the client</span>
+    <span class="dl">"</span><span class="s2">method</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">...</span><span class="dl">"</span> <span class="c1">// request type</span>
+    <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span> <span class="c1">// request parameter list</span>
+      <span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">,</span>
+      <span class="p">...</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>After receiving the request, the server will send the following JSON response to the client</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code>  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="c1">// request id</span>
+    <span class="dl">"</span><span class="s2">result</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">...</span><span class="dl">"</span> <span class="c1">// request result</span>
+  <span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>If an error occurs, the server will send the following error message to the client</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code>  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="c1">// request id</span>
+    <span class="dl">"</span><span class="s2">error</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="c1">// error code</span>
+    <span class="dl">"</span><span class="s2">message</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">...</span><span class="dl">"</span> <span class="c1">// error description</span>
+  <span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>At the same time, the server will also send the following data stream in JSON format to the client, the data stream contains the change information of market conditions</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code>  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">stream</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT.trades</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// data stream name</span>
+    <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">...,</span> <span class="c1">// data</span>
+  <span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>Request: Subscribe to a data stream</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code>  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">method</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">SUBSCRIBE</span><span class="dl">"</span>
+    <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">stream name</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">stream name</span><span class="dl">"</span><span class="p">,</span>
+      <span class="p">...</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>After connecting, please send the request to the server first, and then the server will send the corresponding data stream to the client when the market price changes.</p>
+
+<p>&quot;data stream name&quot; is the data stream name, which is a string in the following format.
+symbol.data_type.param1.param2...</p>
+
+<p>Among them, symbol is the name of the trading pair, such as BTC_USDT, ETH_USDT, etc.
+data_type is the data type, currently only the following data types are supported
+    order_book: depth
+    trades: list of trades
+    candles: candlesticks
+    ticker: latest transaction information</p>
+
+<p>After data_type is the parameter list. Different data types have different parameter lists. These will be introduced later.</p>
+
+<p>Request: Unsubscribe to a data stream</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code>  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">method</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">UNSUBSCRIBE</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">data stream name</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">data stream name</span><span class="dl">"</span><span class="p">,</span>
+      <span class="p">...</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>If the request is handled correctly by the server, the client receives the following response:
+  <code>javascript
+  ...
+</code></p>
+
+<p>If an error occurs in the request, the client receives the following error response:
+  <code>javascript
+  ...
+</code></p>
+</blockquote>
+<h2 id='request-methods'>Request Methods</h2>
+<blockquote>
+<p>Request type and parameters</p>
+
+<p>The client can send the following request to the server</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code>  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="c1">// request id given by client</span>
+    <span class="dl">"</span><span class="s2">method</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">...</span><span class="dl">"</span> <span class="c1">// request type</span>
+    <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span> <span class="c1">// request parameter list</span>
+      <span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">,</span>
+      <span class="p">...</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>The value of the method field is one of the following request types:</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>optional value</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>SUBSCRIBE</td>
+<td>1. Subscribe to the data stream <br/> 2. The parameter is a list of data stream names <br/> 3. After successful subscription, the server will send the data stream to the client when the market price changes</td>
+</tr>
+<tr>
+<td>UNSUBSCRIBE</td>
+<td>1. Unsubscribe data stream <br/> 2. The parameter is a list of data stream names <br/> 3. After successfully unsubscribing, the client will no longer receive the corresponding data stream</td>
+</tr>
+</tbody></table>
+<h2 id='subscribe-order-book'>Subscribe Order Book</h2>
+<p><strong>Subscribe to depth information</strong>*</p>
+
+<blockquote>
+<p>Send the following request to subscribe to depth information</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">method</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">SUBSCRIBE</span><span class="dl">"</span>
+  <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">BTC_USDT.order_book.20</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">ETH_USDT.order_book.20</span><span class="dl">"</span><span class="p">,</span>
+    <span class="p">...</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>parameter</li>
+</ul>
+
+<ol>
+<li>The parameter of the request is the depth stream name, in the following format:
+
+<ul>
+<li>&lt;symbol&gt;.order_book.&lt;max depth&gt;
+
+<ol>
+<li>&lt;symbol&gt; is the name of the trading pair, such as BTC_USDT, ETH_USDT, etc.</li>
+<li>&lt;max depth&gt; is the maximum depth, valid values ​​are 5, 10, 20, 50, 100, 200, 500, 1000</li>
+</ol></li>
+</ul></li>
+</ol>
+
+<blockquote>
+<p>data flow</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code>  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">stream</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT.order_book.20</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1027024</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// update id</span>
+      <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1644558642100</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// update time</span>
+      <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span> <span class="c1">// bid</span>
+        <span class="p">[</span>
+            <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+            <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+          <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+            <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+          <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+            <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+          <span class="p">],</span>
+        <span class="p">...</span>
+      <span class="p">],</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span> <span class="c1">// ask</span>
+        <span class="p">[</span>
+            <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+            <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+          <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+            <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+          <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Order price</span>
+            <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span> <span class="c1">// Order amount</span>
+          <span class="p">],</span>
+       <span class="p">...</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>After a successful subscription, the client will first receive a full-depth data stream, and then will receive an incremental change data stream. Please use the following methods to synthesize a full-depth data stream, or use the SDK.
+  <code>javascript
+  ...
+</code></p>
+</blockquote>
+<h2 id='subscribe-trades'>Subscribe Trades</h2>
+<p><strong>Subscribe to transaction list</strong></p>
+
+<blockquote>
+<p>Send the following request to subscribe to the transaction list</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code>  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">method</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">SUBSCRIBE</span><span class="dl">"</span>
+    <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">BTC_USDT.trades</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">ETH_USDT.trades</span><span class="dl">"</span><span class="p">,</span>
+      <span class="p">...</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>parameter</li>
+</ul>
+
+<ol>
+<li>The parameter of the request is the name of the transaction flow, in the following format:
+
+<ul>
+<li>&lt;symbol&gt;.trades
+
+<ol>
+<li>&lt;symbol&gt; is the name of the trading pair, such as BTC_USDT, ETH_USDT, etc.</li>
+</ol></li>
+</ul></li>
+</ol>
+
+<blockquote>
+<p>Data flow</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">stream</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT.trades</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+     <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">17122255</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction id</span>
+      <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction price</span>
+      <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+      <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">buy</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Taker's transaction direction</span>
+      <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1628738748319</span><span class="dl">"</span> <span class="c1">// transaction time</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">17122255</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction id</span>
+      <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction price</span>
+      <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+      <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">buy</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Taker's transaction direction</span>
+      <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1628738748319</span><span class="dl">"</span> <span class="c1">// transaction time</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">17122255</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction id</span>
+      <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">46125.7</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction price</span>
+      <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.079045</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+      <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">buy</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Taker's transaction direction</span>
+      <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1628738748319</span><span class="dl">"</span> <span class="c1">// transaction time</span>
+    <span class="p">},</span>
+    <span class="p">...</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div><h2 id='subscribe-candles'>Subscribe Candles</h2>
+<p><strong>Subscribe to candles</strong></p>
+
+<blockquote>
+<p>Send the following request to subscribe to the candles</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">method</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">SUBSCRIBE</span><span class="dl">"</span>
+  <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">BTC_USDT.candles.1m</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">ETH_USDT.candles.1h</span><span class="dl">"</span><span class="p">,</span>
+    <span class="p">...</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>parameter</li>
+</ul>
+
+<ol>
+<li>The candles flow name format is as follows:
+
+<ul>
+<li>&lt;symbol&gt;.candles.&lt;time_frame&gt;
+
+<ol>
+<li>&lt;symbol&gt; is the name of the trading pair, such as BTC_USDT, ETH_USDT, etc.</li>
+<li>&lt;time_frame&gt; is the candles period, the valid values ​​are 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 12h, 1d, 1w, 1M</li>
+</ol></li>
+</ul></li>
+</ol>
+
+<blockquote>
+<p>Data flow</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">stream</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT.candles.1m</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">1644224940000</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// start time</span>
+      <span class="dl">"</span><span class="s2">10190.53</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// opening price</span>
+      <span class="dl">"</span><span class="s2">10192.5</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// maximum price</span>
+      <span class="dl">"</span><span class="s2">9806.82</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// minimum price</span>
+      <span class="dl">"</span><span class="s2">10127.37</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// closing price</span>
+      <span class="dl">"</span><span class="s2">0.834</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+      <span class="dl">"</span><span class="s2">8370.40506</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction value</span>
+      <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// first transaction id</span>
+      <span class="mi">278</span> <span class="c1">// The total number of transactions in the range</span>
+    <span class="p">],</span>
+    <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">1644224940000</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// start time</span>
+      <span class="dl">"</span><span class="s2">10190.53</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// opening price</span>
+      <span class="dl">"</span><span class="s2">10192.5</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// maximum price</span>
+      <span class="dl">"</span><span class="s2">9806.82</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// minimum price</span>
+      <span class="dl">"</span><span class="s2">10127.37</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// closing price</span>
+      <span class="dl">"</span><span class="s2">0.834</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+      <span class="dl">"</span><span class="s2">8370.40506</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction value</span>
+      <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// first transaction id</span>
+      <span class="mi">278</span> <span class="c1">// The total number of transactions in the range</span>
+    <span class="p">],</span>
+    <span class="p">[</span>
+      <span class="dl">"</span><span class="s2">1644224940000</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// start time</span>
+      <span class="dl">"</span><span class="s2">10190.53</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// opening price</span>
+      <span class="dl">"</span><span class="s2">10192.5</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// maximum price</span>
+      <span class="dl">"</span><span class="s2">9806.82</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// minimum price</span>
+      <span class="dl">"</span><span class="s2">10127.37</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// closing price</span>
+      <span class="dl">"</span><span class="s2">0.834</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+      <span class="dl">"</span><span class="s2">8370.40506</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transaction value</span>
+      <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// first transaction id</span>
+      <span class="mi">278</span> <span class="c1">// The total number of transactions in the range</span>
+    <span class="p">],</span>
+    <span class="p">...</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div><h2 id='subscribe-tickers'>Subscribe Tickers</h2>
+<p>...</p>
+
+<hr>
+<h1 id='user-data-endpoints'>User Data Endpoints</h1>
+<!-- ## Object
+
+> Account
+
+```javascript
+{
+  "s":"USDT",  // asset code
+  "a":10000,  // Available amount
+  "h":0  // frozen amount
+}
+```
+
+> Ledger Entry
+
+```javascript
+{
+  "i":1125899906842648350,  // entry id
+  "s":"BTC",  // asset symbol
+  "T":"trade",  // entry type
+  "a":0.003,  // amount
+  "b":10.009,  // balance
+  "t":1643289492985  // time
+}
+```
+
+> Entry Type: transfer, trade, fee
+
+> Order
+
+> Order object
+> Up to 20 transactions of the order
+> If the order has more than 20 transactions, the object only contains the last 20 transactions, and other transactions can be obtained through the fills interface
+
+```javascript
+{
+  "i": 4611688217450643477,  // The order id assigned by the exchange
+  "I": "",  // User specified order id
+  "m": "BTC_USDT",  // trading pair code
+  "T": "limit",  // order type
+  "s": "sell",  // order direction
+  "Q": -0.0100,  // order amount
+  "P": 10043.8500,  // Order price
+  "t": "gtc",  // Time In Force
+  "o": false,  // Post Only
+  "S": "filled",  // Order status
+  "E": -0.0100,  // transaction volume
+  "e": -100.43850000,  // transaction value
+  "C": 1643193746043,  // creation time
+  "U": 1643193746464,  // update time
+  "n": 2,  // Number of transactions
+  "F": [{
+    "i": 13,  // transaction id
+    "t": 1643193746464,  // Transaction time
+    "p": 10043.85,  // Transaction price
+    "q": -0.009,  // transaction volume
+    "l": "maker",  // Maker / Taker transaction 
+    "f": {
+      "a": "USDT",  // The asset used for the transaction to pay the handling fee
+      "m": 0.09039465000  // The transaction fee
+    }
+  }, {
+    "i": 12,
+    "t": 1643193746266,
+    "p": 10043.85,
+    "q": -0.001,
+    "l": "maker",
+    "f": {
+      "a": "USDT",
+      "m": 0.01004385000
+    }
+  }],
+  "f": [{
+    "a": "USDT",  // Assets used to pay fees
+    "m": 0.10043850000  // Total handling fee
+  }]
+}
+```
+
+> Fill
+
+```javascript
+{
+  "i": 13,  // transaction id
+  "t": 1643193746464,  // Transaction time
+  "p": 10043.85,  // transaction price
+  "q": -0.009,  // transaction volume
+  "l": "maker",  // Maker / Taker transaction 
+  "f": {
+    "a": "USDT",  // The asset used for the transaction to pay the handling fee
+    "m": 0.09039465000  // The transaction fee
+  }
+}
+``` -->
+<h2 id='get-accounts'>Get Accounts</h2>
+<p><strong>Get the balance, freezing and other information of various assets in the account corresponding to the API Key</strong></p>
+
+<ul>
+<li>Request Method: GET</li>
+<li>Request Path: /v4/userdata/accounts</li>
+<li>Permission: View, Trade</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>asset</td>
+<td>string</td>
+<td>No</td>
+<td>Asset code, such as BTC, ETH, etc.<br/>Multiple asset codes can be specified in the following two forms<br/>1. /v4/userdata/accounts?asset=BTC,ETH<br/> 2. /v4/userdata/accounts?asset=BTC&amp;asset=ETH <br/> If the asset parameter is not specified, it will return the information of all assets</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// asset code</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span><span class="mi">10000</span><span class="p">,</span>  <span class="c1">// Available amount</span>
+    <span class="dl">"</span><span class="s2">h</span><span class="dl">"</span><span class="p">:</span><span class="mi">0</span>  <span class="c1">// frozen amount</span>
+  <span class="p">},</span>
+    <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">BTC</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// asset code</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span><span class="mi">10000</span><span class="p">,</span>  <span class="c1">// Available amount</span>
+    <span class="dl">"</span><span class="s2">h</span><span class="dl">"</span><span class="p">:</span><span class="mi">0</span>  <span class="c1">// frozen amount</span>
+  <span class="p">},</span>
+    <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">ETH</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// asset code</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span><span class="mi">10000</span><span class="p">,</span>  <span class="c1">// Available amount</span>
+    <span class="dl">"</span><span class="s2">h</span><span class="dl">"</span><span class="p">:</span><span class="mi">0</span>  <span class="c1">// frozen amount</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">]</span>
+</code></pre></div>
+<ul>
+<li>Data Source</li>
+</ul>
+
+<p>Cache</p>
+<h2 id='get-an-account-39-s-ledger'>Get an account&#39;s ledger</h2>
+<p><strong>Get the bill of the account corresponding to the API Key, including all records of changing the account balance, such as fund transfer, transaction, handling fee collection, etc.</strong></p>
+
+<ul>
+<li>Request Method: GET</li>
+<li>Request Path: /v4/userdata/ledger</li>
+<li>Permission: View, Trade</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>asset</td>
+<td>string</td>
+<td>No</td>
+<td>Asset code, such as BTC, ETH, etc.<br/>Multiple asset codes can be specified in the following two forms<br/>1. /v4/userdata/ledger?asset=BTC,ETH<br/> 2. /v4/userdata/ledger?asset=BTC&amp;asset=ETH <br/> If the asset parameter is not specified, it will return the bill records of all assets</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>int64</td>
+<td>No</td>
+<td>Limited to return the earliest time of the bill records</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>int64</td>
+<td>no</td>
+<td>Limited to return the latest time of the bill records</td>
+</tr>
+<tr>
+<td>before</td>
+<td>int64</td>
+<td>No</td>
+<td>Bill record id<br/>Limited to return the maximum id value of the bill records</td>
+</tr>
+<tr>
+<td>after</td>
+<td>int64</td>
+<td>No</td>
+<td>Bill record id<br/>Limited to return the minimum id value of the bill records</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>int32</td>
+<td>No</td>
+<td>Limited to return the maximum number of the bill records<br/>default 100</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>int64</td>
+<td>No</td>
+<td>Limited to return the earliest time of the bill records</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>int64</td>
+<td>No</td>
+<td>Limited to return the earliest time of the bill records</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span><span class="mi">1125899906842648350</span><span class="p">,</span>  <span class="c1">// entry id</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">BTC</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// asset symbol</span>
+    <span class="dl">"</span><span class="s2">T</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">trade</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// entry type: transfer, trade, fee</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span><span class="mf">0.003</span><span class="p">,</span>  <span class="c1">// amount</span>
+    <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">:</span><span class="mf">10.009</span><span class="p">,</span>  <span class="c1">// balance</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span><span class="mi">1643289492985</span>  <span class="c1">// time</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span><span class="mi">1125899906842648350</span><span class="p">,</span>  <span class="c1">// entry id</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// asset symbol</span>
+    <span class="dl">"</span><span class="s2">T</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">trade</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// entry type: transfer, trade, fee</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span><span class="mf">0.003</span><span class="p">,</span>  <span class="c1">// amount</span>
+    <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">:</span><span class="mf">10.009</span><span class="p">,</span>  <span class="c1">// balance</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span><span class="mi">1643289492985</span>  <span class="c1">// time</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span><span class="mi">1125899906842648350</span><span class="p">,</span>  <span class="c1">// entry id</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">ETH</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// asset symbol</span>
+    <span class="dl">"</span><span class="s2">T</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">trade</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// entry type: transfer, trade, fee</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span><span class="mf">0.003</span><span class="p">,</span>  <span class="c1">// amount</span>
+    <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">:</span><span class="mf">10.009</span><span class="p">,</span>  <span class="c1">// balance</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span><span class="mi">1643289492985</span>  <span class="c1">// time</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">]</span>
+</code></pre></div>
+<ul>
+<li>Data Source</li>
+</ul>
+
+<p>DB</p>
+<h2 id='create-an-order'>Create an order</h2>
+<p><strong>Submit an order</strong></p>
+
+<ul>
+<li>Request Method: POST</li>
+<li>Request Path: /v4/userdata/order</li>
+<li>Permission: Trade</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>yes</td>
+<td>trading pair code, such as BTC_USDT, ETH_USDT, etc.</td>
+</tr>
+<tr>
+<td>side</td>
+<td>string</td>
+<td>yes</td>
+<td>order direction, valid value ​​buy, sell, case insensitive</td>
+</tr>
+<tr>
+<td>type</td>
+<td>string</td>
+<td>yes</td>
+<td>order type, valid value limit</td>
+</tr>
+<tr>
+<td>client_order_id</td>
+<td>string</td>
+<td>No</td>
+<td>Order id, a string with a valid value of an int64 integer, it is recommended to use the Unix timestamp when the order was submitted</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>decimal</td>
+<td>No</td>
+<td>Order Quantity</td>
+</tr>
+<tr>
+<td>price</td>
+<td>decimal</td>
+<td>No</td>
+<td>Order Limit</td>
+</tr>
+<tr>
+<td>time_in_force</td>
+<td>string</td>
+<td>No</td>
+<td>Order Timeliness<br/>Valid value gtc, ioc<br/>gtc means that the order that is not fully filled will remain valid until the user cancels the order<br/>ioc means that the order matching will immediately cancel the order that cannot be fully filled at the time of placing the order,<br/>Any transaction will be retained<br/>The default value gtc</td>
+</tr>
+<tr>
+<td>post_only</td>
+<td>bool</td>
+<td>no</td>
+<td>...</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+
+<p>Order object
+Up to 20 transactions of the order
+If the order has more than 20 transactions, the object only contains the last 20 transactions, and other transactions can be obtained through the fills interface</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4611688217450643477</span><span class="p">,</span>  <span class="c1">// The order id assigned by the exchange</span>
+  <span class="dl">"</span><span class="s2">I</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>  <span class="c1">// User specified order id</span>
+  <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// trading pair code</span>
+  <span class="dl">"</span><span class="s2">T</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">limit</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// order type</span>
+  <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">sell</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// order direction</span>
+  <span class="dl">"</span><span class="s2">Q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span>  <span class="c1">// order amount</span>
+  <span class="dl">"</span><span class="s2">P</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.8500</span><span class="p">,</span>  <span class="c1">// order price</span>
+  <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">gtc</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Time In Force</span>
+  <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>  <span class="c1">// Post Only</span>
+  <span class="dl">"</span><span class="s2">S</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">filled</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// order status</span>
+  <span class="dl">"</span><span class="s2">E</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span>  <span class="c1">// transaction volume</span>
+  <span class="dl">"</span><span class="s2">e</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">100.43850000</span><span class="p">,</span>  <span class="c1">// transaction value</span>
+  <span class="dl">"</span><span class="s2">C</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746043</span><span class="p">,</span>  <span class="c1">// creation time</span>
+  <span class="dl">"</span><span class="s2">U</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span>  <span class="c1">// update time</span>
+  <span class="dl">"</span><span class="s2">n</span><span class="dl">"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1">// Number of transactions</span>
+  <span class="dl">"</span><span class="s2">F</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>  <span class="c1">// transaction id</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span>  <span class="c1">// Transaction time</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>  <span class="c1">// transaction price</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.009</span><span class="p">,</span>  <span class="c1">// transaction volume</span>
+    <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Maker / Taker transaction </span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// The asset used for the transaction to pay the handling fee</span>
+      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.09039465000</span>  <span class="c1">// The transaction fee</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746266</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.01004385000</span>
+    <span class="p">}</span>
+  <span class="p">}],</span>
+  <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Assets used to pay fees</span>
+    <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.10043850000</span>  <span class="c1">// Total handling fee</span>
+  <span class="p">}]</span>
+<span class="p">}</span>
+</code></pre></div><h2 id='get-an-order'>Get an order</h2>
+<p><strong>Get the order with the specified id</strong></p>
+
+<ul>
+<li>Request Method: GET</li>
+<li>Request Path: /v4/userdata/order</li>
+<li>Permission: View, Trade</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>yes</td>
+<td>order id<br/>The order id can be assigned by the exchange, or <br/>can be defined by the user (use the client_order_id parameter when submitting the order).<br/>When using a custom id, you need to add the &quot;c:&quot; prefix before the id.<br/>For example: when submitting an order, a custom id &quot;123&quot; is used, and when obtaining an order you need to use &quot;c:123&quot;.</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4611688217450643477</span><span class="p">,</span>  <span class="c1">// The order id assigned by the exchange</span>
+  <span class="dl">"</span><span class="s2">I</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>  <span class="c1">// User specified order id</span>
+  <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// trading pair code</span>
+  <span class="dl">"</span><span class="s2">T</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">limit</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// order type</span>
+  <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">sell</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// order direction</span>
+  <span class="dl">"</span><span class="s2">Q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span>  <span class="c1">// order amount</span>
+  <span class="dl">"</span><span class="s2">P</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.8500</span><span class="p">,</span>  <span class="c1">// order price</span>
+  <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">gtc</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Time In Force</span>
+  <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>  <span class="c1">// Post Only</span>
+  <span class="dl">"</span><span class="s2">S</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">filled</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// order status</span>
+  <span class="dl">"</span><span class="s2">E</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span>  <span class="c1">// transaction volume</span>
+  <span class="dl">"</span><span class="s2">e</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">100.43850000</span><span class="p">,</span>  <span class="c1">// transaction value</span>
+  <span class="dl">"</span><span class="s2">C</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746043</span><span class="p">,</span>  <span class="c1">// creation time</span>
+  <span class="dl">"</span><span class="s2">U</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span>  <span class="c1">// update time</span>
+  <span class="dl">"</span><span class="s2">n</span><span class="dl">"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1">// Number of transactions</span>
+  <span class="dl">"</span><span class="s2">F</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>  <span class="c1">// transaction id</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span>  <span class="c1">// Transaction time</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>  <span class="c1">// transaction price</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.009</span><span class="p">,</span>  <span class="c1">// transaction volume</span>
+    <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Maker / Taker transaction </span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// The asset used for the transaction to pay the handling fee</span>
+      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.09039465000</span>  <span class="c1">// The transaction fee</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746266</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.01004385000</span>
+    <span class="p">}</span>
+  <span class="p">}],</span>
+  <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Assets used to pay fees</span>
+    <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.10043850000</span>  <span class="c1">// Total handling fee</span>
+  <span class="p">}]</span>
+<span class="p">}</span>
+</code></pre></div><h2 id='get-orders'>Get Orders</h2>
+<p><strong>Obtain the order that meets the following conditions in the account corresponding to ApiKey</strong></p>
+
+<ol>
+<li>All unsettled orders</li>
+<li>Settled orders within three months, including rejected, cancelled and filled orders</li>
+<li>All completed orders</li>
+<li>All cancelled partial transaction orders</li>
+</ol>
+
+<ul>
+<li>Request Method: GET</li>
+<li>Request Path: /v4/userdata/orders</li>
+<li>Permission: View, Trade</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>No</td>
+<td>Valid values ​​unsettled, settled<br/>unsettled means get unsettled orders, the returned results are sorted in reverse order by order creation time<br/>settled means settled orders are acquired, and the returned results are sorted in reverse order by order settlement time <br/>Default unsettled</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>No</td>
+<td>Trading pair code, such as BTC_USDT, ETH_USDT, etc.<br/>Multiple trading pair codes can be specified in the following two forms<br/>1. /v4/userdata/orders?symbol=BTC_USDT,ETH_USDT<br />2. /v4/userdata/orders?symbol=BTC_USDT&amp;symbol=ETH_USDT<br/>When status=unsettled, if symbol is not specified, it will return unsettled orders for all trading pairs<br/>When status=settled, symbol parameters must be given</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>long</td>
+<td>no</td>
+<td>limited to return the last creation time of the order</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>long</td>
+<td>no</td>
+<td>limited to return the last creation time of the order</td>
+</tr>
+<tr>
+<td>before</td>
+<td>int64</td>
+<td>no</td>
+<td>order update id<br/>limited to return the maximum update id of the order</td>
+</tr>
+<tr>
+<td>after</td>
+<td>int64</td>
+<td>no</td>
+<td>delegate update id<br/>limited to return the minimum update id of the order</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>long</td>
+<td>No</td>
+<td>Specify the maximum number of orders to return</td>
+</tr>
+</tbody></table>
+
+<ul>
+<li><p>Parameter combinations and data sources supported by this interface</p>
+
+<ul>
+<li>status=unsettled + symbol</li>
+<li>status=settled + symbol + start_time</li>
+<li>status=settled + symbol + start_time + limit</li>
+<li>status=settled + symbol + end_time</li>
+<li>status=settled + symbol + end_time + limit</li>
+<li>status=settled + symbol + start_time + end_time</li>
+<li>status=settled + symbol + start_time + end_time + limit</li>
+<li>status=settled + symbol + before</li>
+<li>status=settled + symbol + before + limit</li>
+<li>status=settled + symbol + after</li>
+<li>status=settled + symbol + after + limit</li>
+</ul></li>
+</ul>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4611688217450643477</span><span class="p">,</span> <span class="c1">// The order id assigned by the exchange</span>
+    <span class="dl">"</span><span class="s2">I</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span> <span class="c1">// User specified order id</span>
+    <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// trading pair code</span>
+    <span class="dl">"</span><span class="s2">T</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">limit</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// order type</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">sell</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// order direction</span>
+    <span class="dl">"</span><span class="s2">Q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span> <span class="c1">// Order amount</span>
+    <span class="dl">"</span><span class="s2">P</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.8500</span><span class="p">,</span> <span class="c1">// order price</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">gtc</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Time In Force</span>
+    <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="c1">// Post Only</span>
+    <span class="dl">"</span><span class="s2">S</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">filled</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// order status</span>
+    <span class="dl">"</span><span class="s2">E</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span> <span class="c1">// transaction volume </span>
+    <span class="dl">"</span><span class="s2">e</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">100.43850000</span><span class="p">,</span> <span class="c1">// transaction value</span>
+    <span class="dl">"</span><span class="s2">C</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746043</span><span class="p">,</span> <span class="c1">// creation time</span>
+    <span class="dl">"</span><span class="s2">U</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span> <span class="c1">// update time</span>
+    <span class="dl">"</span><span class="s2">n</span><span class="dl">"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="c1">// number of transactions</span>
+    <span class="dl">"</span><span class="s2">F</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span>
+      <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="c1">// transaction id</span>
+      <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span> <span class="c1">// transaction time</span>
+      <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span> <span class="c1">// transaction price</span>
+      <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.009</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+      <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Maker / Taker transaction </span>
+      <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// This transaction is used to pay the transaction fee</span>
+        <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.09039465000</span> <span class="c1">// The handling fee for this transaction</span>
+      <span class="p">}</span>
+    <span class="p">},</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746266</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.001</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.01004385000</span>
+      <span class="p">}</span>
+    <span class="p">}],</span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Assets used to pay fees</span>
+      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.10043850000</span>  <span class="c1">// Total handling fee</span>
+    <span class="p">}]</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">]</span>
+</code></pre></div>
+<blockquote>
+<p>The returned unsettled orders are sorted by creation time from earliest to latest
+The returned settled orders are sorted by settlement time from earliest to latest</p>
+</blockquote>
+<h2 id='cancel-an-order'>Cancel an Order</h2>
+<p><strong>Revoke the order with the specified id</strong></p>
+
+<ul>
+<li>Request Method: DELETE</li>
+<li>Request Path: /v4/userdata/order</li>
+<li>Permission: Trade</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>yes</td>
+<td>order id<br>The order id can be assigned by the exchange,<br/>or user-defined (use the client_order_id parameter when submitting the order). <br>When using a custom id, you need to add a &quot;c:&quot; prefix before the id. <br/>For example: the custom id &quot;123&quot; is used when submitting the order, and &quot;c:123&quot; must be used when canceling the order.</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4611688217450643477</span><span class="p">,</span> <span class="c1">// The order id assigned by the exchange</span>
+  <span class="dl">"</span><span class="s2">I</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span> <span class="c1">// User specified order id</span>
+  <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// trading pair code</span>
+  <span class="dl">"</span><span class="s2">T</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">limit</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// order type</span>
+  <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">sell</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// order direction</span>
+  <span class="dl">"</span><span class="s2">Q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span> <span class="c1">// Order amount</span>
+  <span class="dl">"</span><span class="s2">P</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.8500</span><span class="p">,</span> <span class="c1">// order price</span>
+  <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">gtc</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Time In Force</span>
+  <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="c1">// Post Only</span>
+  <span class="dl">"</span><span class="s2">S</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">filled</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// order status</span>
+  <span class="dl">"</span><span class="s2">E</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span> <span class="c1">// transaction volume </span>
+  <span class="dl">"</span><span class="s2">e</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">100.43850000</span><span class="p">,</span> <span class="c1">// transaction value</span>
+  <span class="dl">"</span><span class="s2">C</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746043</span><span class="p">,</span> <span class="c1">// creation time</span>
+  <span class="dl">"</span><span class="s2">U</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span> <span class="c1">// update time</span>
+  <span class="dl">"</span><span class="s2">n</span><span class="dl">"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="c1">// number of transactions</span>
+  <span class="dl">"</span><span class="s2">F</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="c1">// deal id</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span> <span class="c1">// transaction time</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span> <span class="c1">// transaction price</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.009</span><span class="p">,</span> <span class="c1">// transaction volume</span>
+    <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Maker / Taker transaction </span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// This transaction is used to pay the transaction fee</span>
+      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.09039465000</span> <span class="c1">// The handling fee for this transaction</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746266</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.01004385000</span>
+    <span class="p">}</span>
+  <span class="p">}],</span>
+  <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Assets used to pay fees</span>
+    <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.10043850000</span>  <span class="c1">// Total handling fee</span>
+  <span class="p">}]</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>If the order with the specified id has been settled, or if there is no order with the specified id, you will receive a -3004 error.</p>
+</blockquote>
+<h2 id='cancel-all-orders'>Cancel all Orders</h2>
+<p><strong>Cancel all orders</strong></p>
+
+<ul>
+<li>Request Method: DELETE</li>
+<li>Request Path: /v4/userdata/orders</li>
+<li>Permission: Trade</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>yes</td>
+<td>trading pair code<br/>such as BTC_USDT, ETH_USDT, etc.</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">[]</span>
+</code></pre></div>
+<blockquote>
+<p>Returns an empty array if the request was executed correctly, otherwise returns an error message</p>
+</blockquote>
+<h2 id='get-fills'>Get fills</h2>
+<p><strong>Get transaction records</strong></p>
+
+<ul>
+<li>Request Method: DELETE</li>
+<li>Request Path: /v4/userdata/fills</li>
+<li>Permission: View, Trade</li>
+<li>Request Parameters</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Parameter name</th>
+<th>Parameter type</th>
+<th>Required or not</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>order_id</td>
+<td>string</td>
+<td>No</td>
+<td>The order id assigned by the exchange<br/>Only return the transaction records of the specified order<br/>If this parameter is not specified, please specify symbol</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>No</td>
+<td>Trading pair code<br/>Such as BTC_USDT, ETH_USDT, etc.<br/>Only return the transaction records of the specified trading pair<br/>If this parameter is not specified, please specify order_id</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>int64</td>
+<td>No</td>
+<td>Limited to return the earliest time of transaction records</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>int64</td>
+<td>No</td>
+<td>Limited to return the latest time of transaction records</td>
+</tr>
+<tr>
+<td>before</td>
+<td>int64</td>
+<td>No</td>
+<td>Transaction record id<br/>Limited to return the maximum id of transaction records</td>
+</tr>
+<tr>
+<td>after</td>
+<td>int64</td>
+<td>No</td>
+<td>Transaction record id<br/>Limited to return the minimum id of transaction records</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>int32</td>
+<td>No</td>
+<td>Limit the maximum number of returned results<br/>default 100</td>
+</tr>
+</tbody></table>
+
+<ul>
+<li><p>Parameter combinations and data sources supported by this interface</p>
+
+<ul>
+<li>symbol  --&gt; database</li>
+<li>symbol + limit  --&gt; database</li>
+<li>symbol + start_time  --&gt; database</li>
+<li>symbol + start_time + limit  --&gt; database</li>
+<li>symbol + end_time  --&gt; database</li>
+<li>symbol + end_time + limit  --&gt; database</li>
+<li>symbol + start_time + end_time  --&gt; database</li>
+<li>symbol + start_time + end_time + limit  --&gt; database</li>
+<li>symbol + before  --&gt; database</li>
+<li>symbol + before + limit  --&gt; database</li>
+<li>symbol + after  --&gt; database</li>
+<li>symbol + after + limit  --&gt; database</li>
+<li>order_id  --&gt; database</li>
+<li>order_id + limit  --&gt; database</li>
+<li>order_id + before  --&gt; database</li>
+<li>order_id + before + limit  --&gt; database</li>
+</ul></li>
+</ul>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>  <span class="c1">// transaction id</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span>  <span class="c1">// transaction time</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>  <span class="c1">// transaction price</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.009</span><span class="p">,</span>  <span class="c1">// transaction volume</span>
+    <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Maker / Taker transaction </span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// The asset used for the transaction to pay the handling fee</span>
+      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.09039465000</span>  <span class="c1">// The transaction fee</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+    <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>  <span class="c1">// transaction id</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span>  <span class="c1">// transaction time</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>  <span class="c1">// transaction price</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.009</span><span class="p">,</span>  <span class="c1">// transaction volume</span>
+    <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Maker / Taker transaction </span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// The asset used for the transaction to pay the handling fee</span>
+      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.09039465000</span>  <span class="c1">// The transaction fee</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+    <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>  <span class="c1">// transaction id</span>
+    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span>  <span class="c1">// transaction time</span>
+    <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>  <span class="c1">// transaction price</span>
+    <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.009</span><span class="p">,</span>  <span class="c1">// transaction volume</span>
+    <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Maker / Taker transaction </span>
+    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// The asset used for the transaction to pay the handling fee</span>
+      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.09039465000</span>  <span class="c1">// The transaction fee</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="p">...</span>
+<span class="p">]</span>
+</code></pre></div>
+<blockquote>
+<p>The returned results are sorted by transaction record id from small to large</p>
+</blockquote>
+<h1 id='user-data-streams'>User Data Streams</h1><h2 id='overview-2'>Overview</h2>
+<p>Using the Websocket push service, you can obtain the account balance and order change information in time.</p>
+
+<p><strong>Connect to Websocket server</strong></p>
+
+<p>Please use the following URL to connect to the Websocket server:</p>
+
+<p>wss://user-wss.bibox360.com</p>
+
+<p><strong>When connecting, please append the following HTTP request headers</strong></p>
+
+<ul>
+<li>BIBOX-API-KEY</li>
+<li>BIBOX-API-SIGN</li>
+<li>BIBOX-TIMESTAMP</li>
+</ul>
+
+<p><em>Please refer to the <a href="#authentication">Authentication</a> chapter for specific methods</em></p>
+
+<blockquote>
+<p>Data flow
+After the connection is successfully established, the client will receive the balance change information and order change information of the account corresponding to the ApiKey. The format is as follows:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">event</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">account</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span> <span class="nx">Account</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+  <span class="dl">"</span><span class="s2">event</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">order</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span> <span class="nx">Order</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h2 id='account'>Account</h2>
+<p><strong>When the account balance changes, the account event is received</strong></p>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">event</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">account</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// asset code</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span><span class="mi">10000</span><span class="p">,</span>  <span class="c1">// available amount</span>
+    <span class="dl">"</span><span class="s2">h</span><span class="dl">"</span><span class="p">:</span><span class="mi">0</span>  <span class="c1">// frozen amount</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h2 id='orders'>Orders</h2>
+<p><strong>When the order changes, the order event will be received</strong></p>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">event</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">order</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// asset code</span>
+    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span><span class="mi">10000</span><span class="p">,</span>  <span class="c1">// available amount</span>
+    <span class="dl">"</span><span class="s2">h</span><span class="dl">"</span><span class="p">:</span><span class="mi">0</span>  <span class="c1">// frozen amount</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h1 id='errors'>Errors</h1><h2 id='error-code'>error code</h2>
+<ul>
+<li>-1xxx network or server failure</li>
+<li>-2xxx request header or parameter error</li>
+<li>-3xxx requests could not be handled correctly</li>
+</ul>
+
+<table><thead>
+<tr>
+<th style="text-align: center">Code</th>
+<th style="text-align: center">Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center">-1000</td>
+<td style="text-align: center">Unknown</td>
+</tr>
+<tr>
+<td style="text-align: center">-2001</td>
+<td style="text-align: center">No request header given</td>
+</tr>
+<tr>
+<td style="text-align: center">-2002</td>
+<td style="text-align: center">Invalid value for request header</td>
+</tr>
+<tr>
+<td style="text-align: center">-2003</td>
+<td style="text-align: center">No parameter given</td>
+</tr>
+<tr>
+<td style="text-align: center">-2004</td>
+<td style="text-align: center">Invalid value for parameter</td>
+</tr>
+<tr>
+<td style="text-align: center">-2005</td>
+<td style="text-align: center">Body contains invalid Json format</td>
+</tr>
+<tr>
+<td style="text-align: center">-2006</td>
+<td style="text-align: center">Invalid signature</td>
+</tr>
+<tr>
+<td style="text-align: center">-2101</td>
+<td style="text-align: center">Specified API access limit exceeded</td>
+</tr>
+<tr>
+<td style="text-align: center">-2102</td>
+<td style="text-align: center">Specified API usage limit exceeded</td>
+</tr>
+<tr>
+<td style="text-align: center">-2103</td>
+<td style="text-align: center">ApiKey has not been granted the relevant permission</td>
+</tr>
+<tr>
+<td style="text-align: center">-2104</td>
+<td style="text-align: center">Request expired</td>
+</tr>
+<tr>
+<td style="text-align: center">-3001</td>
+<td style="text-align: center">Specified asset does not exist</td>
+</tr>
+<tr>
+<td style="text-align: center">-3002</td>
+<td style="text-align: center">Specified trading pair does not exist</td>
+</tr>
+<tr>
+<td style="text-align: center">-3003</td>
+<td style="text-align: center">Specified order does not exist</td>
+</tr>
+</tbody></table>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="python">python</a>
+                <a href="#" data-language-name="csharp">csharp</a>
+          </div>
+      </div>
+    </div>
+  </body>
+      <script>
+        const lang_btn = document.getElementById('lang_box');
+        const btn_spot_v4 = document.getElementById('btn_spot_v4');
+        const btn_spot = document.getElementById('btn_spot');
+        const btn_contract = document.getElementById('btn_contract');
+        const btn_contract_coin = document.getElementById('btn_contract_coin')
+        const btn_v1 = document.getElementById('btn_v1')
+
+        const btnSpotSelect = document.getElementById('btn_spot-select')
+        const spot_select = document.getElementById('spot_select')
+
+        const url = GetUrlRelativePath();
+
+        if(url.indexOf('en') != -1){
+          //英文
+          btnSpotSelect.innerHTML = 'Spot'
+          lang_btn.innerHTML = '中文';
+          btn_spot.innerHTML = 'Spot v3';
+          btn_spot_v4.innerHTML = 'Spot v4'
+          btn_contract_coin.innerHTML = 'ContractCoin';
+          btn_contract.innerHTML = 'Contract USDT';
+          btn_v1.innerHTML = 'Use V1 API?';
+
+          lang_btn.href = url.replace('en/', 'zh/');
+          btn_spot.href = btn_spot.href.replace('zh/', 'en/');
+          btn_spot_v4.href = btn_spot_v4.href.replace('zh/', 'en/')
+          btn_contract_coin.href = btn_contract_coin.href.replace('zh/', 'en/');
+          btn_contract.href = btn_contract.href.replace('zh/', 'en/');
+
+        }else{
+          //中文
+          btnSpotSelect.innerHTML = '现货'
+          lang_btn.innerHTML = 'English';
+          btn_spot.innerHTML = '现货 v3';
+          btn_spot_v4.innerHTML = '现货 v4'
+          btn_contract_coin.innerHTML = '币本位永续合约';
+          btn_contract.innerHTML = 'U本位永续合约';
+          btn_v1.innerHTML = '使用v1版本API';
+
+          lang_btn.href = url.replace('zh/', 'en/');
+          btn_spot.href = btn_spot.href.replace('en/', 'zh/');
+          btn_spot_v4.href = btn_spot_v4.href.replace('en/', 'zh/');
+          btn_contract_coin.href = btn_contract_coin.href.replace('en/', 'zh/');
+          btn_contract.href = btn_contract.href.replace('en/', 'zh/');
+        }
+
+        if(location.href.indexOf('/spotv4/') > 0){
+          btn_spot_v4.className = 'current';
+          btn_contract_coin.className = '';
+          btn_contract.className = '';
+          btn_spot.className = '';
+          spot_select.className = spot_select.className + ' current';
+        } else if(location.href.indexOf('v3/spot/') > 0){
+          btn_spot.className = 'current';
+          btn_contract_coin.className = '';
+          btn_contract.className = '';
+          btn_spot_v4.className = '';
+          spot_select.className = spot_select.className + ' current';
+        }
+        else if(location.href.indexOf('v3/bc/') > 0){
+          btn_spot.className = '';
+          btn_contract_coin.className = 'current';
+          btn_contract.className = '';
+          btn_spot_v4.className = '';
+        }
+        else if(location.href.indexOf('v3/bu/') > 0){
+          btn_spot.className = '';
+          btn_contract_coin.className = '';
+          btn_contract.className = 'current';
+          btn_spot_v4.className = '';
+        }
+
+        lang_btn.style.display = 'block';
+        function GetUrlRelativePath(){
+          let url = document.location.toString();
+          let arrUrl = url.split("//");
+          let start = arrUrl[1].indexOf("/");
+          let relUrl = arrUrl[1].substring(start);
+          if(relUrl.indexOf("?") != -1){
+            relUrl = relUrl.split("?")[0];
+          }
+          if(relUrl.indexOf("#") != -1){
+            relUrl = relUrl.split("#")[0];
+          }
+          return relUrl;
+    　　}
+      </script>
+</html>
